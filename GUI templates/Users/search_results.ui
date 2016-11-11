@@ -39,7 +39,7 @@
     <property name="frameShadow">
      <enum>QFrame::Raised</enum>
     </property>
-    <widget class="QWidget" name="">
+    <widget class="QWidget" name="layoutWidget">
      <property name="geometry">
       <rect>
        <x>0</x>
@@ -125,7 +125,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -210,7 +210,7 @@
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>570</x>
@@ -225,6 +225,9 @@
        <property name="text">
         <string>&lt;FirstName&gt;</string>
        </property>
+       <property name="first_name" stdset="0">
+        <string/>
+       </property>
       </widget>
      </item>
      <item>
@@ -232,18 +235,17 @@
        <property name="text">
         <string>&lt;$money in Account&gt;</string>
        </property>
+       <property name="account_money" stdset="0">
+        <string/>
+       </property>
       </widget>
      </item>
     </layout>
    </widget>
+   <zorder>layoutWidget</zorder>
    <zorder>frame</zorder>
    <zorder>layoutWidget</zorder>
-   <zorder>SearchInputBar</zorder>
    <zorder>Logo</zorder>
-   <zorder>layoutWidget_2</zorder>
-   <zorder>signin_button_2</zorder>
-   <zorder>first_name_text</zorder>
-   <zorder>money_text</zorder>
    <zorder>tableView</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">

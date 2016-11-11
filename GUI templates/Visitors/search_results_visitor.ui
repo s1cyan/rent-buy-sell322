@@ -24,98 +24,17 @@
      </rect>
     </property>
    </widget>
-   <widget class="QFrame" name="frame">
+   <widget class="QTableView" name="tableView">
     <property name="geometry">
      <rect>
-      <x>620</x>
+      <x>10</x>
       <y>150</y>
-      <width>161</width>
+      <width>581</width>
       <height>371</height>
      </rect>
     </property>
-    <property name="frameShape">
-     <enum>QFrame::StyledPanel</enum>
-    </property>
-    <property name="frameShadow">
-     <enum>QFrame::Raised</enum>
-    </property>
-    <widget class="QWidget" name="">
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>10</y>
-       <width>168</width>
-       <height>294</height>
-      </rect>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout_4">
-      <item>
-       <widget class="QLabel" name="label_2">
-        <property name="text">
-         <string>User Actions:</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="sell_button">
-        <property name="text">
-         <string>Sell Item</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="cart_button">
-        <property name="text">
-         <string>View Cart</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="previous_orders_button">
-        <property name="text">
-         <string>View Previous Orders</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="edit_account_button">
-        <property name="text">
-         <string>Edit Account</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="withdraw_button">
-        <property name="text">
-         <string>Add/Withdraw money</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="edit_listings_button">
-        <property name="text">
-         <string>Edit Listings</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="complaint_button">
-        <property name="text">
-         <string>File a Complaint</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="signin_button">
-        <property name="text">
-         <string>Logout</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -200,40 +119,29 @@
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget_2">
     <property name="geometry">
      <rect>
-      <x>570</x>
+      <x>670</x>
       <y>10</y>
-      <width>211</width>
-      <height>15</height>
+      <width>126</width>
+      <height>51</height>
      </rect>
     </property>
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
+    <layout class="QVBoxLayout" name="verticalLayout_2">
      <item>
-      <widget class="QLabel" name="first_name_text">
+      <widget class="QPushButton" name="signup_button">
        <property name="text">
-        <string>&lt;FirstName&gt;</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="money_text">
-       <property name="text">
-        <string>&lt;$money in Account&gt;</string>
+        <string>Sign Up</string>
        </property>
       </widget>
      </item>
     </layout>
    </widget>
-   <zorder>frame</zorder>
    <zorder>layoutWidget</zorder>
-   <zorder>SearchInputBar</zorder>
    <zorder>Logo</zorder>
+   <zorder>tableView</zorder>
    <zorder>layoutWidget_2</zorder>
-   <zorder>signin_button_2</zorder>
-   <zorder>first_name_text</zorder>
-   <zorder>money_text</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
