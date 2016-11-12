@@ -1,0 +1,16 @@
+User pages
+Visitor pages
+
+Welcome_page.png
+list.txt
+superUser pages
+
+./User pages:
+User_main_page.png
+User_sell_item_page.png
+
+./Visitor pages:
+Visitor search results.png
+Visitor_item_details_page.png
+
+./superUser pages:
