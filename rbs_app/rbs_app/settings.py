@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
 import os
+import django.contrib.admin
+
+django.contrib.admin.LOGIN_URL = '/'
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -31,6 +34,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'login',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -52,10 +56,12 @@ MIDDLEWARE_CLASSES = [
 
 ROOT_URLCONF = 'rbs_app.urls'
 
+TEMPLATE_DIR = os.path.join(BASE_DIR, 'rbs_application/templates')
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [TEMPLATE_DIR, ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -78,6 +84,11 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'USER':'',
+        'PASSWORD':'',
+        'HOST':'',
+        'POST':'',
+
     }
 }
 
@@ -117,5 +128,10 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
-
 STATIC_URL = '/static/'
+STATIC_DIR = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIRS = (
+    ('css', os.path.join(STATIC_DIR, 'css')),
+    ('js', os.path.join(STATIC_DIR, 'js')),
+    ('images', os.path.join(STATIC_DIR, 'images')),
+)
