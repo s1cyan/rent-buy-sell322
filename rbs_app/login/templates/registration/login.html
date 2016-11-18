@@ -1,0 +1,18 @@
+<!-- login.html -->
+{% extends "base.html" %} {% block title %}RBS-Login{% endblock %}
+{% block head %}RBS-SerendipityCo: Login{% endblock %}
+{% block content %}
+{% if form.errors %}
+<p>Your Username and Password did not match! Please try again.</p>
+{% endif %}
+
+<form class="form" method="post" action=".">{% csrf_token %}
+    <input type="text" placeholder="Username" name="username">
+    <input type="password" placeholder="Password" name="password">
+    <button type="submit" value="Login" id="login-button">Login</button>
+    <button type="button" onclick="window.location.href='/register/' ">Register</button>
+    <input type="hidden" name="next" value="/home" />
+</form>
+    <input type="checkbox" name="admin" value="admin" id="admin"><label for="admin"> Admin?</label>
+
+{% endblock %}
