@@ -4,5 +4,4 @@ from django.http import HttpResponse
 
 
 def index(request):
-    return render(request,"visitors_main.html")
-    # return HttpResponse("RBS GROUP HOMEPAGE!")
+    return render(request,"user_main.html")
