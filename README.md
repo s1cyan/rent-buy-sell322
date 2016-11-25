@@ -9,5 +9,5 @@ rbs_app contains all base settings, static files, etc.
 
 `$ source venv/bin/activate`
 
-`pip install -r requirements.txt`
+`$ pip install -r requirements.txt`
 
