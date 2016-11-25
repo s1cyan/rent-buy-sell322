@@ -8,3 +8,9 @@ rbs_app contains all base settings, static files, etc.
 `$ virtualenv venv`  
 `$ source venv/bin/activate`  
 `$ pip install -r requirements.txt`
+
+*To deactivate the virtualenv*
+`$ deactivate`
+
+# Run server
+`$python manage.py runserver`
