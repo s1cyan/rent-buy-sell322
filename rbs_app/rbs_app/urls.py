@@ -1,5 +1,5 @@
 """rbs_app URL Configuration
-
+** do not add new pages here - go to the urls.py in rbs_application
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/1.9/topics/http/urls/
 Examples:
