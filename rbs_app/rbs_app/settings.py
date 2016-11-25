@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rbs_app'
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -50,13 +51,16 @@ MIDDLEWARE_CLASSES = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'rbs_app.urls'
-
+ROOT_URLCONF = 'rbs_application.urls'
+# BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+#
+# TEMPLATE_PATH= os.path.join(BASE_DIR, 'templates')
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['rbs_application/templates'],
         'APP_DIRS': True,
+
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -67,6 +71,7 @@ TEMPLATES = [
         },
     },
 ]
+# TEMPLATE_DIRS=  [  os.path.join(SETTINGS_PATH, 'templates'),]
 
 WSGI_APPLICATION = 'rbs_app.wsgi.application'
 
@@ -119,3 +124,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = '/static/'
+
