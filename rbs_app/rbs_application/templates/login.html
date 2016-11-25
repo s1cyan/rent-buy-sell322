@@ -1,0 +1,21 @@
+{% extends 'default.html' %}
+
+
+{% block main %}
+<div class="row center">
+   <form id = "login-form" class="col s6 offset-s3" method="post" action="{{ process_login }}">
+               {% csrf_token %}
+
+    <div class="row">
+    <div class="col s12">
+        <h3>Login</h3>
+    </div>
+    <div class="input-field col s12">
+        <input id="fname" name="fname" type="text" class="validate required">
+        <label class="active " for="fname" data-success="">First Name *:</label>
+
+    </div>
+        </div>
+       </form>
+    </div>
+{% endblock %}
