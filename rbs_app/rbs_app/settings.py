@@ -51,13 +51,15 @@ MIDDLEWARE_CLASSES = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'rbs_app.urls'
+ROOT_URLCONF = 'rbs_application.urls'
+# SETTINGS_PATH = os.path.dirname(os.path.dirname(__file__))
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['rbs_application/templates'],
         'APP_DIRS': True,
+
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -68,6 +70,7 @@ TEMPLATES = [
         },
     },
 ]
+# TEMPLATE_DIRS=  [  os.path.join(SETTINGS_PATH, 'templates'),]
 
 WSGI_APPLICATION = 'rbs_app.wsgi.application'
 
