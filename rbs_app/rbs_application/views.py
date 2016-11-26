@@ -1,7 +1,7 @@
 # Create your views here.
-from django.contrib.auth import logout
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, render_to_response, redirect
 from django.template import RequestContext
 from django.views.decorators.csrf import csrf_protect
@@ -22,6 +22,8 @@ def cart(request):
 def confirm_checkout(request):
     return render(request, 'confirm_checkout.html')
 
+# def login(request):
+#     return render(request, 'login.html')
 
 @csrf_protect
 def register(request):
