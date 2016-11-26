@@ -1,0 +1,37 @@
+{% extends 'default.html' %}
+
+{% block main %}
+<div class="row">
+
+    <div class="row center-align">
+        <br>
+
+        <div class="col s12">
+            <div class="container center-align">
+
+                <a class="waves-effect waves-light btn" href="">Sign in </a>
+                <a class="waves-effect waves-light btn" href="">Register</a>
+
+
+            </div>
+        </div>
+
+        <br>
+
+        {% include 'search_bar.html' %}
+
+        <div class="row">
+            <h5>Item Name</h5>
+            <h6>Item Price</h6>
+            <h6>Seller</h6>
+            <h6>Item is for [rbs]</h6>
+            <h6>Item description</h6>
+            <h6>Comments:</h6>
+            {% for comment in item_comments %}
+            <h6> {{ comment }} </h6>
+            {% endfor %}
+        </div>
+    </div>
+
+</div>
+{% endblock %}
