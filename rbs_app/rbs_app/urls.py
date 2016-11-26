@@ -1,5 +1,5 @@
 """rbs_app URL Configuration
-
+** do not add new pages here - go to the urls.py in rbs_application
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/1.9/topics/http/urls/
 Examples:
@@ -13,18 +13,11 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-
-from django.conf.urls import include, url
+from django.conf.urls import url,include
 from django.contrib import admin
-from login.views import *
+
 
 urlpatterns = [
-    url(r'^rbs_application/', include('rbs_application.urls')),
+    url(r'^$', include('rbs_application.urls')),
     url(r'^admin/', admin.site.urls),
-    url(r'^$', 'django.contrib.auth.views.login'),
-    url(r'^home/$', home),
-    url(r'^register/$', register),
-    url(r'^register/success/$', register_success),
-    url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
-    url(r'^logout/$', logout_page),
 ]
