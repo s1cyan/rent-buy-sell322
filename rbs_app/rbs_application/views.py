@@ -98,10 +98,10 @@ def visitors_main(request):
 
 
 
-@login_required
+# @login_required
 def user_logout(request):
     logout(request)
-    return HttpResponseRedirect('visitor')
+    return HttpResponseRedirect(reverse('visitor'))
 
 
 
