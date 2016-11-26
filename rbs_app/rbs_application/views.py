@@ -4,4 +4,4 @@ from django.http import HttpResponse
 
 
 def index(request):
-    return render(request,"cart.html")
+    return render(request,"previous_orders.html")
