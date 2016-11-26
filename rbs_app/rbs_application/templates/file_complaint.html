@@ -1,0 +1,37 @@
+{% extends "default.html" %}
+{% block header %}
+{% include 'sidenav.html' %}
+{% endblock %}
+
+{% block  main %}
+
+{% include 'search_bar.html' %}
+
+<div class="row">
+
+    <form id="complaint-form" class="col s8 offset-s3" method="post" action="{{ process_complaint }}">
+        {% csrf_token %}
+        <h3>Make a Complaint</h3>
+
+
+        <div class="input-field col s12">
+            <input id="user" name="user" type="text">
+            <label class="active " for="user" data-success="">User (that you are complaining about)</label>
+
+        </div>
+        <div class="input-field col s12">
+            <input id="complaint" name="complaint" type="text">
+            <label class="active " for="complaint" data-success="">Complaint</label>
+
+        </div>
+
+        <div class=" col s12">
+            <button class="btn waves-effect waves-light btn-large" type="submit" name="action">Submit
+                <i class="material-icons right">send</i>
+            </button>
+
+        </div>
+    </form>
+
+</div>
+{% endblock %}
