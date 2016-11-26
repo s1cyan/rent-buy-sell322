@@ -15,9 +15,13 @@ Including another URLconf
 """
 from django.conf.urls import url,include
 from django.contrib import admin
+from rbs_application import views
 
 
 urlpatterns = [
-    url(r'^$', include('rbs_application.urls')),
+    # url(r'^$', include('rbs_application.urls')),
+    url(r'^$', views.index, name='index'),
     url(r'^admin/', admin.site.urls),
+    # admin username: rbs
+    # admin password: rbs_pass
 ]
