@@ -1,6 +1,7 @@
 # Create your views here.
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, render_to_response, redirect
 from django.template import RequestContext
@@ -30,7 +31,29 @@ def file_complaint(request):
 # def login(request):
 #     return render(request, 'login.html')
 
-@csrf_protect
+def user_login(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+                # Redirect to a success page.
+                return HttpResponseRedirect(reverse('index'))
+            else:
+                # Return a 'disabled account' error message
+                return HttpResponse("Your account is disabled.")
+        else:
+            # Bad login details were provided. So we can't log the user in.
+            print("Invalid login details: {0}, {1}".format(username, password))
+            return HttpResponse("Invalid login details supplied.")
+        # The request is not a HTTP POST, so display the login form. # This scenario would most likely be a HTTP GET.
+    else:
+        # No context variables to pass to the template system, hence the # blank dictionary object...
+        return render(request, 'login.html', {})
+
+# @csrf_protect
 def register(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
@@ -40,7 +63,21 @@ def register(request):
             password=form.cleaned_data['password1'],
             email=form.cleaned_data['email']
             )
-            return HttpResponseRedirect('/register/success')
+            return HttpResponseRedirect('/')
+    else:
+        form = RegistrationForm()
+    variables = RequestContext(request, { 'form': form })
+
+    return render_to_response('registration.html',variables,)
+
+
+def process_registration(request):
+    if request.method == 'POST':
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+            user = User.objects.create_user( username=form.cleaned_data['username_id'], password=form.cleaned_data['password1'],
+            email=form.cleaned_data['email'] )
+            return HttpResponseRedirect('/')
     else:
         form = RegistrationForm()
     variables = RequestContext(request, { 'form': form })
