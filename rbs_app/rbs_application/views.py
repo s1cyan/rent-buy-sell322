@@ -40,7 +40,7 @@ def user_login(request):
             if user.is_active:
                 login(request, user)
                 # Redirect to a success page.
-                return HttpResponseRedirect(reverse('index'))
+                return HttpResponseRedirect(reverse('user_main'))
             else:
                 # Return a 'disabled account' error message
                 return HttpResponse("Your account is disabled.")
@@ -52,6 +52,9 @@ def user_login(request):
     else:
         # No context variables to pass to the template system, hence the # blank dictionary object...
         return render(request, 'login.html', {})
+
+def user_main(request):
+    return render(request, 'user_main.html')
 
 # @csrf_protect
 def register(request):
