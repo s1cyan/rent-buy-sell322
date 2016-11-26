@@ -13,15 +13,19 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url,include
+from django.conf.urls import url, include
 from django.contrib import admin
-from rbs_application import views
+from rbs_application import views as rview
 
 
 urlpatterns = [
-    # url(r'^$', include('rbs_application.urls')),
-    url(r'^$', views.index, name='index'),
+    url(r'^rbs/', include('rbs_application.urls')),
+    # above maps any URLs starting with rbs/
+    # to be handled by the rbs_application (see rbs_application/urls.py)
+    url(r'^$', rview.redir, name='redir'),
+    # above maps root (domain.com/) to rview.redir
     url(r'^admin/', admin.site.urls),
+    # Django admin page
     # admin username: rbs
     # admin password: rbs_pass
 ]
