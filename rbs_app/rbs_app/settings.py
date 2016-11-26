@@ -51,7 +51,7 @@ MIDDLEWARE_CLASSES = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'rbs_application.urls'
+ROOT_URLCONF = 'rbs_app.urls'
 # BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 #
 # TEMPLATE_PATH= os.path.join(BASE_DIR, 'templates')
@@ -111,7 +111,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/New_York'
 
 USE_I18N = True
 
@@ -124,4 +124,3 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = '/static/'
-
