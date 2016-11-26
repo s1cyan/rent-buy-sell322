@@ -1,0 +1,56 @@
+<div class="row center">
+    <form id="search-form" class=" input-field col s8 offset-s2" method="post">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col s8">
+                <input id="search_input">
+                <label for="search">Search</label>
+            </div>
+            <div class="col s4">
+                <a class="waves-effect waves-light btn" href="">Submit </a>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s1">
+                <p>
+
+                    <input type="checkbox" id='rent_option'/>
+                    <label for="rent_option">Rent</label>
+                </p>
+            </div>
+            <div class="col s1">
+                <p>
+
+                    <input type="checkbox" id="buy_option"/>
+                    <label for="buy_option">Buy</label>
+                </p>
+            </div>
+            <div class="col s2">
+                <p>
+
+                    <input type="checkbox" id="auction_option"/>
+                    <label for="auction_option">Auction |</label>
+                </p>
+            </div>
+            <div class=" input-field col s2">
+
+                    <input type="number" id="minprice"/> Min Price
+
+
+            </div>
+            <div class=" input-field col s2">
+
+
+                    <input type="number" id="maxprice"/> Max Price
+
+            </div>
+
+        </div>
+
+
+    </form>
+
+</div>
+      <div class="divider"></div>
+<br>

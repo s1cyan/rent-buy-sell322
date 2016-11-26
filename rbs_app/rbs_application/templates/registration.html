@@ -1,0 +1,72 @@
+{% extends 'default.html' %}
+
+
+{% block main %}
+<div class="row center">
+    <form id="registration-form" class="col s6 offset-s3" method="post" action="{{ process_registration }}">
+        {% csrf_token %}
+
+        <div class="row">
+            <div class="col s12">
+                <h3>Registration</h3>
+            </div>
+            <div class="input-field col s12">
+                <input id="fname" name="fname" type="text" class="validate required">
+                <label class="active " for="fname" data-success="">First Name *:</label>
+
+            </div>
+            <div class="input-field col s12">
+                <input id="lname" name="lname" type="text" class="validate required">
+                <label class="active " for="lname" data-success="">Last Name *</label>
+
+            </div>
+            <div class="input-field col s12">
+                <input id="username" name="username" type="text" class="validate required">
+                <label class="active " for="username" data-success="">Unique Username *</label>
+
+            </div>
+            <div class="input-field col s12">
+                <input id="email" name="email" type="email" class="validate required">
+                <label class="active " for="email" data-error="Not an email" data-success="">Email address *</label>
+
+            </div>
+            <div class="input-field col s12">
+                <input id="password" name="password" type="password" class="validate required">
+                <label class="active " for="password" data-success="">Password *</label>
+
+            </div>
+            <div class="input-field col s12">
+                <input id="pconfirm" name="pconfirm" type="password" class="validate required">
+                <label class="active " for="pconfirm" data-success="">Confirm Password *</label>
+
+            </div>
+            <div class="input-field col s12">
+                <input id="address" name="address" type="text" class="validate required">
+                <label class="active " for="address" data-success="">Address *</label>
+
+            </div>
+            <div class="input-field col s12">
+                <input id="card" name="card" type="text" class="validate required">
+                <label class="active " for="card" data-success="">Credit Card *</label>
+
+            </div>
+            <div class="col s12">
+                <h6> Confirm that you are not a bot</h6>
+            </div>
+            <div class="input-field col s12">
+                <input id="math" name="math" type="text" class="validate required">
+                <label class="active " for="math" data-success="">{Some Math Q}</label>
+
+            </div>
+        </div>
+        <div class=" col s12">
+            <button class="btn waves-effect waves-light btn-large" type="submit" name="action">Submit
+                <i class="material-icons right">send</i>
+            </button>
+
+        </div>
+    </form>
+</div>
+
+
+{% endblock %}

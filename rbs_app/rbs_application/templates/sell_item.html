@@ -1,0 +1,75 @@
+{% extends "default.html" %}
+{% block header %}
+{% include 'sidenav.html' %}
+{% endblock %}
+
+{% block  main %}
+{% include 'search_bar.html' %}
+<div class="row center">
+    <form id="sell-form" class="col s6 offset-s3" method="post" action="{{ process_sell_post }}">
+        {% csrf_token %}
+
+        <div class="row">
+            <div class="col s8 offset-s2">
+                <h6>Rent/Sell/Auction an item</h6>
+                <h7>You must fill out all of the fields</h7>
+
+            </div>
+
+            <div class="input-field col s12">
+                <input id="item" name="item" type="text">
+                <label class="active " for="item" data-success="">Item Name * </label>
+
+            </div>
+            <div class="col s4">
+                <p>
+                    <input name="group" type="radio" id="rent"/>
+                    <label for="rent">Rent </label>
+                </p>
+
+            </div>
+            <div class="col s4">
+                <p>
+                    <input name="group" type="radio" id="sell"/>
+                    <label for="sell">Sell </label>
+                </p>
+            </div>
+            <div class="col s4">
+                <p>
+                    <input name="group" type="radio" id="auction"/>
+                    <label for="auction">Auction </label>
+                </p>
+            </div>
+            <div class="input-field col s12">
+                <input id="price" name="price" type="text">
+                <label class="active " for="price">Price * </label>
+
+            </div>
+            <div class="input-field col s12">
+                <input id="daymonth" type="date" class="datepicker">
+                <label class="active " for="daymonth">Takedown Listing on Date * </label>
+
+            </div>
+            <div class="input-field col s12">
+                <input id="time" type="time">
+                <label class="active " for="time">Takedown Listing at Time * </label>
+
+            </div>
+            <div class="input-field col s12">
+                <input id="description" name="description" type="text">
+                <label class="active " for="description">Product Description * </label>
+            </div>
+        </div>
+
+
+        <div class=" col s12">
+            <button class="btn waves-effect waves-light btn-large" type="submit" name="action">Submit
+                <i class="material-icons right">send</i>
+            </button>
+
+        </div>
+    </form>
+</div>
+
+
+{% endblock %}
