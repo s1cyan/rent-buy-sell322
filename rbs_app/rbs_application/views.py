@@ -22,6 +22,11 @@ def cart(request):
 def confirm_checkout(request):
     return render(request, 'confirm_checkout.html')
 
+
+def file_complaint(request):
+    return render(request, 'file_complaint.html')
+
+
 # def login(request):
 #     return render(request, 'login.html')
 
