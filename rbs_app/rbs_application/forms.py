@@ -39,13 +39,13 @@ class UserForm(forms.Form):
 
     username = forms.RegexField(
     regex=r'^\w+$',
-    widget=forms.TextInput(attrs=dict(required=True, max_length=30)), label=_("Username"),
+    widget=forms.TextInput(attrs=dict(required=True, max_length=30)), label=_("USERNAME *"),
     error_messages={ 'invalid':_("This value must contain only letters, numbers and underscores.") })
 
     email = forms.EmailField(
-    widget=forms.TextInput(attrs=dict(required=True, max_length=30)), label=_("Email address"))
+    widget=forms.TextInput(attrs=dict(required=True, max_length=30)), label=_("EMAIL ADDRESS *"))
 
-    password = forms.CharField(widget=forms.PasswordInput(attrs=dict(required=True, max_length=30, render_value=False)), label=_("PASSWORD"))
+    password = forms.CharField(widget=forms.PasswordInput(attrs=dict(required=True, max_length=30, render_value=False)), label=_("PASSWORD *"))
 
     def clean_username(self):
         try:
@@ -59,15 +59,3 @@ class UserForm(forms.Form):
             if self.cleaned_data['password1'] != self.cleaned_data['password2']:
                 raise forms.ValidationError(_("Passwords did not match! Please Try Again."))
         return self.cleaned_data
-    # class Meta:
-    #     model = User
-    #     fields = ('username', 'email', 'password')
-
-''' THIS WORKS
-class UserForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput())
-    class Meta:
-        model = User
-        fields = ('username', 'email', 'password')
-
-'''
