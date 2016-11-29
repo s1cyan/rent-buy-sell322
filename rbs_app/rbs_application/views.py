@@ -83,7 +83,7 @@ def user_login(request):
             if user.is_active:
                 login(request, user)
                 # Redirect to a success page.
-                return HttpResponseRedirect(reverse('user_main'))
+                return HttpResponseRedirect(reverse('user'))
             else:
                 # Return a 'disabled account' error message
                 return HttpResponse("Your account is disabled.")
