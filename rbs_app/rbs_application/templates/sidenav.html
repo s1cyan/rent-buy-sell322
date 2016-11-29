@@ -1,18 +1,21 @@
 <ul id="slide-out" class="side-nav fixed">
     <br>
     <div class="container"> {{ user.username }} </div>
+
+    <br />
+
     <div class="container">{Money in Account}</div>
 
     <br>
     <br>
 
-    <li><a href="{% url 'previous_orders' %}">Sell Item</a></li>
-    <li><a href="{% url 'previous_orders' %}">View Cart</a></li>
+    <li><a href="{% url 'sell' %}">Sell Item</a></li>
+    <li><a href="{% url 'cart' %}">View Cart</a></li>
     <li><a href="{% url 'previous_orders' %}">Previous Orders</a></li>
-    <li><a href="{% url 'previous_orders' %}">Edit Account</a></li>
-    <li><a href="{% url 'previous_orders' %}">Add/Withdraw</a></li>
-    <li><a href="{% url 'previous_orders' %}">Edit Listings</a></li>
-    <li><a href="{% url 'previous_orders' %}">File Complaint</a></li>
+    <li><a href="{% url 'update' %}">Update Account</a></li>
+    <li><a href="{% url 'add_withdraw' %}">Add/Withdraw</a></li>
+    <li><a href="{% url 'edit' %}">Edit Listings</a></li>
+    <li><a href="{% url 'complaint' %}">File Complaint</a></li>
     <li><a href="{% url 'logout' %}">Logout</a></li>
 
 
