@@ -81,4 +81,14 @@ class Complaints(models.Model):
         return self.complaint_id
 
 class ShoppingCart(models.Model):
-    
+    user_id = models.ForeignKey(UserProfile)
+    creation_date = models.DateTimeField(verbose_name=_('creation date'))
+    checked_out = models.BooleanField(default=False, verbose_name=_('checked out'))
+
+    class Meta:
+        verbose_name = _('cart')
+        verbose_name_plural = _('carts')
+        ordering = ('-creation_date',)
+
+    def __unicode__(self):
+        return unicode(self.creation_date)
