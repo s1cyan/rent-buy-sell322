@@ -2,11 +2,16 @@
 	 <div class="container">
 
     <div class="nav-wrapper">
-      <a  class="brand-logo center" href="{% url 'user_main' %}">
+
+    {% if user.is_authenticated %}
+      <a  class="brand-logo center" href="{% url 'user' %}">
           Rent.Buy.Sell
-
       </a>
-
+    {% else %}
+    <a  class="brand-logo center" href="{% url 'visitor' %}">
+        Rent.Buy.Sell
+    </a>
+    {% endif %}
     </div>
 		 </div>
 
