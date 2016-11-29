@@ -14,11 +14,11 @@ class UserProfile(models.Model):
     balance = models.CharField(max_length=50, default='', blank=True)
     num_of_transactions = models.PositiveIntegerField(default='', blank=True)
     num_of_suspensions = models.CharField(max_length=50, default='', blank=True)
-    status = models.TextField(default='', blank=True)
+    status = models.CharField(max_length=20,default='Good Standing', blank=True)
     credit_card = models.PositiveIntegerField(blank=True, default='')
 
     def __str__(self):
-        return self.user_auto_increment_id
+        return str(self.user_auto_increment_id)
 
 
 class Rating(models.Model):
@@ -35,7 +35,7 @@ class Category(models.Model):
             ordering = ["category_auto_increment_id",]
 
     def __str__(self):
-        return self.category_auto_increment_id
+        return str(self.category_auto_increment_id)
 
 class Product(models.Model):
     seller = models.ForeignKey('auth.User')
@@ -65,7 +65,7 @@ class Order(models.Model):
     user_id = models.ForeignKey(UserProfile)
     product_id = models.ForeignKey(Product)
     def __str__(self):
-        return self.order_auto_increment_id
+        return str(self.order_auto_increment_id)
 
 class Complaint(models.Model):
     complaint_id = models.PositiveIntegerField(primary_key=True)
@@ -74,7 +74,7 @@ class Complaint(models.Model):
     end_date = models.DateField()
     user_id = models.ForeignKey(UserProfile)
     def __str__(self):
-        return self.complaint_id
+        return str(self.complaint_id)
 
 class ShoppingCart(models.Model):
     user_auto_increment_id = models.ForeignKey(UserProfile)
