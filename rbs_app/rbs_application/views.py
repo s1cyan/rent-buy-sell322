@@ -77,7 +77,7 @@ def sell_item(request):
 
 def process_sell(request):
     """
-    to access the values in the SellForm, do request.POST['id value in template']
+    to access the values in the SellForm, do request.POST['name value in template']
     """
     print (request.POST)
     return render(request, 'sell_processed.html')
