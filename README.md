@@ -14,3 +14,5 @@ rbs_app contains all base settings, static files, etc.
 
 # Run server
 `$ python manage.py runserver`
+
+#i have so much swag and no one can even front real talk who finna throw hands with me real quick 
