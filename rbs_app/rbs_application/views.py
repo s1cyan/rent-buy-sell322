@@ -97,7 +97,10 @@ def user_login(request):
         return render(request, 'login.html', {})
 
 def user_main(request):
-    return render(request, 'user_main.html')
+    context_dict = {
+        'page_title': 'user_main'
+    }
+    return render(request, 'user_main.html',context_dict)
 
 
 def view_previous_orders(request):
