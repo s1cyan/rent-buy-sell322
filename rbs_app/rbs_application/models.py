@@ -41,10 +41,10 @@ class Category(models.Model):
     category_name = models.CharField(max_length=30)
 
     class Meta:
-            ordering = ["category_id", "category_name"]
+        ordering = ["category_id", "category_name"]
 
     def __str__(self):
-        return self.category_id
+        return self.category_name
 
 class Products(models.Model):
     product_id = models.IntegerField(primary_key=True)
@@ -61,7 +61,7 @@ class Products(models.Model):
         ordering = ["category_id", "category_name", "title", "description", "image", "price", "quantity", "status"]
 
     def __str__(self):
-            return self.product_id
+        return self.title
 
 class Orders(models.Model):
     #assuming order number does not repeat...
