@@ -18,6 +18,6 @@ urlpatterns = [
     # url(r'^su', views.superuser, name='superuser'),
     url(r'^update', views.update_account, name='update'),
     # url(r'^details', views.show_item_details, name='item_details'),
-    url(r'^main/', views.user_main, name='user_main'),
+    url(r'^user/', views.user_main, name='user'),
 
 ]
