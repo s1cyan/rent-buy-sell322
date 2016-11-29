@@ -12,7 +12,7 @@
         <div class="row">
             <div class="col s8 offset-s2">
                 <h6>Rent/Sell/Auction an item</h6>
-                <h7>You must fill out all of the fields</h7>
+                <h6>You must fill out all of the fields</h6>
 
             </div>
 
@@ -21,37 +21,28 @@
                 <label class="active " for="item" data-success="">Item Name * </label>
 
             </div>
-            <div class="col s4">
-                <p>
-                    <input name="group" type="radio" id="rent"/>
-                    <label for="rent">Rent </label>
-                </p>
+            <div class="col s12">
+                <label>Browser Select</label>
+                <select id = 'buy_select' name = 'sell_select' class="browser-default">
+                    <option value="" disabled selected>Sell Method</option>
+                    <option value="1">{{ sell_form.sell_choice.field.choices.0.1 }}</option>
+                    <option value="2">{{ sell_form.sell_choice.field.choices.1.1 }}</option>
+                    <option value="3">{{ sell_form.sell_choice.field.choices.2.1 }}</option>
+                </select>
+            </div>
 
-            </div>
-            <div class="col s4">
-                <p>
-                    <input name="group" type="radio" id="sell"/>
-                    <label for="sell">Sell </label>
-                </p>
-            </div>
-            <div class="col s4">
-                <p>
-                    <input name="group" type="radio" id="auction"/>
-                    <label for="auction">Auction </label>
-                </p>
-            </div>
             <div class="input-field col s12">
                 <input id="price" name="price" type="text">
                 <label class="active " for="price">Price * </label>
 
             </div>
             <div class="input-field col s12">
-                <input id="daymonth" type="date" class="datepicker">
+                <input id="daymonth" type="date" class="datepicker" name="daymonth">
                 <label class="active " for="daymonth">Takedown Listing on Date * </label>
 
             </div>
             <div class="input-field col s12">
-                <input id="time" type="time">
+                <input id="time" type="time" name="time">
                 <label class="active " for="time">Takedown Listing at Time * </label>
 
             </div>
