@@ -1,13 +1,13 @@
 <div class="row center">
-    <form id="search-form" class=" input-field col s8 offset-s2" method="post">
+    <form id="search-form" class=" input-field col s8 offset-s2" method="get" action="{% url 'results' %}" >
         {% csrf_token %}
         <div class="row">
             <div class="col s8">
-                <input id="search_input">
+                <input id="search_input" name="search_input" >
                 <label for="search_input">Search</label>
             </div>
             <div class="col s4">
-                <a class="waves-effect waves-light btn" href="">Submit </a>
+                <button class="waves-effect waves-light btn" type="submit">Submit </button>
 
             </div>
         </div>
@@ -15,34 +15,32 @@
             <div class="col s1">
                 <p>
 
-                    <input type="checkbox" id='rent_option'/>
+                    <input type="checkbox" id='rent_option' name='rent_option'/>
                     <label for="rent_option">Rent</label>
                 </p>
             </div>
             <div class="col s1">
                 <p>
 
-                    <input type="checkbox" id="buy_option"/>
+                    <input type="checkbox" id="buy_option" name='buy_option'/>
                     <label for="buy_option">Buy</label>
                 </p>
             </div>
             <div class="col s2">
                 <p>
 
-                    <input type="checkbox" id="auction_option"/>
+                    <input type="checkbox" id="auction_option" name=auction_option/>
                     <label for="auction_option">Auction |</label>
                 </p>
             </div>
             <div class=" input-field col s2">
 
-                    <input type="number" id="minprice"/> Min Price
-
+                <input type="number" id="minprice" name='minprice'/> Min Price
 
             </div>
             <div class=" input-field col s2">
 
-
-                    <input type="number" id="maxprice"/> Max Price
+                <input type="number" id="maxprice" name=maxprice/> Max Price
 
             </div>
 
@@ -52,5 +50,5 @@
     </form>
 
 </div>
-      <div class="divider"></div>
+<div class="divider"></div>
 <br>

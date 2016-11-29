@@ -27,11 +27,14 @@ class RegistrationForm(forms.Form):
                 raise forms.ValidationError(_("Passwords did not match! Please Try Again."))
         return self.cleaned_data
 '''
+
+
 class UserForm(forms.Form):
     ''' User registration form for RBS '''
     username = forms.RegexField(
         regex=r'^\w+$', widget=forms.TextInput(
-        attrs=dict(required=True, max_length=30)), label=_("USERNAME *"), error_messages={ 'invalid':_("This value must contain only letters, numbers and underscores.") })
+            attrs=dict(required=True, max_length=30)), label=_("USERNAME *"),
+        error_messages={'invalid': _("This value must contain only letters, numbers and underscores.")})
     email = forms.EmailField(
         widget=forms.TextInput(attrs=dict(required=True, max_length=30)), label=_("EMAIL ADDRESS *"))
     password = forms.CharField(
@@ -54,7 +57,7 @@ class UserForm(forms.Form):
 
 
 class SellForm(forms.Form):
-    SELL_CHOICES = ((1,'RENT'),(2,'SELL'),(3,'AUCTION'))
+    SELL_CHOICES = ((1, 'RENT'), (2, 'SELL'), (3, 'AUCTION'))
 
     item_name = forms.CharField(max_length=64)
     sell_choice = forms.ChoiceField(choices=SELL_CHOICES)
@@ -63,3 +66,11 @@ class SellForm(forms.Form):
     takedown_time = forms.TimeField()
     description = forms.CharField(max_length=128)
 
+
+class SearchForm(forms.Form):
+    item_name = forms.CharField(max_length=128)
+    search_rent = forms.BooleanField()
+    search_buy = forms.BooleanField()
+    search_auction = forms.BooleanField()
+    min_price = forms.IntegerField()
+    max_price = forms.IntegerField()
