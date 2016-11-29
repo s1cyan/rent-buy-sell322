@@ -7,7 +7,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, render_to_response, redirect
 from django.template import RequestContext
 from django.views.decorators.csrf import csrf_protect
-from .forms import UserForm
+from .forms import UserForm, SellForm
 # Create your views here.
 
 def register(request):
@@ -66,7 +66,22 @@ def file_complaint(request):
 
 
 def sell_item(request):
-    return render(request, 'sell_item.html')
+
+    sell_form = SellForm(request.POST)
+    context_dict = {
+        'sell_form': sell_form,
+        'process_sell_post': process_sell(request)
+    }
+    return render(request, 'sell_item.html',context_dict)
+
+
+def process_sell(request):
+    """
+    to access the values in the SellForm, do request.POST['id value in template']
+    """
+    print (request.POST)
+    return render(request, 'sell_processed.html')
+
 
 def show_results(request):
     return render(request, 'results.html')
