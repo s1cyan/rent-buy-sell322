@@ -2,8 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.utils.translation import ugettext_lazy as _
-from mezzanine.core.fields import FileField
-
+# from mezzanine.core.fields import FileField
+"""
 class UserProfile(models.Model):
     user_id = models.IntegerField(primary_key=True)
     user = models.OneToOneField(User, related_name='user')
@@ -19,15 +19,15 @@ class UserProfile(models.Model):
     num_of_suspensions = models.CharField(max_length=50, default='', blank=True)
     status = models.TextField(default='', blank=True)
     credit_card = models.IntegerField(max_length=19, blank=True, default='')
-    products = models.ForeignKey(Product)
+    products = models.ForeignKey(Products)
     def __str__(self):
-        return self.user_id
+        return self.user_id"""
 
-class Ratings(models.Model):
-    user_id = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
-    ratings = models.CharField(max_length=1000, default='', blank=True)
-    def __str__(self):
-        return self.ratings
+# class Ratings(models.Model):
+#     user_id = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+#     ratings = models.CharField(max_length=1000, default='', blank=True)
+#     def __str__(self):
+#         return self.ratings
 
 # def create_profile(sender, **kwargs):
 #     user = kwargs["instance"]
@@ -63,32 +63,32 @@ class Products(models.Model):
     def __str__(self):
         return self.title
 
-class Orders(models.Model):
-    #assuming order number does not repeat...
-    order_id = models.IntegerField(primary_key=True)
-    user_id = models.ForeignKey(UserProfile)
-    product_id = models.ForeignKey(Products)
-    def __str__(self):
-        return self.order_id
+# class Orders(models.Model):
+#     #assuming order number does not repeat...
+#     order_id = models.IntegerField(primary_key=True)
+#     user_id = models.ForeignKey(UserProfile)
+#     product_id = models.ForeignKey(Products)
+#     def __str__(self):
+#         return self.order_id
 
-class Complaints(models.Model):
-    complaint_id = models.IntegerField(primary_key=True)
-    pub_date = models.DateTimeField('date published', auto_now_add = True)
-    start_date = models.DateField()
-    end_date = models.DateField()
-    user_id = models.ForeignKey(UserProfile)
-    def __str__(self):
-        return self.complaint_id
+# class Complaints(models.Model):
+#     complaint_id = models.IntegerField(primary_key=True)
+#     pub_date = models.DateTimeField('date published', auto_now_add = True)
+#     start_date = models.DateField()
+#     end_date = models.DateField()
+#     user_id = models.ForeignKey(UserProfile)
+#     def __str__(self):
+#         return self.complaint_id
 
-class ShoppingCart(models.Model):
-    user_id = models.ForeignKey(UserProfile)
-    creation_date = models.DateTimeField(verbose_name=_('creation date'))
-    checked_out = models.BooleanField(default=False, verbose_name=_('checked out'))
-
-    class Meta:
-        verbose_name = _('cart')
-        verbose_name_plural = _('carts')
-        ordering = ('-creation_date',)
-
-    def __unicode__(self):
-        return unicode(self.creation_date)
+# class ShoppingCart(models.Model):
+#     user_id = models.ForeignKey(UserProfile)
+#     creation_date = models.DateTimeField(verbose_name=_('creation date'))
+#     checked_out = models.BooleanField(default=False, verbose_name=_('checked out'))
+#
+#     class Meta:
+#         verbose_name = _('cart')
+#         verbose_name_plural = _('carts')
+#         ordering = ('-creation_date',)
+#
+#     def __unicode__(self):
+#         return unicode(self.creation_date)
