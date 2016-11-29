@@ -44,7 +44,7 @@ def register(request):
 
 
 def redir(request):
-    '''redirection'''
+    '''TODO redirection for top nav bar'''
     return redirect('/rbs')
 
 def add_withdraw(request):
