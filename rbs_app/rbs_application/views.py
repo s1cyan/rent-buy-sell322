@@ -7,7 +7,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, render_to_response, redirect
 from django.template import RequestContext
 from django.views.decorators.csrf import csrf_protect
-from .forms import UserForm, SellForm
+from .forms import UserForm, SellForm, SearchForm
 # Create your views here.
 
 def register(request):
@@ -69,7 +69,7 @@ def sell_item(request):
     '''
     :param request:
     :return:
-    has the sell form stuff, send the return values to process the request
+    has the sell form, sends the return values to process the request at function process_sell()
     '''
 
     sell_form = SellForm(request.POST)
@@ -89,10 +89,18 @@ def process_sell(request):
 
 
 def show_results(request):
+    search_form = SearchForm(request.GET)
+
+    '''
+    write ur model lookup stuff here and return the stuff you find. Check the results template for the values you need to return per item
+    '''
+
     return render(request, 'results.html')
+
 
 def update_account(request):
     return render(request, 'update_info.html')
+
 
 def user_login(request):
     if request.method == 'POST':
@@ -132,3 +140,5 @@ def visitors_main(request):
 def user_logout(request):
     logout(request)
     return HttpResponseRedirect(reverse('visitor'))
+
+
