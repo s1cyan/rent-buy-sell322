@@ -51,3 +51,15 @@ class UserForm(forms.Form):
             if self.cleaned_data['password1'] != self.cleaned_data['password2']:
                 raise forms.ValidationError(_("Passwords did not match! Please Try Again."))
         return self.cleaned_data
+
+
+class SellForm(forms.Form):
+    SELL_CHOICES = ((1,'RENT'),(2,'SELL'),(3,'AUCTION'))
+
+    item_name = forms.CharField(max_length=64)
+    sell_choice = forms.ChoiceField(choices=SELL_CHOICES)
+    price = forms.DecimalField()
+    takedown_date = forms.SelectDateWidget()
+    takedown_time = forms.TimeField()
+    description = forms.CharField(max_length=128)
+
