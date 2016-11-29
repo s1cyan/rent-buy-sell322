@@ -55,6 +55,7 @@ class UserForm(forms.Form):
 
 class SellForm(forms.Form):
     SELL_CHOICES = ((1,'RENT'),(2,'SELL'),(3,'AUCTION'))
+
     item_name = forms.CharField(max_length=64)
     sell_choice = forms.ChoiceField(choices=SELL_CHOICES)
     price = forms.DecimalField()

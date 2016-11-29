@@ -15,7 +15,7 @@ urlpatterns = [
     url(r'^edit/', views.edit_listings, name='edit'),
     url(r'^results/', views.show_results, name='results'),
     url(r'^sell/', views.sell_item, name='sell'),
-    url(r'^processsell', views.process_sell, name='process_sell_item'),
+    url(r'^process-listing', views.process_sell, name='process_sell_item'),
 
     # url(r'^su', views.superuser, name='superuser'),
     url(r'^update', views.update_account, name='update'),

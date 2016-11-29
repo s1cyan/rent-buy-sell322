@@ -66,11 +66,16 @@ def file_complaint(request):
 
 
 def sell_item(request):
+    '''
+    :param request:
+    :return:
+    has the sell form stuff, send the return values to process the request
+    '''
 
     sell_form = SellForm(request.POST)
     context_dict = {
         'sell_form': sell_form,
-        'process_sell_post': process_sell(request)
+        'process_sell_post': '/rbs/process-listing'
     }
     return render(request, 'sell_item.html',context_dict)
 
@@ -79,7 +84,7 @@ def process_sell(request):
     """
     to access the values in the SellForm, do request.POST['name value in template']
     """
-    print (request.POST)
+    print (request.POST) # just for checking the values returned in terminal
     return render(request, 'sell_processed.html')
 
 
