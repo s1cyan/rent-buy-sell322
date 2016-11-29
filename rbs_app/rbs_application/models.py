@@ -29,12 +29,12 @@ class Ratings(models.Model):
     def __str__(self):
         return self.ratings
 
-def create_profile(sender, **kwargs):
-    user = kwargs["instance"]
-    if kwargs["created"]:
-        user_profile = UserProfile(user=user)
-        user_profile.save()
-post_save.connect(create_profile, sender=User)
+# def create_profile(sender, **kwargs):
+#     user = kwargs["instance"]
+#     if kwargs["created"]:
+#         user_profile = UserProfile(user=user)
+#         user_profile.save()
+# post_save.connect(create_profile, sender=User)
 
 class Category(models.Model):
     category_id = models.IntegerField(primary_key=True)
