@@ -13,4 +13,4 @@ rbs_app contains all base settings, static files, etc.
 `$ deactivate`
 
 # Run server
-`$python manage.py runserver`
+`$ python manage.py runserver`

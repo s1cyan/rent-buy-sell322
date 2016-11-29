@@ -18,35 +18,21 @@
             <form id="user_form" class="col s6 offset-s3" enctype="multipart/form-data" action="{% url 'register' %}" method="post">
                 {% csrf_token %}
                 <div class="row">
-                    <div class="input-field col s12">
-                        <!-- Display each form -->
+                    {% for field in user_form %}
+                        <div class="input-field col s12">
+                            {{ field.errors }}
 
-                        {{ user_form.username }}
-                        <label class="active " for="{{ user_form.username.id_for_label }}" data-success="">{{  user_form.username.label }}</label>
+                            {{ field }}
+                            <label class="active " for="{{ field.id_for_label }}" data-success="">{{  field.label }}</label>
 
-
-                        <!-- {{ profile_form.as_p }} -->
-                    </div>
-
-                    <div class="input-field col s12">
-                        <!-- Display each form -->
-
-                        {{ user_form.email }}
-                        <label class="active " for="{{ user_form.email.id_for_label }}" data-success="">{{  user_form.email.label }}</label>
+                            {% if field.help_text %}
+                            <p class="help">{{ field.help_text|safe }}</p>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
 
 
-                        <!-- {{ profile_form.as_p }} -->
-                    </div>
 
-                    <div class="input-field col s12">
-                        <!-- Display each form -->
-
-                        {{ user_form.password }}
-                        <label class="active " for="{{ user_form.password.id_for_label }}" data-success="">{{  user_form.password.label }}</label>
-
-
-                        <!-- {{ profile_form.as_p }} -->
-                    </div>
 
 
 
