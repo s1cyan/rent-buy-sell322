@@ -74,3 +74,7 @@ class SearchForm(forms.Form):
     search_auction = forms.BooleanField()
     min_price = forms.IntegerField()
     max_price = forms.IntegerField()
+
+class ComplaintForm(forms.Form):
+    reported_user = forms.CharField(max_length=64)
+    complaint = forms.CharField(max_length=128)
