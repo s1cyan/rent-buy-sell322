@@ -35,7 +35,7 @@ class Category(models.Model):
             ordering = ["category_auto_increment_id",]
 
     def __str__(self):
-        return str(self.category_auto_increment_id)
+        return str(self.category_name)
 
 class Product(models.Model):
     seller = models.ForeignKey('auth.User')
