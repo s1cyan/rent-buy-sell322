@@ -1,12 +1,6 @@
 ''' Use this script to populate the datebase for rbs
     Type in: python populate_rbs.py and check the data in the admin site. '''
-# import os
-# os.environ.setdefault('DJANGO_SETTINGS_MODULE',
-                      # 'rbs_app.settings')
-# import django
-# django.setup()
-
-
+from django.contrib.auth.models import User
 from django.core.management.base import BaseCommand
 from rbs_application.models import Product, Category
 
@@ -14,6 +8,10 @@ from rbs_application.models import Product, Category
 class Command(BaseCommand):
     args = '<foo bar ...>'
     help = 'our help string comes here'
+
+    def clear_users(self):
+        users = User.objects.exclude(username="rbs")
+        users.delete()
 
     def clear_cat(self):
         cats = Category.objects.all()
@@ -24,15 +22,19 @@ class Command(BaseCommand):
         products = Product.objects.all()
         products.delete()
 
+    def add_user(self, username, password):
+        u = User.objects.create_user(username=username, password=password)
+        u.save()
+        return u
 
-    def add_product(self, cat, title, price):
-        p = Product.objects.get_or_create(category_id=cat, title=title, price=price)
+    def add_product(self, cat, seller, title, price):
+        p = Product.objects.get_or_create(category=cat, seller=seller, title=title, price=price)
         p.save()
         return p
 
 
     def add_cat(self, name):
-        c = Category.objects.get_or_create(category_name=name)[0]
+        c = Category.objects.get_or_create(name=name)[0]
         c.save()
         return c
 
@@ -74,6 +76,40 @@ class Command(BaseCommand):
 
         ]
 
+        sellers = [
+            {"username": "nathan",
+             "password": "qwerty"},
+            {"username": "alpham4le",
+             "password": "password"},
+            {"username": "yoyodog",
+             "password": "easypass1234"},
+            {"username": "jroz",
+             "password": "fasdfcvafs"},
+            {"username": "kwest",
+             "password": "phasr12"},
+            {"username": "hotdoglover",
+             "password": "momspafehti"},
+            {"username": "arioman",
+             "password": "tw35243"},
+            {"username": "facebooksurfer",
+             "password": "mont4r"},
+            {"username": "heybuddy",
+             "password": "eass1234"},
+            {"username": "jozie",
+             "password": "fundingneeded"},
+        ]
+
+        buyers = [
+            {"username": "jonathanrozario",
+             "password": "qwerty"},
+            {"username": "cyan",
+             "password": "password"},
+            {"username": "heyconnie123",
+             "password": "password"},
+            {"username": "alphamale",
+             "password": "password"},
+        ]
+
         # Dictionary of categories
         cats = {"Clothing": {"products": clothing},
                 "Games": {"products": games},
@@ -81,19 +117,22 @@ class Command(BaseCommand):
         # If you want to add more categories or products, add them to the dictionaries above.
 
 
+        # Dictionary of users
+        users = {"Sellers": {"role": sellers},
+                 "Buyers": {"role": buyers},}
+
+        for role, person in users.items():
+            for p in person["role"]:
+                self.add_user(p["username"], p["password"])
+
+
 
         # The code below goes through the cats dictionary, then adds each product,
         # and then adds all the associated products for that category.
         for cat, cat_data in cats.items():
             c = self.add_cat(cat)
-            for p in cat_data["products"]:
-                self.add_product(c, p["title"], p["price"])
-
-        # for cat, cat_data in cats.items():
-        #     c = self.add_cat(cat)
-        #     for p in cat_data["type"]:
-        #         print(p["title"])
-        #     #     self.add_product(c, p["title"], p)
+            # for prod in cat_data["products"]:
+            #     self.add_product(c, , prod["title"], prod["price"])
 
         # Print out the categories we have added.
         # for c in Category.objects.all():
@@ -104,9 +143,11 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         print("Starting RBS database population...")
+        print("deleting all users...")
+        self.clear_users()
         print("deleting categories...")
         self.clear_cat()
-        print("filling in categories...")
+        print("filling in database...")
         self._populate()
 
 # Start execution here!
