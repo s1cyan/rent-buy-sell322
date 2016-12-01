@@ -14,36 +14,38 @@ class UserProfile(models.Model):
     transactions = models.PositiveIntegerField(_("Number of transactions"), default='0', blank=True)
     suspensions = models.PositiveIntegerField(_("Number of suspensions"), default='0')
     strikes = models.PositiveIntegerField(_("Number of strikes"), default=0)
-    credit_card = models.CharField(blank=True, default='1234999912348888')
+    credit_card = models.CharField(max_length=16, blank=True, default='1234999912348888')
 
     def __str__(self):
         return str(self.user)
 
 
 class Rating(models.Model):
-    id = models.ForeignKey(UserProfile, primary_key=True, on_delete=models.CASCADE)
+    id = models.OneToOneField(UserProfile, primary_key=True)
     ratings = models.CharField(max_length=1000, default='', blank=True)
 
     def __str__(self):
         return self.ratings
 
 class Category(models.Model):
-    name = models.CharField(max_length=20, required=True, default="Miscellaneous")
+    name = models.CharField(max_length=20, default="Miscellaneous")
 
     class Meta:
-        ordering = ["category_auto_increment_id",]
+        ordering = ["name",]
         verbose_name_plural = "categories"
 
     def __str__(self):
         return str(self.name)
 
 class Product(models.Model):
-    seller = models.ForeignKey('auth.User')
+    # TODO Don't know what to do here
+    # seller = models.ForeignKey('auth.User')
+    seller = models.ForeignKey(UserProfile)
     title = models.CharField(max_length=200)
     text = models.TextField()
     created_date = models.DateTimeField(default=timezone.now)
     published_date = models.DateTimeField(blank=True, null=True)
-    category = models.ForeignKey(Category)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE,)
     quantity = models.PositiveIntegerField(default=1)
     price = models.DecimalField(max_digits=6, decimal_places=2)
     status = models.CharField(max_length=100, blank=True)
