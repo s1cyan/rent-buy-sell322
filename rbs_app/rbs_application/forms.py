@@ -27,11 +27,14 @@ class RegistrationForm(forms.Form):
                 raise forms.ValidationError(_("Passwords did not match! Please Try Again."))
         return self.cleaned_data
 '''
+
+
 class UserForm(forms.Form):
     ''' User registration form for RBS '''
     username = forms.RegexField(
         regex=r'^\w+$', widget=forms.TextInput(
-        attrs=dict(required=True, max_length=30)), label=_("USERNAME *"), error_messages={ 'invalid':_("This value must contain only letters, numbers and underscores.") })
+            attrs=dict(required=True, max_length=30)), label=_("USERNAME *"),
+        error_messages={'invalid': _("This value must contain only letters, numbers and underscores.")})
     email = forms.EmailField(
         widget=forms.TextInput(attrs=dict(required=True, max_length=30)), label=_("EMAIL ADDRESS *"))
     password = forms.CharField(
@@ -51,3 +54,39 @@ class UserForm(forms.Form):
             if self.cleaned_data['password1'] != self.cleaned_data['password2']:
                 raise forms.ValidationError(_("Passwords did not match! Please Try Again."))
         return self.cleaned_data
+
+
+class SellForm(forms.Form):
+    SELL_CHOICES = ((1, 'RENT'), (2, 'SELL'), (3, 'AUCTION'))
+
+    item_name = forms.CharField(max_length=64)
+    sell_choice = forms.ChoiceField(choices=SELL_CHOICES)
+    price = forms.DecimalField()
+    takedown_date = forms.SelectDateWidget()
+    takedown_time = forms.TimeField()
+    description = forms.CharField(max_length=128)
+
+
+class SearchForm(forms.Form):
+    item_name = forms.CharField(max_length=128)
+    search_rent = forms.BooleanField()
+    search_buy = forms.BooleanField()
+    search_auction = forms.BooleanField()
+    min_price = forms.IntegerField()
+    max_price = forms.IntegerField()
+
+class ComplaintForm(forms.Form):
+    reported_user = forms.CharField(max_length=64)
+    complaint = forms.CharField(max_length=128)
+
+
+class RegistrationForm(forms.Form):
+    first_name = forms.CharField(max_length=64)
+    last_name = forms.CharField(max_length=64)
+    username = forms.CharField(max_length=64)
+    email = forms.EmailField()
+    password = forms.CharField(max_length=64)
+    confirm_password = forms.CharField(max_length=64)
+    address = forms.CharField()
+    credit_card = forms.IntegerField(max_value=9999999999999999)
+    math_answer = forms.IntegerField()

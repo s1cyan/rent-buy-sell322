@@ -7,6 +7,7 @@ urlpatterns = [
     url(r'^cart/', views.cart, name='cart'),
     url(r'^checkout/', views.confirm_checkout, name='checkout'),
     url(r'^complaint/', views.file_complaint, name='complaint'),
+    url(r'^submitted-complaint', views.process_complaint, name='complaint-submitted'),
     url(r'^login/', views.user_login, name='login'),
     url(r'^logout/', views.user_logout, name='logout'),
     url(r'^orders/', views.view_previous_orders, name='previous_orders'),
@@ -15,6 +16,8 @@ urlpatterns = [
     url(r'^edit/', views.edit_listings, name='edit'),
     url(r'^results/', views.show_results, name='results'),
     url(r'^sell/', views.sell_item, name='sell'),
+    url(r'^process-listing', views.process_sell, name='process_sell_item'),
+
     # url(r'^su', views.superuser, name='superuser'),
     url(r'^update', views.update_account, name='update'),
     # url(r'^details', views.show_item_details, name='item_details'),
