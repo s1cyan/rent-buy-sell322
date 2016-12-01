@@ -1,5 +1,5 @@
 from django.contrib import admin
-from rbs_application.models import Category, Products
+from .models import Category, Product
 # Register your models here.
-admin.site.register(Products)
+admin.site.register(Product)
 admin.site.register(Category)
