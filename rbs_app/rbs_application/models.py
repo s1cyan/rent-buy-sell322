@@ -13,16 +13,17 @@ class UserProfile(models.Model):
     balance = models.DecimalField(max_digits=6, decimal_places=2, default='0.00')
     transactions = models.PositiveIntegerField(_("Number of transactions"), default='0', blank=True)
     suspensions = models.PositiveIntegerField(_("Number of suspensions"), default='0')
-    status = models.CharField(max_length=20,default='Good Standing', blank=True)
-    credit_card = models.PositiveIntegerField(blank=True, default='')
+    strikes = models.PositiveIntegerField(_("Number of strikes"), default=0)
+    credit_card = models.CharField(blank=True, default='1234999912348888')
 
     def __str__(self):
-        return str(self.user_auto_increment_id)
+        return str(self.user)
 
 
 class Rating(models.Model):
-    user_auto_increment_id = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    id = models.ForeignKey(UserProfile, primary_key=True, on_delete=models.CASCADE)
     ratings = models.CharField(max_length=1000, default='', blank=True)
+
     def __str__(self):
         return self.ratings
 
