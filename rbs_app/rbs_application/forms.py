@@ -78,3 +78,15 @@ class SearchForm(forms.Form):
 class ComplaintForm(forms.Form):
     reported_user = forms.CharField(max_length=64)
     complaint = forms.CharField(max_length=128)
+
+
+class RegistrationForm(forms.Form):
+    first_name = forms.CharField(max_length=64)
+    last_name = forms.CharField(max_length=64)
+    username = forms.CharField(max_length=64)
+    email = forms.EmailField()
+    password = forms.CharField(max_length=64)
+    confirm_password = forms.CharField(max_length=64)
+    address = forms.CharField()
+    credit_card = forms.IntegerField(max_value=9999999999999999)
+    math_answer = forms.IntegerField()
