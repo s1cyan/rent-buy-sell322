@@ -28,28 +28,24 @@ class Rating(models.Model):
         return self.ratings
 
 class Category(models.Model):
-    category_auto_increment_id = models.AutoField(primary_key=True)
-    category_name = models.CharField(max_length=20, blank=True, default='')
+    name = models.CharField(max_length=20, required=True, default="Miscellaneous")
 
     class Meta:
-            ordering = ["category_auto_increment_id",]
+        ordering = ["category_auto_increment_id",]
+        verbose_name_plural = "categories"
 
     def __str__(self):
-        return str(self.category_name)
+        return str(self.name)
 
 class Product(models.Model):
     seller = models.ForeignKey('auth.User')
     title = models.CharField(max_length=200)
     text = models.TextField()
-    created_date = models.DateTimeField(
-            default=timezone.now)
-    published_date = models.DateTimeField(
-            blank=True, null=True)
-    product_auto_increment_id = models.AutoField(primary_key=True)
-    category_auto_increment_id = models.ForeignKey(Category)
-    quantity = models.PositiveIntegerField()
+    created_date = models.DateTimeField(default=timezone.now)
+    published_date = models.DateTimeField(blank=True, null=True)
+    category = models.ForeignKey(Category)
+    quantity = models.PositiveIntegerField(default=1)
     price = models.DecimalField(max_digits=6, decimal_places=2)
-    image = models.ImageField(upload_to="product_images", blank=True)
     status = models.CharField(max_length=100, blank=True)
 
     def post(self):
@@ -61,15 +57,14 @@ class Product(models.Model):
 
 class Order(models.Model):
     #assuming order number does not repeat...
-    order_auto_increment_id = models.AutoField(primary_key=True)
-    user_id = models.ForeignKey(UserProfile)
-    product_id = models.ForeignKey(Product)
+    user = models.ForeignKey(UserProfile)
+    products = models.ManyToManyField(Product)
     def __str__(self):
-        return str(self.order_auto_increment_id)
+        return str(self.id)
 
 class Complaint(models.Model):
     complaint_id = models.PositiveIntegerField(primary_key=True)
-    pub_date = models.DateTimeField('date published', auto_now_add = True)
+    pub_date = models.DateTimeField("Date published", auto_now_add=True)
     start_date = models.DateField()
     end_date = models.DateField()
     user_id = models.ForeignKey(UserProfile)
@@ -78,13 +73,13 @@ class Complaint(models.Model):
 
 class ShoppingCart(models.Model):
     user_auto_increment_id = models.ForeignKey(UserProfile)
-    creation_date = models.DateTimeField(verbose_name=_('creation date'))
-    checked_out = models.BooleanField(default=False, verbose_name=_('checked out'))
+    creation_date = models.DateTimeField(_("Created on"))
+    checked_out = models.BooleanField(_("Transaction Complete"), default=False)
 
     class Meta:
-        verbose_name = _('cart')
-        verbose_name_plural = _('carts')
-        ordering = ('-creation_date',)
+        verbose_name = _('Cart')
+        verbose_name_plural = _('Carts')
+        ordering = ['-creation_date',]
 
-    def __unicode__(self):
-        return unicode(self.creation_date)
+    # def __unicode__(self):
+    #     return unicode(self.creation_date)
