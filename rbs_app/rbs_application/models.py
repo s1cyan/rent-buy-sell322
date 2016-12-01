@@ -5,15 +5,14 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
 
 class UserProfile(models.Model):
-    user_auto_increment_id = models.AutoField(primary_key=True)
     user = models.OneToOneField(User, related_name='user')
     bio = models.TextField(default='', blank=True)
-    phone = models.CharField(max_length=20, blank=True, default='')
-    city = models.CharField(max_length=100, default='', blank=True)
-    country = models.CharField(max_length=100, default='', blank=True)
-    balance = models.CharField(max_length=50, default='', blank=True)
-    num_of_transactions = models.PositiveIntegerField(default='', blank=True)
-    num_of_suspensions = models.CharField(max_length=50, default='', blank=True)
+    phone = models.PositiveIntegerField(_("Phone number"), blank=True, default='')
+    city = models.CharField(max_length=50, default='', blank=True)
+    country = models.CharField(max_length=50, default='', blank=True)
+    balance = models.DecimalField(max_digits=6, decimal_places=2, default='0.00')
+    transactions = models.PositiveIntegerField(_("Number of transactions"), default='0', blank=True)
+    suspensions = models.PositiveIntegerField(_("Number of suspensions"), default='0')
     status = models.CharField(max_length=20,default='Good Standing', blank=True)
     credit_card = models.PositiveIntegerField(blank=True, default='')
 
