@@ -152,14 +152,15 @@ def show_results(request):
         template = 'results.html'
         print(context)
         return render(request, template, context)
+
     products = Product.objects.all()
     context = {'products': products}
     template = 'results.html'
     if Product.objects.get(title=search_form):
         products = Product.objects.all()
         searched_context = Product.objects.get(title=search_form)
-        return render(request, 'user_item_details.html')
-
+        return render(request, 'results.html')
+    #needs catch statement if product.objects.get != search form...
     '''
     write ur model lookup stuff here and return the stuff you find. Check the results template for the values you need to return per item
     '''
