@@ -42,9 +42,9 @@ class UserForm(forms.Form):
     password = forms.CharField(
         label=_('PASSWORD *'),
         widget=forms.PasswordInput(attrs=dict(required=True, max_length=30, render_value=False)))
-    password2 = forms.CharField(
-        label=_("Confirm Password *"),
-        widget=forms.PasswordInput(attrs=dict(required=True, max_length=30, render_value=False)))
+    # password2 = forms.CharField(
+    #     label=_("CONFIRM PASSWORD *"),
+    #     widget=forms.PasswordInput(attrs=dict(required=True, max_length=30, render_value=False)))
 
     def clean_username(self):
         """ Clean form data for username """
@@ -96,5 +96,5 @@ class RegistrationForm(forms.Form):
     # confirm_password = forms.CharField(max_length=64)
     city = forms.CharField()
     country = forms.CharField()
-    credit_card = forms.IntegerField(max_value=9999999999999999)
+    credit_card = forms.CharField(max_length=16)
     math_answer = forms.IntegerField()
