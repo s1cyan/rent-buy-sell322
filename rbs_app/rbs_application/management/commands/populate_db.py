@@ -2,7 +2,7 @@
     Type in: python populate_rbs.py and check the data in the admin site. '''
 from django.contrib.auth.models import User
 from django.core.management.base import BaseCommand
-from rbs_application.models import Product, Category
+from rbs_application.models import *
 import random
 
 
@@ -25,6 +25,11 @@ class Command(BaseCommand):
 
     def add_user(self, username, password):
         u = User.objects.create_user(username=username, password=password)
+        u.save()
+        return u
+
+    def add_userprofile(self, username):
+        u = UserProfile.objects.get_or_create(username=username)[0]
         u.save()
         return u
 
