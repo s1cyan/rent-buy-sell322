@@ -90,10 +90,6 @@ class ComplaintForm(forms.Form):
 class RegistrationForm(forms.Form):
     first_name = forms.CharField(max_length=64)
     last_name = forms.CharField(max_length=64)
-    # username = forms.CharField(max_length=64)
-    # email = forms.EmailField()
-    # password = forms.CharField(max_length=64)
-    # confirm_password = forms.CharField(max_length=64)
     city = forms.CharField()
     country = forms.CharField()
     credit_card = forms.CharField(max_length=16)
