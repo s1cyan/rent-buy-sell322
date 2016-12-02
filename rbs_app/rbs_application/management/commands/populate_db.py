@@ -28,8 +28,8 @@ class Command(BaseCommand):
         u.save()
         return u
 
-    def add_userprofile(self, username):
-        u = UserProfile.objects.get_or_create(username=username)[0]
+    def add_userprofile(self, user):
+        u = UserProfile.objects.get_or_create(user=user)[0]
         u.save()
         return u
 
@@ -133,7 +133,9 @@ class Command(BaseCommand):
         # def add_superusers(self):
 
         for developer in superusers:
-            self.add_user(developer["username"], developer["password"])
+            user = self.add_user(developer["username"], developer["password"])
+            self.add_userprofile(user)
+
 
         # TODO this works correctly, need a better way to do it.
         # for s in sellers:
