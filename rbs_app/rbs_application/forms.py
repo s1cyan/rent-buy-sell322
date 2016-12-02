@@ -42,9 +42,9 @@ class UserForm(forms.Form):
     password = forms.CharField(
         label=_('PASSWORD *'),
         widget=forms.PasswordInput(attrs=dict(required=True, max_length=30, render_value=False)))
-    # password2 = forms.CharField(
-    #     label=_("CONFIRM PASSWORD *"),
-    #     widget=forms.PasswordInput(attrs=dict(required=True, max_length=30, render_value=False)))
+    password2 = forms.CharField(
+        label=_("CONFIRM PASSWORD *"),
+        widget=forms.PasswordInput(attrs=dict(required=True, max_length=30, render_value=False)))
 
     def clean_username(self):
         """ Clean form data for username """
