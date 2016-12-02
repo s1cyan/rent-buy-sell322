@@ -1,7 +1,7 @@
-''' Forms for registration page.
+""" Forms for registration page.
     Information grabbed: username, email, password
 
-    Thanks to original developer: Connie Liu '''
+    Thanks to original developer: Connie Liu """
 
 from django import forms
 from django.contrib.auth.models import User
@@ -30,7 +30,7 @@ class RegistrationForm(forms.Form):
 
 
 class UserForm(forms.Form):
-    ''' User registration form for RBS '''
+    """ User registration form for RBS """
     username = forms.RegexField(
         label=_("USERNAME *"),
         regex=r'^\w+$',
@@ -43,11 +43,11 @@ class UserForm(forms.Form):
         label=_('PASSWORD *'),
         widget=forms.PasswordInput(attrs=dict(required=True, max_length=30, render_value=False)))
     password2 = forms.CharField(
-        label = _("Confirm Password *"),
+        label=_("Confirm Password *"),
         widget=forms.PasswordInput(attrs=dict(required=True, max_length=30, render_value=False)))
 
     def clean_username(self):
-        ''' Clean form data for username '''
+        """ Clean form data for username """
         try:
             user = User.objects.get(username__iexact=self.cleaned_data['username'])
         except User.DoesNotExist:
@@ -55,7 +55,7 @@ class UserForm(forms.Form):
         raise forms.ValidationError(_("The username already exists. Please try another one."))
 
     def clean(self):
-        ''' Clean form data for password '''
+        """ Clean form data for password """
         if 'password1' in self.cleaned_data and 'password2' in self.cleaned_data:
             if self.cleaned_data['password1'] != self.cleaned_data['password2']:
                 raise forms.ValidationError(_("Passwords did not match! Please Try Again."))
@@ -80,6 +80,7 @@ class SearchForm(forms.Form):
     search_auction = forms.BooleanField()
     min_price = forms.IntegerField()
     max_price = forms.IntegerField()
+
 
 class ComplaintForm(forms.Form):
     reported_user = forms.CharField(max_length=64)
