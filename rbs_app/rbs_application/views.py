@@ -23,6 +23,8 @@ def register(request):
         # registration_form = RegistrationForm(data=request.POST)
         if user_form.is_valid(): # and registration_form.is_valid():
             user = User.objects.create_user(
+                first_name=user_form.cleaned_data['first_name'],
+                last_name=user_form.cleaned_data['last_name'],
                 username=user_form.cleaned_data['username'],
                 email=user_form.cleaned_data['email'],
                 password=user_form.cleaned_data['password'],

@@ -1,7 +1,4 @@
-""" Forms for registration page.
-    Information grabbed: username, email, password
-
-    Thanks to original developer: Connie Liu """
+""" Forms for RBS"""
 
 from django import forms
 from django.contrib.auth.models import User
@@ -9,6 +6,8 @@ from django.utils.translation import ugettext_lazy as _
 
 class UserForm(forms.Form):
     """ User registration form for RBS """
+    first_name = forms.CharField(label=_("FIRST NAME *"), max_length=10)
+    last_name = forms.CharField(label=_("LAST NAME *"), max_length=10)
     username = forms.RegexField(
         label=_("USERNAME *"),
         regex=r'^\w+$',
