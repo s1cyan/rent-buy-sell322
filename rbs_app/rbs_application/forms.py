@@ -32,13 +32,19 @@ class RegistrationForm(forms.Form):
 class UserForm(forms.Form):
     ''' User registration form for RBS '''
     username = forms.RegexField(
-        regex=r'^\w+$', widget=forms.TextInput(
-            attrs=dict(required=True, max_length=30)), label=_("USERNAME *"),
+        label=_("USERNAME *"),
+        regex=r'^\w+$',
+        widget=forms.TextInput(attrs=dict(required=True, max_length=30)),
         error_messages={'invalid': _("This value must contain only letters, numbers and underscores.")})
     email = forms.EmailField(
-        widget=forms.TextInput(attrs=dict(required=True, max_length=30)), label=_("EMAIL ADDRESS *"))
+        label=_("EMAIL ADDRESS *"),
+        widget=forms.TextInput(attrs=dict(required=True, max_length=30)))
     password = forms.CharField(
-        widget=forms.PasswordInput(attrs=dict(required=True, max_length=30, render_value=False)), label=_("PASSWORD *"))
+        label=_('PASSWORD *'),
+        widget=forms.PasswordInput(attrs=dict(required=True, max_length=30, render_value=False)))
+    password2 = forms.CharField(
+        label = _("Confirm Password *"),
+        widget=forms.PasswordInput(attrs=dict(required=True, max_length=30, render_value=False)))
 
     def clean_username(self):
         ''' Clean form data for username '''
@@ -83,10 +89,11 @@ class ComplaintForm(forms.Form):
 class RegistrationForm(forms.Form):
     first_name = forms.CharField(max_length=64)
     last_name = forms.CharField(max_length=64)
-    username = forms.CharField(max_length=64)
-    email = forms.EmailField()
-    password = forms.CharField(max_length=64)
-    confirm_password = forms.CharField(max_length=64)
-    address = forms.CharField()
+    # username = forms.CharField(max_length=64)
+    # email = forms.EmailField()
+    # password = forms.CharField(max_length=64)
+    # confirm_password = forms.CharField(max_length=64)
+    city = forms.CharField()
+    country = forms.CharField()
     credit_card = forms.IntegerField(max_value=9999999999999999)
     math_answer = forms.IntegerField()
