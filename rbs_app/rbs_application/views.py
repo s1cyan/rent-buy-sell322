@@ -7,7 +7,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, render_to_response, redirect
 from django.template import RequestContext
 from django.views.decorators.csrf import csrf_protect
-from .forms import UserForm, SellForm, SearchForm, ComplaintForm
+from .forms import UserForm, SellForm, SearchForm, ComplaintForm, RegistrationForm
+from .models import UserProfile
 # Create your views here.
 
 def register(request):
@@ -17,13 +18,22 @@ def register(request):
     if request.method == 'POST':
         # Attempt to grab information from the raw form information.
         user_form = UserForm(data=request.POST)
-        if user_form.is_valid():
+        registration_form = RegistrationForm(data=request.POST)
+        if user_form.is_valid() and registration_form.is_valid():
             user = User.objects.create_user(
                 username=user_form.cleaned_data['username'],
                 password=user_form.cleaned_data['password'],
                 email=user_form.cleaned_data['email']
                 )
             user.save()
+
+            userprofile = UserProfile.objects.get_or_create(
+                first_name=registration_form.cleaned_data['first_name'],
+                last_name=registration_form.cleaned_data['last_name'],
+                city=registration_form.cleaned_data['city'],
+                country=registration_form.cleaned_data['country']
+            )
+            userprofile.save()
 
             registered = True
 
@@ -35,10 +45,12 @@ def register(request):
         # Not a HTTP POST, so we render our form using the ModelForm instance.
         # These forms will be blank, ready for user input.
         user_form = UserForm()
+        registration_form = RegistrationForm()
         # profile_form = UserProfileForm()
     # Render the template depending on the context.
     return render(request, 'registration.html',
                   {'user_form': user_form,
+                   'registration_form': registration_form,
                    'registered': registered})
 
 
