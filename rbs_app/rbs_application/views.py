@@ -55,22 +55,23 @@ def register(request):
                    'registered': registered})
 
 
-
 def redir(request):
     '''TODO redirection for top nav bar'''
     return redirect('/rbs')
 
+@login_required
 def add_withdraw(request):
     return render(request, 'add_withdraw.html')
 
+@login_required
 def cart(request):
     return render(request, 'cart.html')
 
-
+@login_required
 def confirm_checkout(request):
     return render(request, 'confirm_checkout.html')
 
-
+@login_required
 def edit_listings(request):
     return render(request, 'edit_listings.html')
 
@@ -87,14 +88,14 @@ def file_complaint(request):
 def process_complaint(request):
     '''
     *** Put the functions to process complaints and send them to db here - same method as the others
-    do request.POST['name value in template'] to access values 
+    do request.POST['name value in template'] to access values
     :param request:
     :return:
     '''
     print (request.POST)
     return render(request,'complaint_submitted.html')
 
-
+@login_required
 def sell_item(request):
     '''
     :param request:
@@ -109,7 +110,7 @@ def sell_item(request):
     }
     return render(request, 'sell_item.html',context_dict)
 
-
+@login_required
 def process_sell(request):
     """
     have the functions for search processing in here
@@ -128,7 +129,7 @@ def show_results(request):
 
     return render(request, 'results.html')
 
-
+@login_required
 def update_account(request):
     return render(request, 'update_info.html')
 
@@ -155,10 +156,17 @@ def user_login(request):
         # No context variables to pass to the template system, hence the # blank dictionary object...
         return render(request, 'login.html', {})
 
+@login_required
 def user_main(request):
-    return render(request, 'user_main.html')
+    profile = UserProfile.objects.get(user=request.user)
+    if request.user.is_authenticated:
+        if profile.verified_by_admin == True:
+            print(profile.verified_by_admin)
+            return render(request, 'user_main.html')
+        else:
+            return HttpResponse("You have not been verified by an admin")
 
-
+@login_required
 def view_previous_orders(request):
     return render(request, 'previous_orders.html')
 
@@ -171,5 +179,3 @@ def visitors_main(request):
 def user_logout(request):
     logout(request)
     return HttpResponseRedirect(reverse('visitor'))
-
-

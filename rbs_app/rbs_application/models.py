@@ -23,6 +23,7 @@ class UserProfile(models.Model):
     suspensions = models.PositiveIntegerField(_("Number of suspensions"), default='0')
     strikes = models.PositiveIntegerField(_("Number of strikes"), default=0)
     credit_card = models.CharField(max_length=16, blank=True, default='1234999912348888')
+    verified_by_admin = models.BooleanField(default=False, editable=True)
 
     class Meta:
         verbose_name = "User Profile"
