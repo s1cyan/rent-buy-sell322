@@ -9,7 +9,6 @@ from django.template import RequestContext
 from django.views.decorators.csrf import csrf_protect
 from .forms import UserForm, SellForm, SearchForm, ComplaintForm, RegistrationForm
 from .models import UserProfile
-from .accessmodels import getUserMoney
 # Create your views here.
 
 
