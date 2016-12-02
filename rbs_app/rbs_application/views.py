@@ -11,6 +11,7 @@ from .forms import UserForm, SellForm, SearchForm, ComplaintForm, RegistrationFo
 from .models import UserProfile, Product
 # Create your views here.
 
+
 def register(request):
     '''signup page view'''
     registered = False
@@ -194,10 +195,15 @@ def user_login(request):
 @login_required
 def user_main(request):
     profile = UserProfile.objects.get(user=request.user)
+    context_dict={
+        'username': request.user.username,
+        'money': profile.balance,
+    }
+    print ( "####### ", profile.balance)
     if request.user.is_authenticated:
         if profile.verified_by_admin == True:
             print(profile.verified_by_admin)
-            return render(request, 'user_main.html')
+            return render(request, 'user_main.html', context_dict)
         else:
             return HttpResponse("You have not been verified by an admin")
 
