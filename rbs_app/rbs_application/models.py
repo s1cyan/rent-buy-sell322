@@ -9,9 +9,13 @@ class UserProfile(models.Model):
     bio = models.TextField(default='', blank=True)
     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message=
         "Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.")
-    phone = models.CharField(_("Phone number"), validators=[phone_regex], blank=True, default='', max_length=10)
-    city = models.CharField(max_length=50, default='', blank=True)
-    country = models.CharField(max_length=50, default='', blank=True)
+    phone = models.CharField(_("Phone number"),
+                             validators=[phone_regex],
+                             blank=True,
+                             default='2126507000',
+                             max_length=10)
+    city = models.CharField(max_length=50, default='New York', blank=True)
+    country = models.CharField(max_length=50, default='USA', blank=True)
     balance = models.DecimalField(max_digits=6, decimal_places=2, default='0.00')
     transactions = models.PositiveIntegerField(_("Number of transactions"), default='0', blank=True)
     suspensions = models.PositiveIntegerField(_("Number of suspensions"), default='0')
