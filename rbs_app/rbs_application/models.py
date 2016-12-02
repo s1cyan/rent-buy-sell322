@@ -40,8 +40,7 @@ class Category(models.Model):
         return str(self.name)
 
 class Product(models.Model):
-    # TODO Don't know what to do here
-    # seller = models.ForeignKey('auth.User')
+    # seller = models.ForeignKey('auth.User') # TODO Don't know what to do here
     seller = models.ForeignKey(User)
     title = models.CharField(max_length=200)
     text = models.TextField()
