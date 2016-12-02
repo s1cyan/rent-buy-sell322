@@ -22,6 +22,9 @@ class UserProfile(models.Model):
     strikes = models.PositiveIntegerField(_("Number of strikes"), default=0)
     credit_card = models.CharField(max_length=16, blank=True, default='1234999912348888')
 
+    class Meta:
+        verbose_name = "User Profile"
+
     def __str__(self):
         return str(self.user)
 
