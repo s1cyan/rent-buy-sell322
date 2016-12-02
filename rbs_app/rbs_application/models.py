@@ -1,15 +1,16 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
-from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
+from django.utils.translation import ugettext_lazy as _
 
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, related_name='user')
     bio = models.TextField(default='', blank=True)
-    phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message=
-        "Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.")
+    phone_regex = RegexValidator(
+        regex=r'^\+?1?\d{9,15}$',
+        message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.")
     phone = models.CharField(_("Phone number"),
                              validators=[phone_regex],
                              blank=True,
@@ -42,7 +43,7 @@ class Category(models.Model):
     name = models.CharField(max_length=20, default="Miscellaneous")
 
     class Meta:
-        ordering = ["name",]
+        ordering = ["name", ]
         verbose_name_plural = "categories"
 
     def __str__(self):
@@ -70,9 +71,10 @@ class Product(models.Model):
 
 
 class Order(models.Model):
-    #assuming order number does not repeat...
+    # assuming order number does not repeat...
     user = models.ForeignKey(UserProfile)
     products = models.ManyToManyField(Product)
+
     def __str__(self):
         return str(self.id)
 
@@ -83,6 +85,7 @@ class Complaint(models.Model):
     start_date = models.DateField()
     end_date = models.DateField()
     user_id = models.ForeignKey(UserProfile)
+
     def __str__(self):
         return str(self.complaint_id)
 
