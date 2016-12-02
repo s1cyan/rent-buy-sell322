@@ -1,13 +1,17 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.validators import RegexValidator
 from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, related_name='user')
     bio = models.TextField(default='', blank=True)
-    phone = models.PositiveIntegerField(_("Phone number"), blank=True, default='')
+    phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message=
+        "Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.")
+    phone = models.CharField(_("Phone number"), validators=[phone_regex], blank=True, default='', max_length=10)
     city = models.CharField(max_length=50, default='', blank=True)
     country = models.CharField(max_length=50, default='', blank=True)
     balance = models.DecimalField(max_digits=6, decimal_places=2, default='0.00')
@@ -40,7 +44,7 @@ class Category(models.Model):
 class Product(models.Model):
     # TODO Don't know what to do here
     # seller = models.ForeignKey('auth.User')
-    seller = models.ForeignKey(UserProfile)
+    seller = models.ForeignKey(User)
     title = models.CharField(max_length=200)
     text = models.TextField()
     created_date = models.DateTimeField(default=timezone.now)
