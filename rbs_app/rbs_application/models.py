@@ -4,6 +4,7 @@ from django.core.validators import RegexValidator
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
 
+
 class UserProfile(models.Model):
     user = models.OneToOneField(User, related_name='user')
     bio = models.TextField(default='', blank=True)
@@ -36,6 +37,7 @@ class Rating(models.Model):
     def __str__(self):
         return self.ratings
 
+
 class Category(models.Model):
     name = models.CharField(max_length=20, default="Miscellaneous")
 
@@ -45,6 +47,7 @@ class Category(models.Model):
 
     def __str__(self):
         return str(self.name)
+
 
 class Product(models.Model):
     # seller = models.ForeignKey('auth.User') # TODO Don't know what to do here
@@ -65,12 +68,14 @@ class Product(models.Model):
     def __str__(self):
         return self.title
 
+
 class Order(models.Model):
     #assuming order number does not repeat...
     user = models.ForeignKey(UserProfile)
     products = models.ManyToManyField(Product)
     def __str__(self):
         return str(self.id)
+
 
 class Complaint(models.Model):
     complaint_id = models.PositiveIntegerField(primary_key=True)
@@ -81,6 +86,7 @@ class Complaint(models.Model):
     def __str__(self):
         return str(self.complaint_id)
 
+
 class ShoppingCart(models.Model):
     user_auto_increment_id = models.ForeignKey(UserProfile)
     creation_date = models.DateTimeField(_("Created on"))
@@ -89,7 +95,4 @@ class ShoppingCart(models.Model):
     class Meta:
         verbose_name = _('Cart')
         verbose_name_plural = _('Carts')
-        ordering = ['-creation_date',]
-
-    # def __unicode__(self):
-    #     return unicode(self.creation_date)
+        ordering = ['-creation_date', ]
