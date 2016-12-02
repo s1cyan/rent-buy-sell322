@@ -18,22 +18,23 @@ def register(request):
     if request.method == 'POST':
         # Attempt to grab information from the raw form information.
         user_form = UserForm(data=request.POST)
-        registration_form = RegistrationForm(data=request.POST)
-        if user_form.is_valid() and registration_form.is_valid():
+        # registration_form = RegistrationForm(data=request.POST)
+        if user_form.is_valid(): # and registration_form.is_valid():
             user = User.objects.create_user(
                 username=user_form.cleaned_data['username'],
+                email=user_form.cleaned_data['email'],
                 password=user_form.cleaned_data['password'],
-                email=user_form.cleaned_data['email']
+                # password2=user_form.cleaned_data['password2'],
                 )
             user.save()
 
-            userprofile = UserProfile.objects.get_or_create(
-                first_name=registration_form.cleaned_data['first_name'],
-                last_name=registration_form.cleaned_data['last_name'],
-                city=registration_form.cleaned_data['city'],
-                country=registration_form.cleaned_data['country']
-            )
-            userprofile.save()
+            # userprofile = UserProfile.objects.get_or_create(
+            #     first_name=registration_form.cleaned_data['first_name'],
+            #     last_name=registration_form.cleaned_data['last_name'],
+            #     city=registration_form.cleaned_data['city'],
+            #     country=registration_form.cleaned_data['country']
+            # )
+            # userprofile.save()
 
             registered = True
 
@@ -45,12 +46,12 @@ def register(request):
         # Not a HTTP POST, so we render our form using the ModelForm instance.
         # These forms will be blank, ready for user input.
         user_form = UserForm()
-        registration_form = RegistrationForm()
+        # registration_form = RegistrationForm()
         # profile_form = UserProfileForm()
     # Render the template depending on the context.
     return render(request, 'registration.html',
                   {'user_form': user_form,
-                   'registration_form': registration_form,
+                   # 'registration_form': registration_form,
                    'registered': registered})
 
 
