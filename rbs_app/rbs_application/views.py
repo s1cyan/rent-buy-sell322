@@ -8,8 +8,9 @@ from django.shortcuts import render, render_to_response, redirect
 from django.template import RequestContext
 from django.views.decorators.csrf import csrf_protect
 from .forms import UserForm, SellForm, SearchForm, ComplaintForm, RegistrationForm
-from .models import UserProfile
+from .models import UserProfile, Product
 # Create your views here.
+
 
 def register(request):
     '''signup page view'''
@@ -121,15 +122,49 @@ def process_sell(request):
     print (request.POST) # just for checking the values returned in terminal
     return render(request, 'sell_processed.html')
 
-
 def show_results(request):
-    search_form = SearchForm(request.GET)
+    search_form = request.GET['search_input']
 
+    if 'rent_option' in request:
+        rent_option = request.GET['rent_option']
+    else:
+        rent_option = 'off'
+    if 'buy_option' in request:
+        buy_option = request.GET['buy_option']
+    else:
+        buy_option = 'off'
+    if 'auction_option' in request:
+        auction_option = request.GET['auction_option/']
+    else:
+        auction_option = 'off'
+    min_price = request.GET['minprice']
+    if min_price == '':
+        min_price = 0
+    max_price = request.GET['maxprice/']
+    if max_price == '':
+        max_price = 99999.99
+
+    print(search_form, rent_option, buy_option, auction_option, min_price, max_price)
+
+    if search_form == '':
+        products = Product.objects.all()
+        context = {'products': products}
+        template = 'results.html'
+        print(context)
+        return render(request, template, context)
+
+    products = Product.objects.all()
+    context = {'products': products}
+    template = 'results.html'
+    if Product.objects.get(title=search_form):
+        products = Product.objects.all()
+        searched_context = Product.objects.get(title=search_form)
+        return render(request, 'results.html')
+    #needs catch statement if product.objects.get != search form...
     '''
     write ur model lookup stuff here and return the stuff you find. Check the results template for the values you need to return per item
     '''
-
-    return render(request, 'results.html')
+    return render(request, template, context)
 
 @login_required
 def update_account(request):
@@ -161,10 +196,15 @@ def user_login(request):
 @login_required
 def user_main(request):
     profile = UserProfile.objects.get(user=request.user)
+    context_dict={
+        'username': request.user.username,
+        'money': profile.balance,
+    }
+    print ( "####### ", profile.balance)
     if request.user.is_authenticated:
         if profile.verified_by_admin == True:
             print(profile.verified_by_admin)
-            return render(request, 'user_main.html')
+            return render(request, 'user_main.html', context_dict)
         else:
             return HttpResponse("You have not been verified by an admin")
 
