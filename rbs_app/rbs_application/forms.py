@@ -9,6 +9,8 @@ from django.utils.translation import ugettext_lazy as _
 
 class UserForm(forms.Form):
     """ User registration form for RBS """
+    first_name = forms.CharField(label=_("First Name"), max_length=10)
+    last_name = forms.CharField(label=_("Last Name"), max_length=10)
     username = forms.RegexField(
         label=_("USERNAME *"),
         regex=r'^\w+$',
