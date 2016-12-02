@@ -3,6 +3,7 @@
 from django.contrib.auth.models import User
 from django.core.management.base import BaseCommand
 from rbs_application.models import Product, Category
+import random
 
 
 class Command(BaseCommand):
@@ -10,13 +11,13 @@ class Command(BaseCommand):
     help = 'our help string comes here'
 
     def clear_users(self):
+
         users = User.objects.exclude(username="rbs")
         users.delete()
 
     def clear_cat(self):
         cats = Category.objects.all()
         cats.delete()
-
 
     def clear_products(self):
         products = Product.objects.all()
@@ -28,16 +29,14 @@ class Command(BaseCommand):
         return u
 
     def add_product(self, cat, seller, title, price):
-        p = Product.objects.get_or_create(category=cat, seller=seller, title=title, price=price)
+        p = Product.objects.get_or_create(category=cat, seller=seller, title=title, price=price)[0]
         p.save()
         return p
-
 
     def add_cat(self, name):
         c = Category.objects.get_or_create(name=name)[0]
         c.save()
         return c
-
 
     def _populate(self):
         # First, we will create lists of dictionaries containing the Products
@@ -76,10 +75,21 @@ class Command(BaseCommand):
 
         ]
 
+        superusers = [
+            {"username": "jonathanrozario",
+             "password": "qwerty"},
+            {"username": "cyan",
+             "password": "password"},
+            {"username": "heyconnie123",
+             "password": "password"},
+            {"username": "alphamale",
+             "password": "password"},
+        ]
+
         sellers = [
             {"username": "nathan",
              "password": "qwerty"},
-            {"username": "alpham4le",
+            {"username": "betam4le",
              "password": "password"},
             {"username": "yoyodog",
              "password": "easypass1234"},
@@ -99,58 +109,60 @@ class Command(BaseCommand):
              "password": "fundingneeded"},
         ]
 
-        buyers = [
-            {"username": "jonathanrozario",
-             "password": "qwerty"},
-            {"username": "cyan",
-             "password": "password"},
-            {"username": "heyconnie123",
-             "password": "password"},
-            {"username": "alphamale",
-             "password": "password"},
-        ]
-
         # Dictionary of categories
+        # If you want to add more categories or products, add them to the dictionaries below.
         cats = {"Clothing": {"products": clothing},
                 "Games": {"products": games},
                 "Books": {"products": books}}
-        # If you want to add more categories or products, add them to the dictionaries above.
-
 
         # Dictionary of users
-        users = {"Sellers": {"role": sellers},
-                 "Buyers": {"role": buyers},}
-
-        for role, person in users.items():
-            for p in person["role"]:
-                self.add_user(p["username"], p["password"])
+        # users = {"Sellers": {"role": sellers},
+        #          "superusers": {"role": superusers},}
 
 
+        # for role, person in users.items():
+        #     for p in person["role"]:
+        #         self.add_user(p["username"], p["password"])
 
-        # The code below goes through the cats dictionary, then adds each product,
-        # and then adds all the associated products for that category.
+
+        # def add_superusers(self):
+
+        for developer in superusers:
+            self.add_user(developer["username"], developer["password"])
+
+        # TODO this works correctly, need a better way to do it.
+        # for s in sellers:
+        #     s = self.add_user(s["username"], s["password"])
+        #     for cat, cat_data in cats.items():
+        #         c = self.add_cat(cat)
+        #         for product in cat_data["products"]:
+        #             self.add_product(c, s, product["title"], product["price"])
+
+
+        open_sellers = []
+
+        for s in sellers:
+            seller = self.add_user(s["username"], s["password"])
+            open_sellers.append(seller)
+
         for cat, cat_data in cats.items():
-            c = self.add_cat(cat)
-            # for prod in cat_data["products"]:
-            #     self.add_product(c, , prod["title"], prod["price"])
+            category = self.add_cat(cat)
+            for seller, product in zip(open_sellers, cat_data["products"]):
+                self.add_product(category, seller, product["title"], product["price"])
+                open_sellers.remove(seller)
 
-        # Print out the categories we have added.
-        # for c in Category.objects.all():
-        #     for p in Product.objects.filter(category_name=c):
-        #         print("- {0} - {1}".format(str(c), str(p)))
-
+                # print(open_sellers)
 
 
     def handle(self, *args, **options):
         print("Starting RBS database population...")
-        print("deleting all users...")
+        print("Deleting all users...")
         self.clear_users()
-        print("deleting categories...")
+        print("Deleting all categories...")
         self.clear_cat()
-        print("filling in database...")
+        print("Deleting all products...")
+        self.clear_products()
+        # print("Making new superusers...")
+        # self.add_superusers()
+        print("Filling in database...")
         self._populate()
-
-# Start execution here!
-# if __name__ == '__main__':
-#     print("Starting RBS population script...")
-#     populate()
