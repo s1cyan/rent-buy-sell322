@@ -3,16 +3,23 @@
 from django.contrib.auth.models import User
 from django.core.management.base import BaseCommand
 from rbs_application.models import *
-import random
 
+
+ENGINEERS = [{"username": "jonathanrozario",
+              "password": "pass"},
+             {"username": "cyan",
+              "password": "pass"},
+             {"username": "heyconnie123",
+              "password": "pass"},
+             {"username": "alphamale",
+              "password": "pass"}, ]
 
 class Command(BaseCommand):
     args = '<foo bar ...>'
     help = 'our help string comes here'
 
     def clear_users(self):
-
-        users = User.objects.exclude(username="rbs")
+        users = User.objects.all()
         users.delete()
 
     def clear_cat(self):
@@ -24,14 +31,25 @@ class Command(BaseCommand):
         products.delete()
 
     def add_user(self, username, password):
-        u = User.objects.create_user(username=username, password=password)
-        u.save()
-        return u
+        user = User.objects.create_user(username=username, password=password)
+        user.save()
+        return user
+
+    def createsuperuser(self):
+        superuser = User.objects.create_superuser(username='rbs', email='', password='rbs')
+        superuser.save()
+        return superuser
 
     def add_userprofile(self, user):
-        u = UserProfile.objects.get_or_create(user=user)[0]
-        u.save()
-        return u
+        profile = UserProfile.objects.get_or_create(user=user)[0]
+        profile.verified_by_admin = True
+        profile.save()
+        return profile
+
+    def add_superuser(self, username, password):
+        superuser = User.objects.create_superuser(username=username, password=password)
+        superuser.save()
+        return superuser
 
     def add_product(self, cat, seller, title, price):
         p = Product.objects.get_or_create(category=cat, seller=seller, title=title, price=price)[0]
@@ -77,18 +95,6 @@ class Command(BaseCommand):
              "price": 1.00},
             {"title": "The Hitchhiker's Guide to the Galaxy",
              "price": 7.19},
-
-        ]
-
-        superusers = [
-            {"username": "jonathanrozario",
-             "password": "qwerty"},
-            {"username": "cyan",
-             "password": "password"},
-            {"username": "heyconnie123",
-             "password": "password"},
-            {"username": "alphamale",
-             "password": "password"},
         ]
 
         sellers = [
@@ -132,8 +138,8 @@ class Command(BaseCommand):
 
         # def add_superusers(self):
 
-        for developer in superusers:
-            user = self.add_user(developer["username"], developer["password"])
+        for engineer in ENGINEERS:
+            user = self.add_user(engineer["username"], engineer["password"])
             self.add_userprofile(user)
 
 
@@ -169,7 +175,7 @@ class Command(BaseCommand):
         self.clear_cat()
         print("Deleting all products...")
         self.clear_products()
-        # print("Making new superusers...")
-        # self.add_superusers()
+        print("Making superuser: { 'USERNAME' : 'rbs', 'PASSWORD': 'rbs' ...")
+        self.createsuperuser()
         print("Filling in database...")
         self._populate()
