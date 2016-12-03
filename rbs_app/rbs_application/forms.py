@@ -59,6 +59,11 @@ class SearchForm(forms.Form):
     max_price = forms.IntegerField()
 
 
+class AddWithdrawForm(forms.Form):
+    add = forms.DecimalField(label="Add Money", initial=1000)
+    withdraw = forms.DecimalField(label="Withdraw Money", initial=22)
+
+
 class ComplaintForm(forms.Form):
     reported_user = forms.CharField(max_length=64)
     complaint = forms.CharField(max_length=128)

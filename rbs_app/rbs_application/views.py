@@ -1,4 +1,5 @@
 # Create your views here.
+import decimal
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -7,7 +8,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, render_to_response, redirect
 from django.template import RequestContext
 from django.views.decorators.csrf import csrf_protect
-from .forms import UserForm, SellForm, SearchForm, ComplaintForm, RegistrationForm
+from .forms import AddWithdrawForm, UserForm, SellForm, SearchForm, ComplaintForm, RegistrationForm
 from .models import UserProfile, Product
 # Create your views here.
 
@@ -27,7 +28,6 @@ def register(request):
                 username=user_form.cleaned_data['username'],
                 email=user_form.cleaned_data['email'],
                 password=user_form.cleaned_data['password'],
-                # password2=user_form.cleaned_data['password2'],
                 )
             user.save()
 
@@ -64,11 +64,28 @@ def redir(request):
 
 @login_required
 def add_withdraw(request):
-    return render(request, 'add_withdraw.html')
+    profile = UserProfile.objects.get(user=request.user)
+    add_withdraw_form = AddWithdrawForm(request.POST)
+    if request.method == 'POST':
+        if request.POST['add']:
+            add = decimal.Decimal(request.POST['add'])
+            profile.balance += add
+            profile.save()
+        if request.POST['withdraw']:
+            withdraw = decimal.Decimal(request.POST['withdraw'])
+            profile.balance -= withdraw
+            profile.save()
+        return HttpResponseRedirect(reverse('user'))
+    else:
+        return render(request, 'add_withdraw.html',
+                      {'add_withdraw_form': add_withdraw_form,
+                       'username': request.user.username,
+                       'money': profile.balance})
+
 
 @login_required
 def cart(request):
-    return render(request, 'cart.html')
+    return render(request, 'cart.html', )
 
 @login_required
 def confirm_checkout(request):
@@ -160,9 +177,10 @@ def show_results(request):
         products = Product.objects.all()
         searched_context = Product.objects.get(title=search_form)
         return render(request, 'results.html')
-    #needs catch statement if product.objects.get != search form...
+    # needs catch statement if product.objects.get != search form...
     '''
-    write ur model lookup stuff here and return the stuff you find. Check the results template for the values you need to return per item
+    Write ur model lookup stuff here and return the stuff you find.
+    Check the results template for the values you need to return per item
     '''
     return render(request, template, context)
 
@@ -188,9 +206,10 @@ def user_login(request):
             # Bad login details were provided. So we can't log the user in.
             print("Invalid login details: {0}, {1}".format(username, password))
             return HttpResponse("Invalid login details supplied.")
-        # The request is not a HTTP POST, so display the login form. # This scenario would most likely be a HTTP GET.
+    # The request is not a HTTP POST, so display the login form.
+    # This scenario would most likely be a HTTP GET.
     else:
-        # No context variables to pass to the template system, hence the # blank dictionary object...
+        # No context variables to pass to the template system, hence the blank dictionary object...
         return render(request, 'login.html', {})
 
 @login_required
@@ -210,14 +229,17 @@ def user_main(request):
 
 @login_required
 def view_previous_orders(request):
+    # Render the page for previous orders
     return render(request, 'previous_orders.html')
 
 
 def visitors_main(request):
+    # Redirect to visitor home page
     return render(request, 'visitors_main.html')
 
 
 # @login_required
 def user_logout(request):
     logout(request)
+    # Redirect to visitor home page
     return HttpResponseRedirect(reverse('visitor'))
