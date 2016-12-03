@@ -8,11 +8,12 @@
 {% include 'search_bar.html' %}
 <div class="row">
     <div class="col s8 offset-s3">
-        <form>
+        <form method="post">
             {% csrf_token %}
+
             <div class="col s12">
                 <div class="input-field col s6">
-                    <input id="add" name="add" type="text">
+                    <input id="add" name="add" type="number">
                     <label class="active " for="add" data-success="">Add Money</label>
 
                 </div>
@@ -22,12 +23,15 @@
 
             <div class="col s12">
                 <div class="input-field col s6">
-                    <input id="withdraw" name="withdraw" type="text">
+                    <input id="withdraw" name="withdraw" type="number">
                     <label class="active " for="withdraw" data-success="">Withdraw Money</label>
 
                 </div>
                 <button class="btn">Withdraw $</button>
             </div>
+
+
+
 
         </form>
     </div>

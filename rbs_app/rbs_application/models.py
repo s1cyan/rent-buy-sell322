@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
 from django.db import models
@@ -24,7 +25,7 @@ class UserProfile(models.Model):
     suspensions = models.PositiveIntegerField(_("Number of suspensions"), default='0')
     strikes = models.PositiveIntegerField(_("Number of strikes"), default=0)
     credit_card = models.CharField(max_length=16, blank=True, default='1234999912348888')
-    verified_by_admin = models.BooleanField(default=False, editable=True)
+    verified_by_admin = models.BooleanField(_("RBS Verified User"), default=False, editable=True)
 
     class Meta:
         verbose_name = "User Profile"
@@ -66,6 +67,8 @@ class Product(models.Model):
     text = models.TextField()
     created_date = models.DateTimeField(default=timezone.now)
     published_date = models.DateTimeField(blank=True, null=True)
+    takedown_date = models.DateField(blank=False, null=False, default=datetime.today().date() + timedelta(days=7))
+    takedown_time = models.TimeField(blank=False, null=False, default=datetime.now().time())
     category = models.ForeignKey(Category, on_delete=models.CASCADE,)
     quantity = models.PositiveIntegerField(default=1)
     price = models.DecimalField(max_digits=6, decimal_places=2)

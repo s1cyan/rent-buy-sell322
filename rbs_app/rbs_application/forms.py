@@ -3,6 +3,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
+from datetime import datetime, timedelta
 
 class UserForm(forms.Form):
     """ User registration form for RBS """
@@ -45,8 +46,9 @@ class SellForm(forms.Form):
     item_name = forms.CharField(max_length=64)
     sell_choice = forms.ChoiceField(choices=SELL_CHOICES)
     price = forms.DecimalField()
-    takedown_date = forms.SelectDateWidget()
-    takedown_time = forms.TimeField()
+    takedown_date = forms.DateField(widget=forms.SelectDateWidget(),
+                                    initial=datetime.today().date() + timedelta(days=7))
+    takedown_time = forms.TimeField(initial=datetime.now().time())
     description = forms.CharField(max_length=128)
 
 
@@ -59,14 +61,17 @@ class SearchForm(forms.Form):
     max_price = forms.IntegerField()
 
 
+class AddWithdrawForm(forms.Form):
+    add = forms.DecimalField(label="Add Money", initial=1000)
+    withdraw = forms.DecimalField(label="Withdraw Money", initial=22)
+
+
 class ComplaintForm(forms.Form):
     reported_user = forms.CharField(max_length=64)
     complaint = forms.CharField(max_length=128)
 
 
 class RegistrationForm(forms.Form):
-    first_name = forms.CharField(max_length=64)
-    last_name = forms.CharField(max_length=64)
     city = forms.CharField()
     country = forms.CharField()
     credit_card = forms.CharField(max_length=16)
