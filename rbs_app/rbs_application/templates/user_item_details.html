@@ -1,7 +1,9 @@
 {% extends 'default.html' %}
 
 {% block header %}
+{% if user.is_authenticated %}
 {% include 'sidenav.html' %}
+{% endif %}
 {% endblock %}
 
 
