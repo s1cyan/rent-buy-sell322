@@ -100,7 +100,8 @@ def file_complaint(request):
     complaint_form = ComplaintForm(request.POST)
     context_dict = {
         'complaint-form': complaint_form,
-        'process_complaint': '/rbs/submitted-complaint'
+        'process_complaint': '/rbs/submitted-complaint',
+        'user':request.user.username
     }
     return render(request, 'file_complaint.html', context_dict)
 
@@ -112,8 +113,16 @@ def process_complaint(request):
     :param request:
     :return:
     '''
+    context_dict = {
+        'user': request.user.username,
+
+    }
     print (request.POST)
-    return render(request,'complaint_submitted.html')
+    if request.POST['reported_user'] or request.POST['complaint'] == "" or " ":
+        return HttpResponseRedirect('complaint')
+
+    
+    return render(request,'complaint_submitted.html',context_dict)
 
 @login_required
 def sell_item(request):
@@ -157,7 +166,7 @@ def process_sell(request):
                       price = request.POST['price'],
                       # TODO Change status to a boolean field, Charfield will make it harder to tell what is an active listing
                       # Maybe even change its name to is_active_listing
-                      # Also maybe get rid of categories? 
+                      # Also maybe get rid of categories?
                       )
     product.save()
     return render(request, 'sell_processed.html')
