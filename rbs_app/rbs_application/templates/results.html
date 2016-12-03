@@ -7,19 +7,20 @@
 
 {% include 'search_bar.html' %}
 
-{% if found %}
 <div class="row">
-    <div class="col s8 offset-s2">
+    {% if found %}
+    <div class="col s8 offset-s3">
       <ul class="collection">
 
-          {% for item in results %}
-      <a href="#" class="collection-item">{{ item }} </a>
+          {% for result in results %}
+
+      <a href="#" class="collection-item">{{ result.title }} </a>
             {% endfor %}
     </ul>
     </div>
+    {% endif %}
 </div>
 
-{% endif %}
 
 
 
