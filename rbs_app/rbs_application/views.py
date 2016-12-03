@@ -139,9 +139,9 @@ def process_sell(request):
     print (request.POST) # just for checking the values returned in terminal
     return render(request, 'sell_processed.html')
 
+
 def show_results(request):
     search_form = request.GET['search_input']
-
     if 'rent_option' in request:
         rent_option = request.GET['rent_option']
     else:
@@ -160,29 +160,39 @@ def show_results(request):
     max_price = request.GET['maxprice/']
     if max_price == '':
         max_price = 99999.99
-
     print(search_form, rent_option, buy_option, auction_option, min_price, max_price)
-
     if search_form == '':
         products = Product.objects.all()
         context = {'products': products}
         template = 'results.html'
         print(context)
         return render(request, template, context)
-
     products = Product.objects.all()
     context = {'products': products}
     template = 'results.html'
+    x = Product.objects.get(title=search_form)
     if Product.objects.get(title=search_form):
         products = Product.objects.all()
         searched_context = Product.objects.get(title=search_form)
+
         return render(request, 'results.html')
+
+        result_c =[]
+        result_c.append(searched_context) # add the searched Product into the list, the template will access the title
+        # context dict to store all the values passed into the param
+        context_dict = {'title': "Search Results",
+                        'results': result_c,
+                        'found': True, # need to set this to true or nothing will show
+                        }
+        return render(request, template, context_dict)
+
     # needs catch statement if product.objects.get != search form...
     '''
     Write ur model lookup stuff here and return the stuff you find.
     Check the results template for the values you need to return per item
     '''
     return render(request, template, context)
+
 
 @login_required
 def update_account(request):
