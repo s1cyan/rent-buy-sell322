@@ -98,3 +98,9 @@ ENV/
 
 # Ignore the default SQLite database.
 db.sqlite3
+
+rbs_app/db.sqlite3
+
+rbs_app/db.sqlite3
+
+rbs_app/db.sqlite3
