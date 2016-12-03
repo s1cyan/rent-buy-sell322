@@ -9,7 +9,7 @@ from django.shortcuts import render, render_to_response, redirect
 from django.template import RequestContext
 from django.views.decorators.csrf import csrf_protect
 from .forms import AddWithdrawForm, UserForm, SellForm, SearchForm, ComplaintForm, RegistrationForm
-from .models import UserProfile, Product
+from .models import UserProfile, Product, Category
 # Create your views here.
 
 
@@ -132,11 +132,34 @@ def sell_item(request):
 
 @login_required
 def process_sell(request):
+    context_dict = {
+        'user': request.user.username,
+    }
     """
     have the functions for search processing in here
     to access the values in the SellForm, do request.POST['name value in template']
     """
     print (request.POST) # just for checking the values returned in terminal
+    # if fields are blank redirect back to refill the form
+    if (request.POST['item'] or request.POST['price'] or request.POST['daymonth']or request.POST['time'] or request.POST['description']) == None:
+        print("invalid entry ")
+        return HttpResponseRedirect('sell')
+
+    # create the Product entry
+    c = Category()
+    c.save()
+    product = Product(seller=request.user,
+                      title = request.POST['item'],
+                      text = request.POST['description'],
+                      takedown_date = request.POST['daymonth'],
+                      takedown_time = request.POST['time'],
+                      category = c,
+                      price = request.POST['price'],
+                      # TODO Change status to a boolean field, Charfield will make it harder to tell what is an active listing
+                      # Maybe even change its name to is_active_listing
+                      # Also maybe get rid of categories? 
+                      )
+    product.save()
     return render(request, 'sell_processed.html')
 
 
