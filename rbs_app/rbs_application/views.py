@@ -227,6 +227,7 @@ def show_results(request):
                 'seller': product.seller.username,
                 'option': 'n/a yet', # TODO SET THE SELLING TYPE
                 'description': product.text,
+                'product_pk': product.pk
             }
             return render(request,'user_item_details.html',context_dict)
 
@@ -238,7 +239,10 @@ def show_results(request):
 
 @login_required
 def buy_item_details_users(request):
-
+    if request.method == "POST":
+        product_pk = request.POST.get('pk','')
+        product = Product.objects.get(pk = product_pk)
+        # Add to shopping cart 
     return render(request,'user_item_details.html')
 
 
