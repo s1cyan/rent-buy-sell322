@@ -84,14 +84,6 @@ def add_withdraw(request):
 
 
 @login_required
-def cart(request):
-    return render(request, 'cart.html', )
-
-@login_required
-def confirm_checkout(request):
-    return render(request, 'confirm_checkout.html')
-
-@login_required
 def edit_listings(request):
     return render(request, 'edit_listings.html')
 
@@ -242,8 +234,17 @@ def buy_item_details_users(request):
     if request.method == "POST":
         product_pk = request.POST.get('pk','')
         product = Product.objects.get(pk = product_pk)
-        # Add to shopping cart 
+        # TODO Add to shopping cart logic
     return render(request,'user_item_details.html')
+
+
+@login_required
+def cart(request):
+    return render(request, 'cart.html', )
+
+@login_required
+def confirm_checkout(request):
+    return render(request, 'confirm_checkout.html')
 
 
 @login_required
