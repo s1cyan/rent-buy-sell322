@@ -218,7 +218,22 @@ def show_results(request):
     '''
     write ur model lookup stuff here and return the stuff you find. Check the results template for the values you need to return per item
     '''
+    # -------- getting to item details page
+    if request.method == 'POST':
+
+        return render(request, 'user_item_details.html')
     return render(request, template, context)
+
+
+@login_required
+def buy_item_details_users(request):
+    profile = UserProfile.objects.get(user=request.user)
+    context_dict = {
+        'user' : request.user.username,
+        'money' : profile.balance,
+
+    }
+    return render(request,'user_item_details.html',context_dict)
 
 
 @login_required
