@@ -12,18 +12,29 @@
 <div class="row">
     {% if found %}
     <div class="col s8 offset-s3">
-      <ul class="collection">
+        <ul class="collection">
 
-          {% for result in results %}
+            {% for result in results %}
+            <li class="collection-item">{{ result.title }}
+                <div class="secondary-content ">
+                    <form method="POST">
+                        {% csrf_token %}
 
-      <a href="#" class="collection-item">{{ result.title }} </a>
+                        <button class="waves-effect waves-light btn" name='pk' value="{{ result.pk }}"> View Details
+                        </button>
+                    </form>
+
+
+                </div>
+            </li>
+
             {% endfor %}
-    </ul>
+        </ul>
+
     </div>
+
     {% endif %}
 </div>
-
-
 
 
 {% endblock %}

@@ -100,7 +100,8 @@ def file_complaint(request):
     complaint_form = ComplaintForm(request.POST)
     context_dict = {
         'complaint-form': complaint_form,
-        'process_complaint': '/rbs/submitted-complaint'
+        'process_complaint': '/rbs/submitted-complaint',
+        'user':request.user.username
     }
     return render(request, 'file_complaint.html', context_dict)
 
@@ -112,8 +113,16 @@ def process_complaint(request):
     :param request:
     :return:
     '''
+    context_dict = {
+        'user': request.user.username,
+
+    }
     print (request.POST)
-    return render(request,'complaint_submitted.html')
+    if request.POST['reported_user'] or request.POST['complaint'] == "" or " ":
+        return HttpResponseRedirect('complaint')
+
+
+    return render(request,'complaint_submitted.html',context_dict)
 
 @login_required
 def sell_item(request):
@@ -157,7 +166,7 @@ def process_sell(request):
                       price = request.POST['price'],
                       # TODO Change status to a boolean field, Charfield will make it harder to tell what is an active listing
                       # Maybe even change its name to is_active_listing
-                      # Also maybe get rid of categories? 
+                      # Also maybe get rid of categories?
                       )
     product.save()
     return render(request, 'sell_processed.html')
@@ -204,12 +213,33 @@ def show_results(request):
                         'results': result_c,
                         'found': True, # need to set this to true or nothing will show
                         }
+        if request.method == "POST":
+            # GOing to the item details page 
+            # if the item is clicked on, load the item details page with the Product information
+            profile = UserProfile.objects.get(user=request.user)
+            product_pk = request.POST.get('pk', '')
+            product = Product.objects.get(pk=product_pk) # bc multiple item can have the same name, access by pk
+            context_dict = {
+                'user': request.user.username,
+                'money': profile.balance,
+                'item': product.title,
+                'price': product.price,
+                'seller': product.seller.username,
+                'option': 'n/a yet', # TODO SET THE SELLING TYPE
+                'description': product.text,
+            }
+            return render(request,'user_item_details.html',context_dict)
+
         return render(request, template, context_dict)
     # needs catch statement if product.objects.get != search form...
-    '''
-    write ur model lookup stuff here and return the stuff you find. Check the results template for the values you need to return per item
-    '''
+
     return render(request, template, context)
+
+
+@login_required
+def buy_item_details_users(request):
+
+    return render(request,'user_item_details.html')
 
 
 @login_required
