@@ -93,10 +93,11 @@ class Order(models.Model):
 
 class Complaint(models.Model):
     complaint_id = models.PositiveIntegerField(primary_key=True)
-    pub_date = models.DateTimeField("Date published", auto_now_add=True)
-    start_date = models.DateField()
-    end_date = models.DateField()
+    # pub_date = models.DateTimeField("Date published", auto_now_add=True)
+    # start_date = models.DateField()
+    # end_date = models.DateField()
     user_id = models.ForeignKey(UserProfile)
+    complaint = models.CharField(max_length=512, default="No details")
 
     def __str__(self):
         return str(self.complaint_id)

@@ -121,7 +121,7 @@ def process_complaint(request):
     if request.POST['reported_user'] or request.POST['complaint'] == "" or " ":
         return HttpResponseRedirect('complaint')
 
-    
+
     return render(request,'complaint_submitted.html',context_dict)
 
 @login_required
