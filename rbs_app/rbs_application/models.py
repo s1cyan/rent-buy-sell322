@@ -73,6 +73,7 @@ class Product(models.Model):
     quantity = models.PositiveIntegerField(default=1)
     price = models.DecimalField(max_digits=6, decimal_places=2)
     status = models.CharField(max_length=100, blank=True)
+    #TODO set the item sell method RBS
 
     def post(self):
         self.published_date = timezone.now()

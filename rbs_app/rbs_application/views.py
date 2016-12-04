@@ -214,28 +214,32 @@ def show_results(request):
                         'found': True, # need to set this to true or nothing will show
                         }
         if request.method == "POST":
-            print("######## got to this part ")
-            return render(request, 'user_item_details.html')
-        
+            # GOing to the item details page 
+            # if the item is clicked on, load the item details page with the Product information
+            profile = UserProfile.objects.get(user=request.user)
+            product_pk = request.POST.get('pk', '')
+            product = Product.objects.get(pk=product_pk) # bc multiple item can have the same name, access by pk
+            context_dict = {
+                'user': request.user.username,
+                'money': profile.balance,
+                'item': product.title,
+                'price': product.price,
+                'seller': product.seller.username,
+                'option': 'n/a yet', # TODO SET THE SELLING TYPE
+                'description': product.text,
+            }
+            return render(request,'user_item_details.html',context_dict)
+
         return render(request, template, context_dict)
     # needs catch statement if product.objects.get != search form...
-    '''
-    write ur model lookup stuff here and return the stuff you find. Check the results template for the values you need to return per item
-    '''
-    # -------- getting to item details page
 
     return render(request, template, context)
 
 
 @login_required
 def buy_item_details_users(request):
-    profile = UserProfile.objects.get(user=request.user)
-    context_dict = {
-        'user' : request.user.username,
-        'money' : profile.balance,
 
-    }
-    return render(request,'user_item_details.html',context_dict)
+    return render(request,'user_item_details.html')
 
 
 @login_required

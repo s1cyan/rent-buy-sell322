@@ -20,7 +20,7 @@
                     <form method="POST">
                         {% csrf_token %}
 
-                        <button class="waves-effect waves-light btn" name='view' value="{{ result }}"> View Details
+                        <button class="waves-effect waves-light btn" name='pk' value="{{ result.pk }}"> View Details
                         </button>
                     </form>
 
