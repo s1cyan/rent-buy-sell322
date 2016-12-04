@@ -20,9 +20,13 @@
 
 
         <div class=" col s12">
-            <button class="btn waves-effect waves-light btn-large" type="item" name="action">Add Item to Cart
-                <i class="material-icons right">shopping_cart</i>
-            </button>
+            <form method="POST">
+                {% csrf_token %}
+
+                <button class="waves-effect waves-light btn" name='pk' value="{{ product_pk }}"> Add Item to Cart
+                    <i class="material-icons right">shopping_cart</i>
+                </button>
+            </form>
 
         </div>
         <h6>Comments:</h6>
