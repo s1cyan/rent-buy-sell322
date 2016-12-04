@@ -213,15 +213,17 @@ def show_results(request):
                         'results': result_c,
                         'found': True, # need to set this to true or nothing will show
                         }
+        if request.method == "POST":
+            print("######## got to this part ")
+            return render(request, 'user_item_details.html')
+        
         return render(request, template, context_dict)
     # needs catch statement if product.objects.get != search form...
     '''
     write ur model lookup stuff here and return the stuff you find. Check the results template for the values you need to return per item
     '''
     # -------- getting to item details page
-    if request.method == 'POST':
 
-        return render(request, 'user_item_details.html')
     return render(request, template, context)
 
 
