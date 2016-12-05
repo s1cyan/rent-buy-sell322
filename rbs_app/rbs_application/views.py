@@ -203,7 +203,7 @@ def show_results(request):
     min_price = request.GET['minprice']
     if min_price == '':
         min_price = 0
-    max_price = request.GET['maxprice/']
+    max_price = request.GET['maxprice']
     if max_price == '':
         max_price = 99999.99
     print(search_form, rent_option, buy_option, auction_option, min_price, max_price)
