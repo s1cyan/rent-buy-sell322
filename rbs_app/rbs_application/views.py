@@ -9,7 +9,7 @@ from django.shortcuts import render, render_to_response, redirect
 from django.template import RequestContext
 from django.views.decorators.csrf import csrf_protect
 from .forms import AddWithdrawForm, UserForm, SellForm, SearchForm, ComplaintForm, RegistrationForm
-from .models import UserProfile, Product, Category
+from .models import UserProfile, Product, Category, Complaint
 # Create your views here.
 
 
@@ -90,11 +90,14 @@ def edit_listings(request):
 
 def file_complaint(request):
     complaint_form = ComplaintForm(request.POST)
+    profile= UserProfile.objects.get(user=request.user)
     context_dict = {
+        'username': request.user.username,
+        'money':profile.balance,
         'complaint-form': complaint_form,
         'process_complaint': '/rbs/submitted-complaint',
-        'user':request.user.username
     }
+
     return render(request, 'file_complaint.html', context_dict)
 
 
@@ -105,15 +108,23 @@ def process_complaint(request):
     :param request:
     :return:
     '''
+    profile= UserProfile.objects.get(user=request.user)
     context_dict = {
-        'user': request.user.username,
+        'username': request.user.username,
+        'money': profile.balance,
 
     }
-    print (request.POST)
-    if request.POST['reported_user'] or request.POST['complaint'] == "" or " ":
-        return HttpResponseRedirect('complaint')
 
-
+    # if request.POST['reported_user'] or request.POST['complaint'] == None:
+    #     return HttpResponseRedirect('complaint')
+    print("_________ ", request.POST['reported_user'])
+    if User.objects.filter(username=request.POST['reported_user']).exists():
+        complained_user = User.objects.get(username = request.POST['reported_user'])
+        complaint_user_profile = UserProfile.objects.get(user = complained_user)
+        complaint_str = request.POST['complaint']
+        complaint = Complaint( user_id = complaint_user_profile,
+                               complaint = complaint_str)
+        complaint.save()
     return render(request,'complaint_submitted.html',context_dict)
 
 @login_required
@@ -125,7 +136,10 @@ def sell_item(request):
     '''
 
     sell_form = SellForm(request.POST)
+    profile = UserProfile.objects.get(user=request.user)
     context_dict = {
+        'username': request.user.username,
+        'money': profile.balance,
         'sell_form': sell_form,
         'process_sell_post': '/rbs/process-listing'
     }
@@ -133,8 +147,11 @@ def sell_item(request):
 
 @login_required
 def process_sell(request):
+    profile = UserProfile.objects.get(user=request.user)
+
     context_dict = {
         'user': request.user.username,
+        'money': profile.balance,
     }
     """
     have the functions for search processing in here
@@ -204,7 +221,7 @@ def show_results(request):
                         'results': result_c,
                         'found': True, # need to set this to true or nothing will show
                         'user.is_authenticated': request.user.is_authenticated,
-                        #TODO Issue, user.isauthenticated doesnt work, bc if the user is authenticated we need to repass in the user values 
+                        #TODO Issue, user.isauthenticated doesnt work, bc if the user is authenticated we need to repass in the user values
                     }
         if request.method == "POST":
             if request.user.is_authenticated:
