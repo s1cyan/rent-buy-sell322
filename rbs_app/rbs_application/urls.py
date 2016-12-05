@@ -16,6 +16,7 @@ urlpatterns = [
     url(r'^edit/', views.edit_listings, name='edit'),
     url(r'^results/', views.show_results, name='results'),
     url(r'^item-details/', views.buy_item_details_users, name='users-buy-item'),
+    url(r'^item-details-visitor/', views.item_details_visitor, name='visitors-view-item'),
 
     url(r'^sell/', views.sell_item, name='sell'),
     url(r'^process-listing', views.process_sell, name='process_sell_item'),

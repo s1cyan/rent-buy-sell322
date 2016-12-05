@@ -196,7 +196,6 @@ def show_results(request):
     template = 'results.html'
     x = Product.objects.get(title=search_form)
     if Product.objects.get(title=search_form):
-        products = Product.objects.all()
         searched_context = Product.objects.get(title=search_form)
         result_c =[]
         result_c.append(searched_context) # add the searched Product into the list, the template will access the title
@@ -204,24 +203,39 @@ def show_results(request):
         context_dict = {'title': "Search Results",
                         'results': result_c,
                         'found': True, # need to set this to true or nothing will show
-                        }
+                        'user.is_authenticated': request.user.is_authenticated,
+                        #TODO Issue, user.isauthenticated doesnt work, bc if the user is authenticated we need to repass in the user values 
+                    }
         if request.method == "POST":
-            # GOing to the item details page 
-            # if the item is clicked on, load the item details page with the Product information
-            profile = UserProfile.objects.get(user=request.user)
-            product_pk = request.POST.get('pk', '')
-            product = Product.objects.get(pk=product_pk) # bc multiple item can have the same name, access by pk
-            context_dict = {
-                'user': request.user.username,
-                'money': profile.balance,
-                'item': product.title,
-                'price': product.price,
-                'seller': product.seller.username,
-                'option': 'n/a yet', # TODO SET THE SELLING TYPE
-                'description': product.text,
-                'product_pk': product.pk
-            }
-            return render(request,'user_item_details.html',context_dict)
+            if request.user.is_authenticated:
+                # GOing to the item details page
+                # if the item is clicked on, load the item details page with the Product information
+                profile = UserProfile.objects.get(user=request.user)
+                product_pk = request.POST.get('pk', '')
+                product = Product.objects.get(pk=product_pk) # bc multiple item can have the same name, access by pk
+                context_dict = {
+                    'user': request.user.username,
+                    'money': profile.balance,
+                    'item': product.title,
+                    'price': product.price,
+                    'seller': product.seller.username,
+                    'option': 'n/a yet', # TODO SET THE SELLING TYPE
+                    'description': product.text,
+                    'product_pk': product.pk
+                }
+                return render(request,'user_item_details.html',context_dict)
+            else:
+                product_pk = request.POST.get('pk', '')
+                product = Product.objects.get(pk=product_pk)  # bc multiple item can have the same name, access by pk
+                context_dict = {
+                    'item': product.title,
+                    'price': product.price,
+                    'seller': product.seller.username,
+                    'option': 'n/a yet',  # TODO SET THE SELLING TYPE
+                    'description': product.text,
+                    'product_pk': product.pk
+                }
+                return render(request,'visitor_item_details.html',context_dict)
 
         return render(request, template, context_dict)
     # needs catch statement if product.objects.get != search form...
@@ -236,6 +250,10 @@ def buy_item_details_users(request):
         product = Product.objects.get(pk = product_pk)
         # TODO Add to shopping cart logic
     return render(request,'user_item_details.html')
+
+
+def item_details_visitor(request):
+    return render(request,'visitor_item_details.html')
 
 
 @login_required

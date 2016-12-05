@@ -21,11 +21,12 @@
         {% include 'search_bar.html' %}
 
         <div class="row">
-            <h5>Item Name</h5>
-            <h6>Item Price</h6>
-            <h6>Seller</h6>
-            <h6>Item is for [rbs]</h6>
-            <h6>Item description</h6>
+       <h5>Item: {{ item }}</h5>
+        <h6>Price: {{ price }}</h6>
+        <h6>Seller: {{ seller }}</h6>
+        <h6>Item is for :{{ option }}</h6>
+        <h6>Description: {{ description }}</h6>
+
             <h6>Comments:</h6>
             {% for comment in item_comments %}
             <h6> {{ comment }} </h6>
