@@ -110,6 +110,9 @@ def process_complaint(request):
     '''
     *** Put the functions to process complaints and send them to db here - same method as the others
     do request.POST['name value in template'] to access values
+    Users can submit a complaint for a user, if they get the username wrong
+    users will be told they submitted a complaint, but it will not necessarily be registered
+    bc the user has to be in our system 
     :param request:
     :return:
     '''
@@ -119,10 +122,6 @@ def process_complaint(request):
         'money': profile.balance,
 
     }
-
-    # if request.POST['reported_user'] or request.POST['complaint'] == None:
-    #     return HttpResponseRedirect('complaint')
-    print("_________ ", request.POST['reported_user'])
     if User.objects.filter(username=request.POST['reported_user']).exists():
         complained_user = User.objects.get(username = request.POST['reported_user'])
         complaint_user_profile = UserProfile.objects.get(user = complained_user)
@@ -229,7 +228,7 @@ def show_results(request):
                         #TODO Issue, user.isauthenticated doesnt work, bc if the user is authenticated we need to repass in the user values
                     }
         if request.method == "POST":
-            if request.user.is_authenticated:
+            if request.user.is_authenticated: # need to check if its not auction, and if item is an auction item, redirect to an auction page
                 # GOing to the item details page
                 # if the item is clicked on, load the item details page with the Product information
                 profile = UserProfile.objects.get(user=request.user)
@@ -275,10 +274,16 @@ def buy_item_details_users(request):
     }
     if request.method == "POST":
         product_pk = request.POST.get('pk','')
-        product = Product.objects.get(pk = product_pk)
+        product = Product.objects.get(pk = product_pk) # access the product, do what you will with it
         # TODO Add to shopping cart logic
     return render(request,'user_item_details.html', context_dict)
 
+@login_required
+def auction_item_details_users(request):
+    if request.method == 'POST':
+        product_pk = request.POST.get('pk','')
+        product_for_auction = Product.objects.get(pk= product_pk) # access to the product for auction, do w.e you need
+    return render(request,'user_auction_details.html')
 
 def item_details_visitor(request):
     return render(request,'visitor_item_details.html')
