@@ -9,7 +9,7 @@ from django.shortcuts import render, render_to_response, redirect
 from django.template import RequestContext
 from django.views.decorators.csrf import csrf_protect
 from .forms import AddWithdrawForm, UserForm, SellForm, SearchForm, ComplaintForm, RegistrationForm
-from .models import UserProfile, Product
+from .models import UserProfile, Product, Category, Complaint
 # Create your views here.
 
 
@@ -84,24 +84,20 @@ def add_withdraw(request):
 
 
 @login_required
-def cart(request):
-    return render(request, 'cart.html', )
-
-@login_required
-def confirm_checkout(request):
-    return render(request, 'confirm_checkout.html')
-
-@login_required
 def edit_listings(request):
     return render(request, 'edit_listings.html')
 
 
 def file_complaint(request):
     complaint_form = ComplaintForm(request.POST)
+    profile= UserProfile.objects.get(user=request.user)
     context_dict = {
+        'username': request.user.username,
+        'money':profile.balance,
         'complaint-form': complaint_form,
-        'process_complaint': '/rbs/submitted-complaint'
+        'process_complaint': '/rbs/submitted-complaint',
     }
+
     return render(request, 'file_complaint.html', context_dict)
 
 
@@ -112,8 +108,24 @@ def process_complaint(request):
     :param request:
     :return:
     '''
-    print (request.POST)
-    return render(request,'complaint_submitted.html')
+    profile= UserProfile.objects.get(user=request.user)
+    context_dict = {
+        'username': request.user.username,
+        'money': profile.balance,
+
+    }
+
+    # if request.POST['reported_user'] or request.POST['complaint'] == None:
+    #     return HttpResponseRedirect('complaint')
+    print("_________ ", request.POST['reported_user'])
+    if User.objects.filter(username=request.POST['reported_user']).exists():
+        complained_user = User.objects.get(username = request.POST['reported_user'])
+        complaint_user_profile = UserProfile.objects.get(user = complained_user)
+        complaint_str = request.POST['complaint']
+        complaint = Complaint( user_id = complaint_user_profile,
+                               complaint = complaint_str)
+        complaint.save()
+    return render(request,'complaint_submitted.html',context_dict)
 
 @login_required
 def sell_item(request):
@@ -124,7 +136,10 @@ def sell_item(request):
     '''
 
     sell_form = SellForm(request.POST)
+    profile = UserProfile.objects.get(user=request.user)
     context_dict = {
+        'username': request.user.username,
+        'money': profile.balance,
         'sell_form': sell_form,
         'process_sell_post': '/rbs/process-listing'
     }
@@ -132,11 +147,37 @@ def sell_item(request):
 
 @login_required
 def process_sell(request):
+    profile = UserProfile.objects.get(user=request.user)
+
+    context_dict = {
+        'user': request.user.username,
+        'money': profile.balance,
+    }
     """
     have the functions for search processing in here
     to access the values in the SellForm, do request.POST['name value in template']
     """
     print (request.POST) # just for checking the values returned in terminal
+    # if fields are blank redirect back to refill the form
+    if (request.POST['item'] or request.POST['price'] or request.POST['daymonth']or request.POST['time'] or request.POST['description']) == None:
+        print("invalid entry ")
+        return HttpResponseRedirect('sell')
+
+    # create the Product entry
+    c = Category()
+    c.save()
+    product = Product(seller=request.user,
+                      title = request.POST['item'],
+                      text = request.POST['description'],
+                      takedown_date = request.POST['daymonth'],
+                      takedown_time = request.POST['time'],
+                      category = c,
+                      price = request.POST['price'],
+                      # TODO Change status to a boolean field, Charfield will make it harder to tell what is an active listing
+                      # Maybe even change its name to is_active_listing
+                      # Also maybe get rid of categories?
+                      )
+    product.save()
     return render(request, 'sell_processed.html')
 
 
@@ -172,7 +213,6 @@ def show_results(request):
     template = 'results.html'
     x = Product.objects.get(title=search_form)
     if Product.objects.get(title=search_form):
-        products = Product.objects.all()
         searched_context = Product.objects.get(title=search_form)
         result_c =[]
         result_c.append(searched_context) # add the searched Product into the list, the template will access the title
@@ -180,13 +220,66 @@ def show_results(request):
         context_dict = {'title': "Search Results",
                         'results': result_c,
                         'found': True, # need to set this to true or nothing will show
-                        }
+                        'user.is_authenticated': request.user.is_authenticated,
+                        #TODO Issue, user.isauthenticated doesnt work, bc if the user is authenticated we need to repass in the user values
+                    }
+        if request.method == "POST":
+            if request.user.is_authenticated:
+                # GOing to the item details page
+                # if the item is clicked on, load the item details page with the Product information
+                profile = UserProfile.objects.get(user=request.user)
+                product_pk = request.POST.get('pk', '')
+                product = Product.objects.get(pk=product_pk) # bc multiple item can have the same name, access by pk
+                context_dict = {
+                    'user': request.user.username,
+                    'money': profile.balance,
+                    'item': product.title,
+                    'price': product.price,
+                    'seller': product.seller.username,
+                    'option': 'n/a yet', # TODO SET THE SELLING TYPE
+                    'description': product.text,
+                    'product_pk': product.pk
+                }
+                return render(request,'user_item_details.html',context_dict)
+            else:
+                product_pk = request.POST.get('pk', '')
+                product = Product.objects.get(pk=product_pk)  # bc multiple item can have the same name, access by pk
+                context_dict = {
+                    'item': product.title,
+                    'price': product.price,
+                    'seller': product.seller.username,
+                    'option': 'n/a yet',  # TODO SET THE SELLING TYPE
+                    'description': product.text,
+                    'product_pk': product.pk
+                }
+                return render(request,'visitor_item_details.html',context_dict)
+
         return render(request, template, context_dict)
     # needs catch statement if product.objects.get != search form...
-    '''
-    write ur model lookup stuff here and return the stuff you find. Check the results template for the values you need to return per item
-    '''
+
     return render(request, template, context)
+
+
+@login_required
+def buy_item_details_users(request):
+    if request.method == "POST":
+        product_pk = request.POST.get('pk','')
+        product = Product.objects.get(pk = product_pk)
+        # TODO Add to shopping cart logic
+    return render(request,'user_item_details.html')
+
+
+def item_details_visitor(request):
+    return render(request,'visitor_item_details.html')
+
+
+@login_required
+def cart(request):
+    return render(request, 'cart.html', )
+
+@login_required
+def confirm_checkout(request):
+    return render(request, 'confirm_checkout.html')
 
 
 @login_required

@@ -12,6 +12,11 @@
     <form id="complaint-form" class="col s8 offset-s3" method="post" action="{{ process_complaint }}">
         {% csrf_token %}
         <h3>Make a Complaint</h3>
+        <h5>Note: If you want to deactivate your account,
+            simply put your name in the User field,
+            with the message "Deactivate account"
+
+        </h5>
 
 
         <div class="input-field col s12">
@@ -26,7 +31,7 @@
         </div>
 
         <div class=" col s12">
-            <button class="btn waves-effect waves-light btn-large" type="submit" name="action">Submit
+            <button class="btn waves-effect waves-light btn-large" type="submit" name="action" >Submit
                 <i class="material-icons right">send</i>
             </button>
 

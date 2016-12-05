@@ -69,10 +69,11 @@ class Product(models.Model):
     published_date = models.DateTimeField(blank=True, null=True)
     takedown_date = models.DateField(blank=False, null=False, default=datetime.today().date() + timedelta(days=7))
     takedown_time = models.TimeField(blank=False, null=False, default=datetime.now().time())
-    category = models.ForeignKey(Category, on_delete=models.CASCADE,)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
     price = models.DecimalField(max_digits=6, decimal_places=2)
     status = models.CharField(max_length=100, blank=True)
+    #TODO set the item sell method RBS
 
     def post(self):
         self.published_date = timezone.now()
@@ -92,14 +93,15 @@ class Order(models.Model):
 
 
 class Complaint(models.Model):
-    complaint_id = models.PositiveIntegerField(primary_key=True)
-    pub_date = models.DateTimeField("Date published", auto_now_add=True)
-    start_date = models.DateField()
-    end_date = models.DateField()
+    # complaint_id = models.PositiveIntegerField(primary_key=True)
+    # pub_date = models.DateTimeField("Date published", auto_now_add=True)
+    # start_date = models.DateField()
+    # end_date = models.DateField()
     user_id = models.ForeignKey(UserProfile)
+    complaint = models.CharField(max_length=512,null= True, blank= True,default="No details")
 
     def __str__(self):
-        return str(self.complaint_id)
+        return str(self.complaint)
 
 
 class ShoppingCart(models.Model):
