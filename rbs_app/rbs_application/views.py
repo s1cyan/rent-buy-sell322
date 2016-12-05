@@ -327,6 +327,8 @@ def update_account(request):
         return render(request, "update_info.html", {
             'username': request.user.username,
             'money': profile.balance,
+            "noodle_form": user_form,
+            "formset": formset,
         })
     else:
         raise PermissionDenied
