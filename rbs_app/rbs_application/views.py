@@ -8,7 +8,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, render_to_response, redirect
 from django.template import RequestContext
 from django.views.decorators.csrf import csrf_protect
-from .forms import AddWithdrawForm, UserForm, SellForm, SearchForm, ComplaintForm, RegistrationForm, UserForm
+from .forms import AddWithdrawForm, UserForm, SellForm, SearchForm, ComplaintForm, RegistrationForm
 from .models import UserProfile, Product, Category, Complaint
 from django.forms.models import inlineformset_factory
 from django.core.exceptions import PermissionDenied
@@ -331,6 +331,7 @@ def update_account(request):
         })
     else:
         raise PermissionDenied
+
 
 def user_login(request):
     if request.method == 'POST':
