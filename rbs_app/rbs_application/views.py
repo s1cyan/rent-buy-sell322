@@ -85,7 +85,12 @@ def add_withdraw(request):
 
 @login_required
 def edit_listings(request):
-    return render(request, 'edit_listings.html')
+    profile = UserProfile.objects.get(user=request.user)
+    context_dict = {
+        'user': request.user.username,
+        'money': profile.balance,
+    }
+    return render(request, 'edit_listings.html', context_dict)
 
 
 def file_complaint(request):
@@ -125,7 +130,7 @@ def process_complaint(request):
         complaint = Complaint( user_id = complaint_user_profile,
                                complaint = complaint_str)
         complaint.save()
-    return render(request,'complaint_submitted.html',context_dict)
+    return render(request,'complaint_submitted.html', context_dict)
 
 @login_required
 def sell_item(request):
@@ -143,7 +148,7 @@ def sell_item(request):
         'sell_form': sell_form,
         'process_sell_post': '/rbs/process-listing'
     }
-    return render(request, 'sell_item.html',context_dict)
+    return render(request, 'sell_item.html', context_dict)
 
 @login_required
 def process_sell(request):
@@ -178,7 +183,7 @@ def process_sell(request):
                       # Also maybe get rid of categories?
                       )
     product.save()
-    return render(request, 'sell_processed.html')
+    return render(request, 'sell_processed.html', context_dict)
 
 
 def show_results(request):
@@ -240,6 +245,7 @@ def show_results(request):
                     'description': product.text,
                     'product_pk': product.pk
                 }
+                # return HttpResponse("HERE")
                 return render(request,'user_item_details.html',context_dict)
             else:
                 product_pk = request.POST.get('pk', '')
@@ -262,11 +268,16 @@ def show_results(request):
 
 @login_required
 def buy_item_details_users(request):
+    profile = UserProfile.objects.get(user=request.user)
+    context_dict = {
+        'user': request.user.username,
+        'money': profile.balance,
+    }
     if request.method == "POST":
         product_pk = request.POST.get('pk','')
         product = Product.objects.get(pk = product_pk)
         # TODO Add to shopping cart logic
-    return render(request,'user_item_details.html')
+    return render(request,'user_item_details.html', context_dict)
 
 
 def item_details_visitor(request):
@@ -275,7 +286,12 @@ def item_details_visitor(request):
 
 @login_required
 def cart(request):
-    return render(request, 'cart.html', )
+    profile = UserProfile.objects.get(user=request.user)
+    context_dict = {
+        'user': request.user.username,
+        'money': profile.balance,
+    }
+    return render(request, 'cart.html', context_dict)
 
 @login_required
 def confirm_checkout(request):
@@ -284,7 +300,12 @@ def confirm_checkout(request):
 
 @login_required
 def update_account(request):
-    return render(request, 'update_info.html')
+    profile = UserProfile.objects.get(user=request.user)
+    context_dict = {
+        'user': request.user.username,
+        'money': profile.balance,
+    }
+    return render(request, 'update_info.html', context_dict)
 
 
 def user_login(request):
@@ -328,7 +349,12 @@ def user_main(request):
 @login_required
 def view_previous_orders(request):
     # Render the page for previous orders
-    return render(request, 'previous_orders.html')
+    profile = UserProfile.objects.get(user=request.user)
+    context_dict = {
+        'user': request.user.username,
+        'money': profile.balance,
+    }
+    return render(request, 'previous_orders.html', context_dict)
 
 
 def visitors_main(request):
