@@ -76,3 +76,11 @@ class RegistrationForm(forms.Form):
     country = forms.CharField()
     credit_card = forms.CharField(max_length=16)
     math_answer = forms.IntegerField()
+
+class UserForm(forms.ModelForm):
+    """
+    The default form for a user
+    """
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'email']

@@ -8,8 +8,10 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, render_to_response, redirect
 from django.template import RequestContext
 from django.views.decorators.csrf import csrf_protect
-from .forms import AddWithdrawForm, UserForm, SellForm, SearchForm, ComplaintForm, RegistrationForm
+from .forms import AddWithdrawForm, UserForm, SellForm, SearchForm, ComplaintForm, RegistrationForm, UserForm
 from .models import UserProfile, Product, Category, Complaint
+from django.forms.models import inlineformset_factory
+from django.core.exceptions import PermissionDenied
 # Create your views here.
 
 
@@ -107,7 +109,7 @@ def process_complaint(request):
     do request.POST['name value in template'] to access values
     Users can submit a complaint for a user, if they get the username wrong
     users will be told they submitted a complaint, but it will not necessarily be registered
-    bc the user has to be in our system 
+    bc the user has to be in our system
     :param request:
     :return:
     '''
@@ -289,8 +291,48 @@ def confirm_checkout(request):
 
 @login_required
 def update_account(request):
-    return render(request, 'update_info.html')
+    """
+    Update the user profile
+    """
+    # querying the User object with pk from url
+    user = User.objects.get(pk=pk)
 
+    # prepopulate UserProfileForm with retrieved user values from above.
+    user_form = UserForm(instance=user)
+
+    # The sorcery begins from here, see explanation below
+    ProfileInlineFormset = inlineformset_factory(User,
+                                                 UserProfile,
+                                                 fields=('bio',
+                                                         'phone',
+                                                         'city',
+                                                         'country',
+                                                         'transactions',
+                                                         'credit_card',
+                                                         'strikes',
+                                                         'suspensions',
+                                                         'balance',))
+    formset = ProfileInlineFormset(instance=user)
+
+    if request.user.is_authenticated() and request.user.id == user.id:
+        if request.method == "POST":
+            user_form = UserForm(request.POST, request.FILES, instance=user)
+            formset = ProfileInlineFormset(request.POST, request.FILES or None, instance=user)
+            if user_form.is_valid():
+                created_user = user_form.save(commit=False)
+                formset = ProfileInlineFormset(request.POST, request.FILES or None, instance=created_user)
+                if formset.is_valid():
+                    created_user.save()
+                    formset.save()
+                    return HttpResponseRedirect('/rbs/update')
+
+        return render(request, "update_info.html", {
+            "pk": pk,
+            "noodle_form": user_form,
+            "formset": formset,
+        })
+    else:
+        raise PermissionDenied
 
 def user_login(request):
     if request.method == 'POST':
