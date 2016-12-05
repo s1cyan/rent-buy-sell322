@@ -6,13 +6,17 @@
 {% block  main %}
 {% include 'search_bar.html' %}
 <div class="row center">
-    <form id="update-form" class="col s6 offset-s3" method="post" action="{{ process_update }}">
+    <form id="update-form" class="col s6 offset-s3" method="POST" action="/update/{{pk}}/">
         {% csrf_token %}
+        {{ noodle_form.as_p }}
+
 
         <div class="row">
             <div class="col s8 offset-s2">
                 <h3>Update Information</h3>
             </div>
+            {{ formset.management_form }}
+                {{ formset.as_p }}
             <div class="input-field col s12">
                 <input id="fname" name="fname" type="text" >
                 <label class="active " for="fname" data-success="">First Name:</label>
