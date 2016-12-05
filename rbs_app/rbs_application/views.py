@@ -186,11 +186,12 @@ def process_sell(request):
 
 
 def show_results(request):
-    profile = UserProfile.objects.get(user=request.user)
-    context_dict = {
-        'username': request.user.username,
-        'money': profile.balance,
-    }
+    context_dict = dict()
+    if request.user.is_authenticated:
+        profile = UserProfile.objects.get(user=request.user)
+        # print(profile)
+        context_dict['username'] = request.user.username
+        context_dict['money'] = profile.balance
     (query, method, min, max) = (request.GET['query'],
                                  request.GET['method'],
                                  request.GET['minprice'],
@@ -202,6 +203,11 @@ def show_results(request):
     context_dict['results'] = results
     context_dict['found'] = True
     return render(request, 'results.html', context_dict)
+
+def details(request):
+    # View for seeing item details
+    pass
+
 
 
 
