@@ -196,7 +196,7 @@ def show_results(request):
                                  request.GET['minprice'],
                                  request.GET['maxprice'], )
     products = Product.objects.all()
-    if query is True:
+    if query is True: # TODO add logic to check for whitespace
         products = Product.objects.filter(title=query)
     results = list(products)
     context_dict['results'] = results
