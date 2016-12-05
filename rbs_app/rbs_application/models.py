@@ -105,7 +105,8 @@ class Complaint(models.Model):
 
 
 class ShoppingCart(models.Model):
-    user_auto_increment_id = models.ForeignKey(UserProfile)
+    user = models.ForeignKey(UserProfile)
+    product = models.ManyToManyField(Product)
     creation_date = models.DateTimeField(_("Created on"))
     checked_out = models.BooleanField(_("Transaction Complete"), default=False)
 
