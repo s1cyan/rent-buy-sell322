@@ -297,10 +297,8 @@ def update_account(request):
     # querying the User object with pk from url
     user = User.objects.get(pk=pk)
 
-    # prepopulate UserProfileForm with retrieved user values from above.
     user_form = UserForm(instance=user)
 
-    # The sorcery begins from here, see explanation below
     ProfileInlineFormset = inlineformset_factory(User,
                                                  UserProfile,
                                                  fields=('bio',
