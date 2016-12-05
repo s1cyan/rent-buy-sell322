@@ -9,7 +9,7 @@ from django.shortcuts import render, render_to_response, redirect
 from django.template import RequestContext
 from django.views.decorators.csrf import csrf_protect
 from .forms import AddWithdrawForm, UserForm, SellForm, SearchForm, ComplaintForm, RegistrationForm
-from .models import UserProfile, Product, Category, Complaint
+from .models import UserProfile, Product, Category, Complaint, ShoppingCart
 # Create your views here.
 
 
@@ -206,7 +206,7 @@ def show_results(request):
     return render(request, 'results.html', context_dict)
 
 def details(request):
-    # View for seeing item details
+    # View for clicking 'View item details' in search results
     context_dict = dict()
     if request.user.is_authenticated:
         profile = UserProfile.objects.get(user=request.user)
@@ -221,7 +221,7 @@ def details(request):
     context_dict['description'] = product.text
     context_dict['product_pk'] = product_pk
     return render(request, 'user_item_details.html', context_dict)
-    # TODO NOBODY TOUCH THESE COMMENTED OUT CODES
+    # TODO JONATHAN, delete this later. NOBODY TOUCH THESE COMMENTED OUT LINES
     # because multiple item can have the same name, access by pk
     # if request.method == "POST":
         # if request.user.is_authenticated: # need to check if its not auction, and if item is an auction item, redirect to an auction page
@@ -262,11 +262,6 @@ def details(request):
     pass
 
 
-
-
-
-
-
 @login_required
 def buy_item_details_users(request):
     profile = UserProfile.objects.get(user=request.user)
@@ -291,13 +286,21 @@ def item_details_visitor(request):
     return render(request,'visitor_item_details.html')
 
 
-@login_required
+# @login_required
 def cart(request):
     profile = UserProfile.objects.get(user=request.user)
     context_dict = {
         'username': request.user.username,
         'money': profile.balance,
     }
+    product_pk = request.POST.get('pk', '')
+    product = Product.objects.get(pk=product_pk)
+    if request.method == 'POST':
+        for item in product:
+            cart = ShoppingCart(user=profile, product=item.title)
+            cart.save()
+            context_dict['item'] = item.title
+        context_dict['cart'] = cart
     return render(request, 'cart.html', context_dict)
 
 @login_required

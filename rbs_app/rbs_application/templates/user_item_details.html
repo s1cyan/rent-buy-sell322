@@ -20,7 +20,7 @@
 
 
         <div class=" col s12">
-            <form method="POST">
+            <form method="POST" action="{% url 'cart' %}">
                 {% csrf_token %}
 
                 <button class="waves-effect waves-light btn" name='pk' value="{{ product_pk }}"> Add Item to Cart
