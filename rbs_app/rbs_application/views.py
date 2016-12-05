@@ -293,8 +293,9 @@ def update_account(request):
     """
     Update the user profile
     """
-    # querying the User object with pk from url
-    user = User.objects.get(pk=pk)
+
+    user = User.objects.get(user=request.user.id)
+    profile = UserProfile.objects.get(user=request.user)
 
     user_form = UserForm(instance=user)
 
@@ -324,9 +325,8 @@ def update_account(request):
                     return HttpResponseRedirect('/rbs/update')
 
         return render(request, "update_info.html", {
-            "pk": pk,
-            "noodle_form": user_form,
-            "formset": formset,
+            'username': request.user.username,
+            'money': profile.balance,
         })
     else:
         raise PermissionDenied
