@@ -3,7 +3,7 @@
         {% csrf_token %}
         <div class="row">
             <div class="col s8">
-                <input id="search_input" name="search_input" >
+                <input id="search_input" name="query" >
                 <label for="search_input">Search</label>
             </div>
             <div class="col s4">
@@ -38,11 +38,14 @@
               </div>
 
             <div class=" input-field col s2">
-                <input type="number" id="minprice" name="minprice" min="0"/>
+                <input type="number" id="minprice" name="minprice" value="0"
+                       min="0" max="99999.99"/>
                 Min Price
             </div>
             <div class=" input-field col s2">
-                <input type="number" id="maxprice" name="maxprice" min="0"/>
+                <input type="number" id="maxprice" name="maxprice" value="100"
+                       min="0"
+                       max="99999.99"/>
                 Max Price
             </div>
             </fieldset>
