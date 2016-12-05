@@ -186,90 +186,68 @@ def process_sell(request):
 
 
 def show_results(request):
-    search_form = request.GET['search_input']
-    if 'rent_option' in request:
-        rent_option = request.GET['rent_option']
-    else:
-        rent_option = 'off'
-    if 'buy_option' in request:
-        buy_option = request.GET['buy_option']
-    else:
-        buy_option = 'off'
-    if 'auction_option' in request:
-        auction_option = request.GET['auction_option/']
-    else:
-        auction_option = 'off'
-    min_price = request.GET['minprice']
-    if min_price == '':
-        min_price = 0
-    max_price = request.GET['maxprice']
-    if max_price == '':
-        max_price = 99999.99
-    print(search_form, rent_option, buy_option, auction_option, min_price, max_price)
-    if search_form == '':
-        products = Product.objects.all()
-        context = {'products': products}
-        template = 'results.html'
-        print(context)
-        return render(request, template, context)
+    profile = UserProfile.objects.get(user=request.user)
+    context_dict = {
+        'username': request.user.username,
+        'money': profile.balance,
+    }
+    (query, method, min, max) = (request.GET['query'],
+                                 request.GET['method'],
+                                 request.GET['minprice'],
+                                 request.GET['maxprice'], )
     products = Product.objects.all()
-    context = {'products': products}
-    template = 'results.html'
-    x = Product.objects.get(title=search_form)
-    if Product.objects.get(title=search_form):
-        searched_context = Product.objects.get(title=search_form)
-        result_c =[]
-        result_c.append(searched_context) # add the searched Product into the list, the template will access the title
-        # context dict to store all the values passed into the param
-        context_dict = {'title': "Search Results",
-                        'results': result_c,
-                        'found': True, # need to set this to true or nothing will show
-                        'user.is_authenticated': request.user.is_authenticated,
-                        #TODO Issue, user.isauthenticated doesnt work, bc if the user is authenticated we need to repass in the user values
-                    }
-        if request.method == "POST":
-            if request.user.is_authenticated: # need to check if its not auction, and if item is an auction item, redirect to an auction page
-                # GOing to the item details page
-                # if the item is clicked on, load the item details page with the Product information
-                profile = UserProfile.objects.get(user=request.user)
-                product_pk = request.POST.get('pk', '')
-                product = Product.objects.get(pk=product_pk) # bc multiple item can have the same name, access by pk
-                context_dict = {
-                    'user': request.user.username,
-                    'money': profile.balance,
-                    'item': product.title,
-                    'price': product.price,
-                    'seller': product.seller.username,
-                    'option': 'n/a yet', # TODO SET THE SELLING TYPE
-                    'description': product.text,
-                    'product_pk': product.pk
-                }
-                # return HttpResponse("HERE")
-                return render(request,'user_item_details.html',context_dict)
-            else:
-                product_pk = request.POST.get('pk', '')
-                product = Product.objects.get(pk=product_pk)  # bc multiple item can have the same name, access by pk
-                context_dict = {
-                    'item': product.title,
-                    'price': product.price,
-                    'seller': product.seller.username,
-                    'option': 'n/a yet',  # TODO SET THE SELLING TYPE
-                    'description': product.text,
-                    'product_pk': product.pk
-                }
-                return render(request,'visitor_item_details.html',context_dict)
+    if query is True:
+        products = Product.objects.filter(title=query)
+    results = list(products)
+    context_dict['results'] = results
+    context_dict['found'] = True
+    return render(request, 'results.html', context_dict)
 
-        return render(request, template, context_dict)
+
+
+        # if request.method == "POST":
+        #     if request.user.is_authenticated: # need to check if its not auction, and if item is an auction item, redirect to an auction page
+        #         # GOing to the item details page
+        #         # if the item is clicked on, load the item details page with the Product information
+        #         profile = UserProfile.objects.get(user=request.user)
+        #         product_pk = request.POST.get('pk', '')
+        #         product = Product.objects.get(pk=product_pk) # bc multiple item can have the same name, access by pk
+        #         context_dict = {
+        #             'user': request.user.username,
+        #             'money': profile.balance,
+        #             'item': product.title,
+        #             'price': product.price,
+        #             'seller': product.seller.username,
+        #             'option': 'n/a yet', # TODO SET THE SELLING TYPE
+        #             'description': product.text,
+        #             'product_pk': product.pk
+        #         }
+        #         # return HttpResponse("HERE")
+        #         return render(request,'user_item_details.html',context_dict)
+        #     else:
+        #         product_pk = request.POST.get('pk', '')
+        #         product = Product.objects.get(pk=product_pk)  # bc multiple item can have the same name, access by pk
+        #         context_dict = {
+        #             'item': product.title,
+        #             'price': product.price,
+        #             'seller': product.seller.username,
+        #             'option': 'n/a yet',  # TODO SET THE SELLING TYPE
+        #             'description': product.text,
+        #             'product_pk': product.pk
+        #         }
+        #         return render(request,'visitor_item_details.html',context_dict)
+        #
+        # return render(request, template, context_dict)
     # needs catch statement if product.objects.get != search form...
 
-    return render(request, template, context)
+    # return render(request, template, context)
 
 
 @login_required
 def buy_item_details_users(request):
     profile = UserProfile.objects.get(user=request.user)
     context_dict = {
-        'user': request.user.username,
+        'username': request.user.username,
         'money': profile.balance,
     }
     if request.method == "POST":
@@ -293,7 +271,7 @@ def item_details_visitor(request):
 def cart(request):
     profile = UserProfile.objects.get(user=request.user)
     context_dict = {
-        'user': request.user.username,
+        'username': request.user.username,
         'money': profile.balance,
     }
     return render(request, 'cart.html', context_dict)
@@ -307,7 +285,7 @@ def confirm_checkout(request):
 def update_account(request):
     profile = UserProfile.objects.get(user=request.user)
     context_dict = {
-        'user': request.user.username,
+        'username': request.user.username,
         'money': profile.balance,
     }
     return render(request, 'update_info.html', context_dict)
@@ -356,7 +334,7 @@ def view_previous_orders(request):
     # Render the page for previous orders
     profile = UserProfile.objects.get(user=request.user)
     context_dict = {
-        'user': request.user.username,
+        'username': request.user.username,
         'money': profile.balance,
     }
     return render(request, 'previous_orders.html', context_dict)
