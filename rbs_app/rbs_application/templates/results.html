@@ -17,7 +17,7 @@
             {% for result in results %}
             <li class="collection-item">{{ result.title }}
                 <div class="secondary-content ">
-                    <form method="POST">
+                    <form method="POST" action="{% url 'details' %}">
                         {% csrf_token %}
 
                         <button class="waves-effect waves-light btn" name='pk' value="{{ result.pk }}"> View Details
