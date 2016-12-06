@@ -170,14 +170,12 @@ def process_sell(request):
         return HttpResponseRedirect('sell')
 
     # create the Product entry
-    c = Category()
-    c.save()
+
     product = Product(seller=request.user,
                       title = request.POST['item'],
                       text = request.POST['description'],
                       takedown_date = request.POST['daymonth'],
                       takedown_time = request.POST['time'],
-                      category = c,
                       price = request.POST['price'],
                       # TODO Change status to a boolean field, Charfield will make it harder to tell what is an active listing
                       # Maybe even change its name to is_active_listing
