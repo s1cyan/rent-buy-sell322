@@ -361,8 +361,7 @@ def update_account(request):
                                                          'transactions',
                                                          'credit_card',
                                                          'strikes',
-                                                         'suspensions',
-                                                         'balance',))
+                                                         'suspensions',))
     formset = ProfileInlineFormset(instance=user)
 
     if request.user.is_authenticated() and request.user.id == user.id:
