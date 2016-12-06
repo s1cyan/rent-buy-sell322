@@ -81,7 +81,7 @@ class Product(models.Model):
     published_date = models.DateTimeField(blank=True, null=True)
     takedown_date = models.DateField(blank=False, null=False, default=datetime.today().date() + timedelta(days=7))
     takedown_time = models.TimeField(blank=False, null=False, default=datetime.now().time())
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    # category = models.ForeignKey(Category, on_delete=models.CASCADE)
     # quantity = models.PositiveIntegerField(default=1)
     price = models.DecimalField(max_digits=6, decimal_places=2)
     is_active = models.BooleanField(max_length=100, blank=True, default=True)
@@ -99,6 +99,7 @@ class Order(models.Model):
     # assuming order number does not repeat...
     user = models.ForeignKey(UserProfile)
     products = models.ManyToManyField(Product)
+    creation_date = models.DateTimeField(_("Created on"))
 
     def __str__(self):
         return str(self.id)
@@ -118,12 +119,13 @@ class Complaint(models.Model):
 
 class ShoppingCart(models.Model):
     user = models.ForeignKey(UserProfile)
-    product = models.ManyToManyField(Product)
+    products = models.ManyToManyField(Product)
     creation_date = models.DateTimeField(_("Created on"))
     checked_out = models.BooleanField(_("Transaction Complete"), default=False)
 
     def __str__(self):
         return (str(self.product))
+
     class Meta:
         verbose_name = _('Cart')
         verbose_name_plural = _('Carts')
