@@ -201,10 +201,12 @@ def show_results(request):
     products = Product.objects.all()
     if query is True: # TODO add logic to check for whitespace
         products = Product.objects.filter(title=query)
-    results = list(products)
-    context_dict['results'] = results
-    context_dict['found'] = True
+                    'product_pk': product.pk,
+                    'user.is_authenticated': True,
+
     return render(request, 'results.html', context_dict)
+                print("------ logged in ")
+                print ("++++++ not logged in")
 
 def details(request):
     # View for seeing item details
@@ -254,9 +256,12 @@ def details(request):
 @login_required
 def buy_item_details_users(request):
     profile = UserProfile.objects.get(user=request.user)
+
     context_dict = {
-        'username': request.user.username,
+        'user': request.user.username,
         'money': profile.balance,
+        'user.is_authenticated': True,
+
     }
     if request.method == "POST":
         product_pk = request.POST.get('pk','')
