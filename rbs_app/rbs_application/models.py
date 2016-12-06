@@ -101,7 +101,7 @@ class Order(models.Model):
     # assuming order number does not repeat...
     user = models.ForeignKey(UserProfile)
     products = models.ManyToManyField(Product)
-    creation_date = models.DateTimeField(_("Created on"))
+    creation_date = models.DateTimeField(_("Ordered on"))
 
     def __str__(self):
         return str(self.id)
@@ -120,15 +120,16 @@ class Complaint(models.Model):
 
 
 class ShoppingCart(models.Model):
-    user = models.ForeignKey(UserProfile)
+    user = models.OneToOneField(UserProfile)
     products = models.ManyToManyField(Product)
     # creation_date = models.DateTimeField(_("Created on"))
     # checked_out = models.BooleanField(_("Transaction Complete"), default=False)
 
     def __str__(self):
-        return (str(self.product))
+        return ("%s's Shopping Cart" % self.user)
 
     class Meta:
-        verbose_name = _('Cart')
-        verbose_name_plural = _('Carts')
+        # pass
+        verbose_name = _('Shopping Cart')
+        verbose_name_plural = _('Shopping Carts')
         # ordering = ['-creation_date', ]
