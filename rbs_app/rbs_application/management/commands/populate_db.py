@@ -10,25 +10,25 @@ ENGINEERS = [{"username": "jonathanrozario",
               "phone": "2126507000",
               "city": "Harlem",
               "country": "USA",
-              "balance": 512, },
+              "balance": '512.00', },
              {"username": "cyan",
               "password": "pass",
               "phone": "2126507000",
               "city": "Harlem",
               "country": "USA",
-              "balance": 5000, },
+              "balance": '100.00', },
              {"username": "heyconnie123",
               "password": "pass",
               "phone": "2126507000",
               "city": "Harlem",
               "country": "USA",
-              "balance": 120345, },
+              "balance": '345.00', },
              {"username": "alphamale",
               "password": "pass",
               "phone": "2126507000",
               "city": "Harlem",
               "country": "USA",
-              "balance": 99220, }, ]
+              "balance": '992.00', }, ]
 
 class Command(BaseCommand):
     args = '<foo bar ...>'
@@ -56,19 +56,29 @@ class Command(BaseCommand):
         superuser.save()
         return superuser
 
-    def add_userprofile(self, user):
+    def add_userprofile(self, user, phone, city, country, balance):
+        import decimal
         profile = UserProfile.objects.get_or_create(user=user)[0]
         profile.verified_by_admin = True
+        profile.city = city
+        profile.country = country
+        profile.balance = decimal.Decimal(balance)
         profile.save()
         return profile
 
-    def add_superuser(self, username, password):
-        superuser = User.objects.create_superuser(username=username, password=password)
-        superuser.save()
-        return superuser
+    # def add_cart(self, user, product):
+    #     profile = UserProfile.objects.get_or_create(user=user)[0]
+    #     cart = ShoppingCart.objects.get_or_create(user=profile)
+    #
+    #     return cart
 
-    def add_product(self, cat, seller, title, price):
-        p = Product.objects.get_or_create(category=cat, seller=seller, title=title, price=price)[0]
+    # def add_superuser(self, username, password):
+    #     superuser = User.objects.create_superuser(username=username, password=password)
+    #     superuser.save()
+    #     return superuser
+
+    def add_product(self, seller, title, price):
+        p = Product.objects.get_or_create(seller=seller, title=title, price=price)[0]
         p.save()
         return p
 
@@ -155,8 +165,9 @@ class Command(BaseCommand):
         # def add_superusers(self):
 
         for engineer in ENGINEERS:
-            user = self.add_user(engineer["username"], engineer["password"])
-            self.add_userprofile(user)
+            user = self.add_user(engineer["username"], engineer["password"], )
+            self.add_userprofile(user, engineer["phone"], engineer["city"],
+                                 engineer["country"], engineer["balance"], )
 
 
         # TODO this works correctly, need a better way to do it.
@@ -177,7 +188,7 @@ class Command(BaseCommand):
         for cat, cat_data in cats.items():
             category = self.add_cat(cat)
             for seller, product in zip(open_sellers, cat_data["products"]):
-                self.add_product(category, seller, product["title"], product["price"])
+                self.add_product(seller, product["title"], product["price"])
                 open_sellers.remove(seller)
 
                 # print(open_sellers)
