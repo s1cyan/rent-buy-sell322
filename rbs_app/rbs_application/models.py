@@ -110,6 +110,8 @@ class ShoppingCart(models.Model):
     creation_date = models.DateTimeField(_("Created on"))
     checked_out = models.BooleanField(_("Transaction Complete"), default=False)
 
+    def __str__(self):
+        return (str(self.product))
     class Meta:
         verbose_name = _('Cart')
         verbose_name_plural = _('Carts')
