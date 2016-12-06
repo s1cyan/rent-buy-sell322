@@ -121,7 +121,7 @@ class ShoppingCart(models.Model):
     user = models.ForeignKey(UserProfile)
     products = models.ManyToManyField(Product)
     creation_date = models.DateTimeField(_("Created on"))
-    checked_out = models.BooleanField(_("Transaction Complete"), default=False)
+    # checked_out = models.BooleanField(_("Transaction Complete"), default=False)
 
     def __str__(self):
         return (str(self.product))
