@@ -6,13 +6,29 @@ from rbs_application.models import *
 
 
 ENGINEERS = [{"username": "jonathanrozario",
-              "password": "pass"},
+              "password": "pass",
+              "phone": "2126507000",
+              "city": "Harlem",
+              "country": "USA",
+              "balance": 512, },
              {"username": "cyan",
-              "password": "pass"},
+              "password": "pass",
+              "phone": "2126507000",
+              "city": "Harlem",
+              "country": "USA",
+              "balance": 5000, },
              {"username": "heyconnie123",
-              "password": "pass"},
+              "password": "pass",
+              "phone": "2126507000",
+              "city": "Harlem",
+              "country": "USA",
+              "balance": 120345, },
              {"username": "alphamale",
-              "password": "pass"}, ]
+              "password": "pass",
+              "phone": "2126507000",
+              "city": "Harlem",
+              "country": "USA",
+              "balance": 99220, }, ]
 
 class Command(BaseCommand):
     args = '<foo bar ...>'
