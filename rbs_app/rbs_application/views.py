@@ -284,12 +284,13 @@ def item_details_visitor(request):
     return render(request,'visitor_item_details.html')
 
 
-# @login_required
-def cart(request):
-    product = Product.objects.filter(title="Tango with Django")
+@login_required
+def cart(request, product_id):
+    # Add product to cart
+    product = Product.objects.get(id=product_id)
+    print("PRODUCT IS", product)
 
-    # print("PRODUCT IS", product)
-    category = Category(name="Book")
+    # category = Category(name="Book")
     profile = UserProfile.objects.get(user=request.user)
     # test_product = Product(seller=request.user, title="TITLE", price=123,
     #                        quantity=10)
@@ -297,15 +298,15 @@ def cart(request):
     # cart = ShoppingCart.objects.get_or_create(user=profile,
     #                                           product=test_product)
     # print("CART IS", cart)
-    print("CART", cart)
+    # print("CART", cart)
     context_dict = {
         'username': request.user.username,
         'money': profile.balance,
-        'cart' : cart,
+        # 'cart' : cart,
     }
     if request.method == 'POST':
         # Add Item to Cart was pressed
-        return HttpResponse("ADD ITEM TO CART was pressed.")
+        return HttpResponse("ADD ITEM TO CART was pressed for ")
     # product_pk = request.POST.get('pk', '')
     # product = Product.objects.get(pk=product_pk)
     # if request.method == 'POST':

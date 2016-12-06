@@ -20,7 +20,9 @@ class UserProfile(models.Model):
                              max_length=10)
     city = models.CharField(max_length=50, default='New York', blank=True)
     country = models.CharField(max_length=50, default='USA', blank=True)
-    balance = models.DecimalField(max_digits=6, decimal_places=2, default='0.00')
+    balance = models.DecimalField(max_digits=7,
+                                  decimal_places=2,
+                                  default='0.00', )
     transactions = models.PositiveIntegerField(_("Number of transactions"), default='0', blank=True)
     suspensions = models.PositiveIntegerField(_("Number of suspensions"), default='0')
     strikes = models.PositiveIntegerField(_("Number of strikes"), default=0)
@@ -120,7 +122,7 @@ class Complaint(models.Model):
 class ShoppingCart(models.Model):
     user = models.ForeignKey(UserProfile)
     products = models.ManyToManyField(Product)
-    creation_date = models.DateTimeField(_("Created on"))
+    # creation_date = models.DateTimeField(_("Created on"))
     # checked_out = models.BooleanField(_("Transaction Complete"), default=False)
 
     def __str__(self):
@@ -129,4 +131,4 @@ class ShoppingCart(models.Model):
     class Meta:
         verbose_name = _('Cart')
         verbose_name_plural = _('Carts')
-        ordering = ['-creation_date', ]
+        # ordering = ['-creation_date', ]
