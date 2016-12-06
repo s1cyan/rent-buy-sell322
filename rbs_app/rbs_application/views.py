@@ -107,7 +107,7 @@ def process_complaint(request):
     do request.POST['name value in template'] to access values
     Users can submit a complaint for a user, if they get the username wrong
     users will be told they submitted a complaint, but it will not necessarily be registered
-    bc the user has to be in our system 
+    bc the user has to be in our system
     :param request:
     :return:
     '''
@@ -237,8 +237,11 @@ def show_results(request):
                     'seller': product.seller.username,
                     'option': 'n/a yet', # TODO SET THE SELLING TYPE
                     'description': product.text,
-                    'product_pk': product.pk
+                    'product_pk': product.pk,
+                    'user.is_authenticated': True,
+
                 }
+                print("------ logged in ")
                 return render(request,'user_item_details.html',context_dict)
             else:
                 product_pk = request.POST.get('pk', '')
@@ -251,6 +254,7 @@ def show_results(request):
                     'description': product.text,
                     'product_pk': product.pk
                 }
+                print ("++++++ not logged in")
                 return render(request,'visitor_item_details.html',context_dict)
 
         return render(request, template, context_dict)
@@ -261,11 +265,19 @@ def show_results(request):
 
 @login_required
 def buy_item_details_users(request):
+    profile = UserProfile.objects.get(user=request.user)
+
+    context_dict = {
+        'user': request.user.username,
+        'money': profile.balance,
+        'user.is_authenticated': True,
+
+    }
     if request.method == "POST":
         product_pk = request.POST.get('pk','')
         product = Product.objects.get(pk = product_pk) # access the product, do what you will with it
         # TODO Add to shopping cart logic
-    return render(request,'user_item_details.html')
+    return render(request,'user_item_details.html', context_dict)
 
 @login_required
 def auction_item_details_users(request):
