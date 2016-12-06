@@ -218,6 +218,7 @@ def details(request):
     # context_dict['option'] = 'n/a yet'
     context_dict['description'] = product.text
     context_dict['product_pk'] = product_pk
+    # context_dict['product_id'] = product.id
     return render(request, 'user_item_details.html', context_dict)
     # TODO JONATHAN, delete this later. NOBODY TOUCH THESE COMMENTED OUT LINES
     # because multiple item can have the same name, access by pk
@@ -285,13 +286,14 @@ def item_details_visitor(request):
 
 
 @login_required
-def cart(request, product_id):
+def cart(request):
     # Add product to cart
-    product = Product.objects.get(id=product_id)
-    print("PRODUCT IS", product)
+    # product = Product.objects.get(id=product_id)
+    # print("PRODUCT IS", product)
 
     # category = Category(name="Book")
     profile = UserProfile.objects.get(user=request.user)
+    # print(profile)
     # test_product = Product(seller=request.user, title="TITLE", price=123,
     #                        quantity=10)
     # print("PROFILE OF", profile)
@@ -304,9 +306,19 @@ def cart(request, product_id):
         'money': profile.balance,
         # 'cart' : cart,
     }
+    # check if "Add Item to Cart" was pressed
     if request.method == 'POST':
-        # Add Item to Cart was pressed
-        return HttpResponse("ADD ITEM TO CART was pressed for ")
+        # Show which product was added to cart
+        product_pk = request.POST.get('pk')
+        product = Product.objects.get(pk=product_pk)
+        product.save()
+        cart = ShoppingCart.objects.get_or_create(user=profile)[0]
+        cart.save()
+        cart.products.add(product)
+        cart.save()
+        context_dict['products'] = cart.products.all()
+        return render(request, 'cart.html', context_dict)
+
     # product_pk = request.POST.get('pk', '')
     # product = Product.objects.get(pk=product_pk)
     # if request.method == 'POST':
