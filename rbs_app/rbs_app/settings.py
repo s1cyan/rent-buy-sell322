@@ -30,7 +30,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
+LOGIN_URL = '/rbs/login/'
 # Application definition
 
 INSTALLED_APPS = [

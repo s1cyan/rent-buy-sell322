@@ -15,6 +15,7 @@ urlpatterns = [
     url(r'^$', views.visitors_main, name='visitor'),
     url(r'^edit/', views.edit_listings, name='edit'),
     url(r'^results/', views.show_results, name='results'),
+    url(r'^details/', views.details, name='details'),
     url(r'^item-details/', views.buy_item_details_users, name='users-buy-item'),
     url(r'^item-details-visitor/', views.item_details_visitor, name='visitors-view-item'),
     url(r'^auction-item-details/', views.auction_item_details_users, name='item-auction'),

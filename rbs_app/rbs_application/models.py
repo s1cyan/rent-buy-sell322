@@ -20,7 +20,9 @@ class UserProfile(models.Model):
                              max_length=10)
     city = models.CharField(max_length=50, default='New York', blank=True)
     country = models.CharField(max_length=50, default='USA', blank=True)
-    balance = models.DecimalField(max_digits=6, decimal_places=2, default='0.00')
+    balance = models.DecimalField(max_digits=7,
+                                  decimal_places=2,
+                                  default='0.00', )
     transactions = models.PositiveIntegerField(_("Number of transactions"), default='0', blank=True)
     suspensions = models.PositiveIntegerField(_("Number of suspensions"), default='0')
     strikes = models.PositiveIntegerField(_("Number of strikes"), default=0)
@@ -62,17 +64,29 @@ class Category(models.Model):
 
 class Product(models.Model):
     # seller = models.ForeignKey('auth.User') # TODO Don't know what to do here
+    (BUY, RENT, AUCTION) = ('B', 'R', 'A')
+    SELL_CHOICES = (
+        (BUY, 'Buy It Now'),
+        (RENT, 'Rent'),
+        (AUCTION, 'Auction'),
+    )
     seller = models.ForeignKey(User)
     title = models.CharField(max_length=200)
+    # option: How the product is to be sold
+    option = models.CharField(
+        max_length=1,
+        choices=SELL_CHOICES,
+        default=BUY,
+    )
     text = models.TextField()
     created_date = models.DateTimeField(default=timezone.now)
     published_date = models.DateTimeField(blank=True, null=True)
     takedown_date = models.DateField(blank=False, null=False, default=datetime.today().date() + timedelta(days=7))
     takedown_time = models.TimeField(blank=False, null=False, default=datetime.now().time())
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField(default=1)
+    # category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    # quantity = models.PositiveIntegerField(default=1)
     price = models.DecimalField(max_digits=6, decimal_places=2)
-    status = models.CharField(max_length=100, blank=True)
+    is_active = models.BooleanField(max_length=100, blank=True, default=True)
     #TODO set the item sell method RBS
 
     def post(self):
@@ -87,6 +101,7 @@ class Order(models.Model):
     # assuming order number does not repeat...
     user = models.ForeignKey(UserProfile)
     products = models.ManyToManyField(Product)
+    creation_date = models.DateTimeField(_("Ordered on"))
 
     def __str__(self):
         return str(self.id)
@@ -105,12 +120,16 @@ class Complaint(models.Model):
 
 
 class ShoppingCart(models.Model):
-    user = models.ForeignKey(UserProfile)
-    product = models.ManyToManyField(Product)
-    creation_date = models.DateTimeField(_("Created on"))
-    checked_out = models.BooleanField(_("Transaction Complete"), default=False)
+    user = models.OneToOneField(UserProfile)
+    products = models.ManyToManyField(Product)
+    # creation_date = models.DateTimeField(_("Created on"))
+    # checked_out = models.BooleanField(_("Transaction Complete"), default=False)
+
+    def __str__(self):
+        return ("%s's Shopping Cart" % self.user)
 
     class Meta:
-        verbose_name = _('Cart')
-        verbose_name_plural = _('Carts')
-        ordering = ['-creation_date', ]
+        # pass
+        verbose_name = _('Shopping Cart')
+        verbose_name_plural = _('Shopping Carts')
+        # ordering = ['-creation_date', ]
