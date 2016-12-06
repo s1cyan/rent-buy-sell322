@@ -328,6 +328,9 @@ def cart(request):
     #         context_dict['item'] = item.title
     #     context_dict['cart'] = cart
     else:
+        cart = ShoppingCart.objects.get(user=profile)
+        print(cart.products.all())
+        context_dict['products'] = cart.products.all()
         return render(request, 'cart.html', context_dict)
 
 @login_required
