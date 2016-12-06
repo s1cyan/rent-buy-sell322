@@ -12,7 +12,7 @@
         <ul class="collection">
             {% for item in cart %}
             <li class="collection-item">
-                <div> {{ item.name }}
+                <div> ITEM: {{ item.user }}
                     <div class="secondary-content">
                         <form method="post" action="{% url 'cart' %">
                             {% csrf_token %}

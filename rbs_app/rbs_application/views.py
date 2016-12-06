@@ -190,17 +190,15 @@ def show_results(request):
     context_dict = dict()
     if request.user.is_authenticated:
         profile = UserProfile.objects.get(user=request.user)
-        # print(profile)
         context_dict['username'] = request.user.username
         context_dict['money'] = profile.balance
     (query, method, min, max) = (request.GET['query'],
                                  request.GET['method'],
                                  request.GET['minprice'],
                                  request.GET['maxprice'], )
-    products = Product.objects.all()
-    if query is True: # TODO add logic to check for whitespace
-        products = Product.objects.filter(title=query)
-    results = list(products)
+    results = Product.objects.all()
+    if query: # TODO add logic to check for whitespace
+        results = Product.objects.filter(title=query)
     context_dict['results'] = results
     context_dict['found'] = True
     return render(request, 'results.html', context_dict)
@@ -288,20 +286,36 @@ def item_details_visitor(request):
 
 # @login_required
 def cart(request):
+    product = Product.objects.filter(title="Tango with Django")
+
+    # print("PRODUCT IS", product)
+    category = Category(name="Book")
     profile = UserProfile.objects.get(user=request.user)
+    # test_product = Product(seller=request.user, title="TITLE", price=123,
+    #                        quantity=10)
+    # print("PROFILE OF", profile)
+    # cart = ShoppingCart.objects.get_or_create(user=profile,
+    #                                           product=test_product)
+    # print("CART IS", cart)
+    print("CART", cart)
     context_dict = {
         'username': request.user.username,
         'money': profile.balance,
+        'cart' : cart,
     }
-    product_pk = request.POST.get('pk', '')
-    product = Product.objects.get(pk=product_pk)
     if request.method == 'POST':
-        for item in product:
-            cart = ShoppingCart(user=profile, product=item.title)
-            cart.save()
-            context_dict['item'] = item.title
-        context_dict['cart'] = cart
-    return render(request, 'cart.html', context_dict)
+        # Add Item to Cart was pressed
+        return HttpResponse("ADD ITEM TO CART was pressed.")
+    # product_pk = request.POST.get('pk', '')
+    # product = Product.objects.get(pk=product_pk)
+    # if request.method == 'POST':
+    #     for item in product:
+    #         cart = ShoppingCart(user=profile, product=item.title)
+    #         cart.save()
+    #         context_dict['item'] = item.title
+    #     context_dict['cart'] = cart
+    else:
+        return render(request, 'cart.html', context_dict)
 
 @login_required
 def confirm_checkout(request):
