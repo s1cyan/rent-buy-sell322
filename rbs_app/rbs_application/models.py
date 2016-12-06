@@ -62,17 +62,29 @@ class Category(models.Model):
 
 class Product(models.Model):
     # seller = models.ForeignKey('auth.User') # TODO Don't know what to do here
+    (BUY, RENT, AUCTION) = ('B', 'R', 'A')
+    SELL_CHOICES = (
+        (BUY, 'Buy It Now'),
+        (RENT, 'Rent'),
+        (AUCTION, 'Auction'),
+    )
     seller = models.ForeignKey(User)
     title = models.CharField(max_length=200)
+    # option: How the product is to be sold
+    option = models.CharField(
+        max_length=1,
+        choices=SELL_CHOICES,
+        default=BUY,
+    )
     text = models.TextField()
     created_date = models.DateTimeField(default=timezone.now)
     published_date = models.DateTimeField(blank=True, null=True)
     takedown_date = models.DateField(blank=False, null=False, default=datetime.today().date() + timedelta(days=7))
     takedown_time = models.TimeField(blank=False, null=False, default=datetime.now().time())
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField(default=1)
+    # quantity = models.PositiveIntegerField(default=1)
     price = models.DecimalField(max_digits=6, decimal_places=2)
-    status = models.CharField(max_length=100, blank=True)
+    is_active = models.BooleanField(max_length=100, blank=True, default=True)
     #TODO set the item sell method RBS
 
     def post(self):
