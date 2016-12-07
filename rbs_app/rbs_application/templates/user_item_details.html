@@ -1,14 +1,4 @@
-{% extends 'default.html' %}
-
-{% block header %}
-{% if user.is_authenticated %}
-{% include 'sidenav.html' %}
-{% endif %}
-{% endblock %}
-
-
-{% block main %}
-{% include 'search_bar.html' %}
+{% extends 'default.html' %} {% block header %} {% if user.is_authenticated %} {% include 'sidenav.html' %} {% endif %} {% endblock %} {% block main %} {% include 'search_bar.html' %}
 
 <div class="row">
     <div class="col s8 offset-s3">
@@ -29,14 +19,15 @@
             </form>
 
         </div>
-        <h6>Comments:</h6>
-        {% for comment in item_comments %}
-        <h6> {{ comment }} </h6>
-        {% endfor %}
+        <form action="" method="POST">
+            {% csrf_token %}
+            <label for="add_comment">Add Comment: </label>
+            <textarea rows="4" cols="40"></textarea>
+            <input type="submit" value="Submit">
+        </form>
+        <h6>Comments:</h6> {% for comment in comments %}
+        <h6> {{ comment }} </h6> {% endfor %}
     </div>
-
-
-</div>
 </div>
 
 </div>

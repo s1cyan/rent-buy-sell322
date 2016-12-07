@@ -4,6 +4,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from datetime import datetime, timedelta
+from .models import *
 
 class UserForm(forms.Form):
     """ User registration form for RBS """
@@ -84,3 +85,9 @@ class UserForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'email']
+
+class CommentForm(forms.ModelForm):
+
+    class Meta:
+        model = Comment
+        fields = ('author', 'text',)
