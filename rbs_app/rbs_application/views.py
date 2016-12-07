@@ -185,6 +185,7 @@ def process_sell(request):
                       # Also maybe get rid of categories?
                       )
     product.save()
+    print(product)
     return render(request, 'sell_processed.html', context_dict)
 
 

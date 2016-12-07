@@ -42,7 +42,7 @@ class UserForm(forms.Form):
 
 
 class SellForm(forms.Form):
-    SELL_CHOICES = ((1, 'RENT'), (2, 'BUY NOW'), (3, 'AUCTION'))
+    SELL_CHOICES = ((1, 'Buy It Now'), (2, 'Rent'), (3, 'Auction'))
 
     item_name = forms.CharField(max_length=64)
     sell_choice = forms.ChoiceField(choices=SELL_CHOICES)
