@@ -12,6 +12,8 @@ from .forms import AddWithdrawForm, UserForm, SellForm, SearchForm, ComplaintFor
 from .models import UserProfile, Product, Category, Complaint, ShoppingCart
 from django.forms.models import inlineformset_factory
 from django.core.exceptions import PermissionDenied
+from .associate import associate_option
+
 # Create your views here.
 
 
@@ -170,7 +172,6 @@ def process_sell(request):
         return HttpResponseRedirect('sell')
 
     # create the Product entry
-
     product = Product(seller=request.user,
                       title = request.POST['item'],
                       text = request.POST['description'],
@@ -178,10 +179,7 @@ def process_sell(request):
                       takedown_time = request.POST['time'],
                       quantity = request.POST['quantity'],
                       price = request.POST['price'],
-
-                      # TODO Change status to a boolean field, Charfield will make it harder to tell what is an active listing
-                      # Maybe even change its name to is_active_listing
-                      # Also maybe get rid of categories?
+                      option = request.POST['sell_select']
                       )
     product.save()
     return render(request, 'sell_processed.html', context_dict)
@@ -222,16 +220,16 @@ def details(request):
     context_dict['item'] = product.title
     context_dict['price'] = product.price
     context_dict['seller'] = product.seller.username
-    context_dict['option'] = product.option
+    context_dict['option'] = associate_option(product.option)
     context_dict['description'] = product.text
     context_dict['product_pk'] = product_pk
-    # context_dict['product_id'] = product.id
-    if product.option == Product.SELL_CHOICES(3):
+    context_dict['product_id'] = product.id
+    if product.option == Product.AUCTION:
         print("----------------------- auction item")
         return render(request, 'user_auction_details.html', context_dict)
 
-    else:
-        return render(request, 'user_item_details.html', context_dict)
+    # else:
+    return render(request, 'user_item_details.html', context_dict)
     # TODO JONATHAN, delete this later. NOBODY TOUCH THESE COMMENTED OUT LINES
     # because multiple item can have the same name, access by pk
     # if request.method == "POST":

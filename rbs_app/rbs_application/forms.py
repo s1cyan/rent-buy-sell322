@@ -4,6 +4,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from datetime import datetime, timedelta
+from .models import Product
 
 class UserForm(forms.Form):
     """ User registration form for RBS """
@@ -41,7 +42,8 @@ class UserForm(forms.Form):
 
 
 class SellForm(forms.Form):
-    SELL_CHOICES = ((1, 'RENT'), (2, 'BUY NOW'), (3, 'AUCTION'))
+
+    SELL_CHOICES = ((0, 'Buy It Now'), (1, 'Rent'), (2, 'Auction'))
 
     item_name = forms.CharField(max_length=64)
     sell_choice = forms.ChoiceField(choices=SELL_CHOICES)
