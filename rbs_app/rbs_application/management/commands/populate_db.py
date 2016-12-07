@@ -77,8 +77,9 @@ class Command(BaseCommand):
     #     superuser.save()
     #     return superuser
 
-    def add_product(self, seller, title, price):
-        p = Product.objects.get_or_create(seller=seller, title=title, price=price)[0]
+    def add_product(self, seller, title, price, option):
+        p = Product.objects.get_or_create(seller=seller, title=title,
+                                          price=price, option=option)[0]
         p.save()
         return p
 
@@ -96,31 +97,41 @@ class Command(BaseCommand):
 
         clothing = [
             {"title": "Pink Chanel Suit",
-             "price": 1000},
+             "price": 1000,
+             "option": "A"},
             {"title": "Bjork's Swan Dress",
-             "price": 80},
+             "price": 80,
+             "option": "A"},
             {"title": "Black Givenchy Dress",
-             "price": 500}
+             "price": 500,
+             "option": "A"}
         ]
 
         games = [
             {"title": "Cities: Skylines",
-             "price": 7.99},
+             "price": 7.99,
+             "option": "B"},
             {"title": "Counter-Strike: Global Offensive",
-             "price": 10.04},
+             "price": 10.04,
+             "option": "B"},
             {"title": "The Last of Us Remastered",
-             "price": 14.99}
+             "price": 14.99,
+             "option": "B"}
         ]
 
         books = [
             {"title": "Tango with Django",
-             "price": 9.99},
+             "price": 9.99,
+             "option": "R"},
             {"title": "The Annals of America",
-             "price": 166.16},
+             "price": 166.16,
+             "option": "R"},
             {"title": "Holy Bible, King James Version",
-             "price": 1.00},
+             "price": 1.00,
+             "option": "R"},
             {"title": "The Hitchhiker's Guide to the Galaxy",
-             "price": 7.19},
+             "price": 7.19,
+             "option": "R"},
         ]
 
         sellers = [
@@ -188,7 +199,8 @@ class Command(BaseCommand):
         for cat, cat_data in cats.items():
             category = self.add_cat(cat)
             for seller, product in zip(open_sellers, cat_data["products"]):
-                self.add_product(seller, product["title"], product["price"])
+                self.add_product(seller, product["title"], product["price"],
+                                 product["option"])
                 open_sellers.remove(seller)
 
                 # print(open_sellers)
