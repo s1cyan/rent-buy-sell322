@@ -226,7 +226,12 @@ def details(request):
     context_dict['description'] = product.text
     context_dict['product_pk'] = product_pk
     # context_dict['product_id'] = product.id
-    return render(request, 'user_item_details.html', context_dict)
+    if product.option == Product.SELL_CHOICES(3):
+        print("----------------------- auction item")
+        return render(request, 'user_auction_details.html', context_dict)
+
+    else:
+        return render(request, 'user_item_details.html', context_dict)
     # TODO JONATHAN, delete this later. NOBODY TOUCH THESE COMMENTED OUT LINES
     # because multiple item can have the same name, access by pk
     # if request.method == "POST":
@@ -286,6 +291,14 @@ def buy_item_details_users(request):
 
 @login_required
 def auction_item_details_users(request):
+    profile = UserProfile.objects.get(user=request.user)
+
+    context_dict = {
+        'user': request.user.username,
+        'money': profile.balance,
+        'user.is_authenticated': True,
+
+    }
     if request.method == 'POST':
         product_pk = request.POST.get('pk','')
         product_for_auction = Product.objects.get(pk= product_pk) # access to the product for auction, do w.e you need
