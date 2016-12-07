@@ -76,7 +76,7 @@ class Product(models.Model):
     option = models.CharField(
         max_length=1,
         choices=SELL_CHOICES,
-        default=BUY,
+        default=RENT,
     )
     text = models.TextField()
     created_date = models.DateTimeField(default=timezone.now)

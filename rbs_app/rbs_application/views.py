@@ -178,6 +178,7 @@ def process_sell(request):
                       takedown_time = request.POST['time'],
                       quantity = request.POST['quantity'],
                       price = request.POST['price'],
+                      option=request.POST['sell_select'],
 
                       # TODO Change status to a boolean field, Charfield will make it harder to tell what is an active listing
                       # Maybe even change its name to is_active_listing
