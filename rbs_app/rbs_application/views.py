@@ -170,15 +170,15 @@ def process_sell(request):
         return HttpResponseRedirect('sell')
 
     # create the Product entry
-    c = Category()
-    c.save()
+
     product = Product(seller=request.user,
                       title = request.POST['item'],
                       text = request.POST['description'],
                       takedown_date = request.POST['daymonth'],
                       takedown_time = request.POST['time'],
-                      category = c,
+                      quantity = request.POST['quantity'],
                       price = request.POST['price'],
+
                       # TODO Change status to a boolean field, Charfield will make it harder to tell what is an active listing
                       # Maybe even change its name to is_active_listing
                       # Also maybe get rid of categories?
@@ -345,8 +345,7 @@ def update_account(request):
                                                          'transactions',
                                                          'credit_card',
                                                          'strikes',
-                                                         'suspensions',
-                                                         'balance',))
+                                                         'suspensions',))
     formset = ProfileInlineFormset(instance=user)
 
     if request.user.is_authenticated() and request.user.id == user.id:

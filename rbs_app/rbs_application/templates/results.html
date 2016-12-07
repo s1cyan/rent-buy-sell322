@@ -14,6 +14,9 @@
     <div class="col s8 offset-s3">
         <ul class="collection">
 
+            {% if results|length == 0 %}
+            <h3> Sorry, we did not find anything for your search :( </h3>
+            {% endif %}
             {% for result in results %}
             <li class="collection-item">
                 TITLE: {{ result.title }}
