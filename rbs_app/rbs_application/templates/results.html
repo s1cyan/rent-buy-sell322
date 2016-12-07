@@ -22,7 +22,6 @@
                 TITLE: {{ result.title }}
                 PRICE: ${{ result.price }}
                 QUANTITY: {{ result.quantity}}
-                OPTION: {{ result.option }}
                 <div class="secondary-content ">
                     <form method="POST" action="{% url 'details' %}">
                         {% csrf_token %}
