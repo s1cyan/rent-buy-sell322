@@ -224,8 +224,9 @@ def details(request):
     context_dict['description'] = product.text
     context_dict['product_pk'] = product_pk
     context_dict['product_id'] = product.id
+    context_dict['date'] = product.takedown_date
+    context_dict['time'] = product.takedown_time
     if product.option == Product.AUCTION:
-        print("----------------------- auction item")
         return render(request, 'user_auction_details.html', context_dict)
 
     # else:
