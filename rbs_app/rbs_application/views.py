@@ -176,7 +176,9 @@ def process_sell(request):
                       text = request.POST['description'],
                       takedown_date = request.POST['daymonth'],
                       takedown_time = request.POST['time'],
+                      quantity = request.POST['quantity'],
                       price = request.POST['price'],
+
                       # TODO Change status to a boolean field, Charfield will make it harder to tell what is an active listing
                       # Maybe even change its name to is_active_listing
                       # Also maybe get rid of categories?
@@ -196,11 +198,15 @@ def show_results(request):
                                  request.GET['method'],
                                  request.GET['minprice'],
                                  request.GET['maxprice'], )
-    results = Product.objects.all()
+    results = Product.objects.filter(option=method)
+    print("ALL RESULTS: ", results)
     if query: # TODO add logic to check for whitespace
-        results = Product.objects.filter(title=query)
-    context_dict['results'] = results
-    context_dict['found'] = True
+        results = Product.objects.filter(title__icontains=query, option=method)
+        (context_dict['results'], context_dict['found']) = (results, True)
+        if not results:
+            (context_dict['results'], context_dict['found']) = (results, False)
+    else:
+        (context_dict['results'], context_dict['found']) = (results, True)
     return render(request, 'results.html', context_dict)
 
 
@@ -216,7 +222,7 @@ def details(request):
     context_dict['item'] = product.title
     context_dict['price'] = product.price
     context_dict['seller'] = product.seller.username
-    # context_dict['option'] = 'n/a yet'
+    context_dict['option'] = product.option
     context_dict['description'] = product.text
     context_dict['product_pk'] = product_pk
     # context_dict['product_id'] = product.id
@@ -291,20 +297,7 @@ def item_details_visitor(request):
 
 @login_required
 def cart(request):
-    # Add product to cart
-    # product = Product.objects.get(id=product_id)
-    # print("PRODUCT IS", product)
-
-    # category = Category(name="Book")
     profile = UserProfile.objects.get(user=request.user)
-    # print(profile)
-    # test_product = Product(seller=request.user, title="TITLE", price=123,
-    #                        quantity=10)
-    # print("PROFILE OF", profile)
-    # cart = ShoppingCart.objects.get_or_create(user=profile,
-    #                                           product=test_product)
-    # print("CART IS", cart)
-    # print("CART", cart)
     context_dict = {
         'username': request.user.username,
         'money': profile.balance,
@@ -322,17 +315,8 @@ def cart(request):
         cart.save()
         context_dict['products'] = cart.products.all()
         return render(request, 'cart.html', context_dict)
-
-    # product_pk = request.POST.get('pk', '')
-    # product = Product.objects.get(pk=product_pk)
-    # if request.method == 'POST':
-    #     for item in product:
-    #         cart = ShoppingCart(user=profile, product=item.title)
-    #         cart.save()
-    #         context_dict['item'] = item.title
-    #     context_dict['cart'] = cart
     else:
-        cart = ShoppingCart.objects.get(user=profile)
+        cart = ShoppingCart.objects.get_or_create(user=profile)[0]
         print(cart.products.all())
         context_dict['products'] = cart.products.all()
         return render(request, 'cart.html', context_dict)

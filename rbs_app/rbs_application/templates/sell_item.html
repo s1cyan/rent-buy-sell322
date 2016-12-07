@@ -22,7 +22,7 @@
 
             </div>
             <div class="col s12">
-                <label>Browser Select</label>
+                <label>Select Rent|Buy Now|Auction</label>
                 <select id = 'buy_select' name = 'sell_select' class="browser-default">
                     <option value="1">{{ sell_form.sell_choice.field.choices.0.1 }}</option>
                     <option value="2">{{ sell_form.sell_choice.field.choices.1.1 }}</option>
@@ -34,6 +34,10 @@
                 <input id="price" name="price" type="text">
                 <label class="active " for="price">Price * </label>
 
+            </div>
+            <div class="input-field col s12">
+                <input id="quantity" name="quantity" type="number">
+                <label class="active " for="quantity">Quantity * </label>
             </div>
             <div class="input-field col s12">
                 <input id="daymonth" type="date" class="datepicker" name="daymonth">
