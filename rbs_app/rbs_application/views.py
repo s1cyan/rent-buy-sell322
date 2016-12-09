@@ -8,10 +8,12 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, render_to_response, redirect
 from django.template import RequestContext
 from django.views.decorators.csrf import csrf_protect
-from .forms import AddWithdrawForm, UserForm, SellForm, SearchForm, ComplaintForm, RegistrationForm
+from .forms import AddWithdrawForm, UserForm, SellForm, SearchForm, ComplaintForm, RegistrationForm, AuctionForm
 from .models import UserProfile, Product, Category, Complaint, ShoppingCart
 from django.forms.models import inlineformset_factory
 from django.core.exceptions import PermissionDenied
+from .associate import associate_option
+
 # Create your views here.
 
 
@@ -170,7 +172,6 @@ def process_sell(request):
         return HttpResponseRedirect('sell')
 
     # create the Product entry
-
     product = Product(seller=request.user,
                       title = request.POST['item'],
                       text = request.POST['description'],
@@ -179,10 +180,6 @@ def process_sell(request):
                       quantity = request.POST['quantity'],
                       price = request.POST['price'],
                       option=request.POST['sell_select'],
-
-                      # TODO Change status to a boolean field, Charfield will make it harder to tell what is an active listing
-                      # Maybe even change its name to is_active_listing
-                      # Also maybe get rid of categories?
                       )
     product.save()
     print(product)
@@ -224,10 +221,16 @@ def details(request):
     context_dict['item'] = product.title
     context_dict['price'] = product.price
     context_dict['seller'] = product.seller.username
-    context_dict['option'] = product.option
+    context_dict['option'] = associate_option(product.option)
     context_dict['description'] = product.text
     context_dict['product_pk'] = product_pk
-    # context_dict['product_id'] = product.id
+    context_dict['product_id'] = product.id
+    context_dict['date'] = product.takedown_date
+    context_dict['time'] = product.takedown_time
+    if product.option == Product.AUCTION:
+        return render(request, 'user_auction_details.html', context_dict)
+
+    # else:
     return render(request, 'user_item_details.html', context_dict)
     # TODO JONATHAN, delete this later. NOBODY TOUCH THESE COMMENTED OUT LINES
     # because multiple item can have the same name, access by pk
@@ -287,11 +290,23 @@ def buy_item_details_users(request):
     return render(request,'user_item_details.html', context_dict)
 
 @login_required
-def auction_item_details_users(request):
+def auction_item_details_users(request,context_dict):
+    profile = UserProfile.objects.get(user=request.user)
+    context_dict = context_dict
     if request.method == 'POST':
-        product_pk = request.POST.get('pk','')
-        product_for_auction = Product.objects.get(pk= product_pk) # access to the product for auction, do w.e you need
+
+
+        product_pk = request.POST.get('pk')
+        print("----------", request.POST)
+        bid = request.POST.get('bidamount','')
+        print ("-------", product_pk)
+        product = Product.objects.get(pk= product_pk)
+        # if bid > product.price and bid <= profile.balance:
+
+        return render(request, 'user_auction_details.html', context_dict)
+
     return render(request,'user_auction_details.html')
+
 
 def item_details_visitor(request):
     return render(request,'visitor_item_details.html')

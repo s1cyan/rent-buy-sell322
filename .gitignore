@@ -95,6 +95,7 @@ ENV/
 *.swp
 *.swo
 *~
+*.orig
 
 # Ignore the default SQLite database.
 rbs_app/db.sqlite3
