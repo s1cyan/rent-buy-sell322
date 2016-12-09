@@ -318,9 +318,11 @@ def auction_item_details_users(request):
 
             product.price = bid  # update the current price
             product.current_bidder = profile.pk
+            product.save()
             profile.balance -= bid
+            profile.save()
             print ("@@@@@@@@@@ latest bid value ", product.price)
-
+        context_dict['money'] = profile.balance
         context_dict['item'] = product.title
         context_dict['price'] = product.price
         context_dict['seller'] = product.seller.username
