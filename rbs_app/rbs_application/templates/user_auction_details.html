@@ -22,7 +22,7 @@
 
 
         <div class=" col s12">
-            <form method="POST">
+            <form method="POST" action="{% url 'item-auction' %}">
                 {% csrf_token %}
 
                 <div class=" input-field col s2">
@@ -30,7 +30,7 @@
                     <input type="number" id="bidamount" name='bidamount'/> Bid Amount
 
                 </div>
-                <button class="waves-effect waves-light btn" name='pk' value="{{ product_pk }}"> Make a bid
+                <button type= "submit" class="waves-effect waves-light btn" name='pk' value="{{ product_pk }}"> Make a bid
                 </button>
             </form>
 

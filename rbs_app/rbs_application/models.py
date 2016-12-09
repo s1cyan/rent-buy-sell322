@@ -87,8 +87,8 @@ class Product(models.Model):
     quantity = models.PositiveIntegerField(default=1)
     price = models.DecimalField(max_digits=6, decimal_places=2)
     is_active = models.BooleanField(max_length=100, blank=True, default=True)
-    #TODO set the item sell method RBS
-
+    #below is only for auction items
+    current_bidder = models.PositiveIntegerField(blank = True, null = True ,default= None)
     def post(self):
         self.published_date = timezone.now()
         self.save()
