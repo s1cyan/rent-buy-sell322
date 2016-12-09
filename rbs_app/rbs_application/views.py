@@ -306,22 +306,21 @@ def auction_item_details_users(request):
         bid = Decimal(bid)
         product_pk = request.POST.get('pk', '')
         product = Product.objects.get(pk=product_pk)
-        print ("&&&&&&&&&&&&& BID SUBMITTED", request.user.username, bid, profile.balance, bid < profile.balance)
 
         if bid > product.price and profile.balance >= bid:
-            print ("$$$$$$$$$$$$$ reqs met", bid)
-
-            if product.current_bidder != None:  # get last users profile if the item has been prevously bid on
+            if product.current_bidder is not None:  # get last users profile if the item has been prevously bid on
                 last_bidder = UserProfile.objects.get(pk=product.current_bidder)
                 print ("********** latest person to bid", request.user.username)
                 last_bidder.balance += product.price  # take their balance += product's current price
+                last_bidder.save()
 
             product.price = bid  # update the current price
-            product.current_bidder = profile.pk
-            product.save()
-            profile.balance -= bid
+            product.current_bidder = profile.pk # update the current bidder
+            profile.balance -= bid # subtract from that user's balance
+
             profile.save()
-            print ("@@@@@@@@@@ latest bid value ", product.price)
+            product.save()
+
         context_dict['money'] = profile.balance
         context_dict['item'] = product.title
         context_dict['price'] = product.price
