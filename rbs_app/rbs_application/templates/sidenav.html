@@ -1,6 +1,9 @@
 <ul id="slide-out resize-on-med" class="side-nav fixed">
     <br>
-    <div class="container"> {{ username }} </div>
+    <div class="container">
+        <i class="small material-icons">perm_identity</i>
+        {{ username }}
+    </div>
 
     <br />
 
@@ -8,14 +11,51 @@
     <br>
     <br>
 
-    <li><a href="{% url 'sell' %}">Sell Item</a></li>
-    <li><a href="{% url 'cart' %}">View Cart</a></li>
-    <li><a href="{% url 'previous_orders' %}">Previous Orders</a></li>
-    <li><a href="{% url 'update' %}">Update Account</a></li>
-    <li><a href="{% url 'add_withdraw' %}">Add/Withdraw</a></li>
-    <li><a href="{% url 'edit' %}">Edit Listings</a></li>
-    <li><a href="{% url 'complaint' %}">File Complaint</a></li>
-    <li><a href="{% url 'logout' %}">Logout</a></li>
+    <li>
+        <a href="{% url 'sell' %}">
+            <i class="small material-icons prefix">shop_two</i>
+            Sell Item
+        </a>
+    </li>
+    <li>
+        <a href="{% url 'cart' %}">
+            <i class="small material-icons">shopping_cart</i>
+            View Cart
+        </a>
+    </li>
+    <li>
+        <a href="{% url 'previous_orders' %}">
+            <i class="small material-icons">restore</i>
+            Previous Orders
+        </a>
+    </li>
+    <li>
+        <a href="{% url 'update' %}">
+            <i class="small material-icons">assignment_ind</i>
+            Update Account
+        </a>
+    </li>
+    <li>
+        <a href="{% url 'add_withdraw' %}">
+            <i class="small material-icons">payment</i>
+            Add/Withdraw
+        </a>
+    </li>
+    <li><a href="{% url 'edit' %}">
+        <i class="small material-icons">mode_edit</i>
+        Edit Listings
+        </a>
+    </li>
+    <li><a href="{% url 'complaint' %}">
+        <i class="small material-icons">thumb_down</i>
+        File Complaint
+        </a>
+    </li>
+    <li><a href="{% url 'logout' %}">
+        <i class="small material-icons">power_settings_new</i>
+        Logout
+        </a>
+    </li>
 
 
 </ul>
