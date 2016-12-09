@@ -9,7 +9,7 @@ from django.shortcuts import render, render_to_response, redirect
 from django.template import RequestContext
 from django.views.decorators.csrf import csrf_protect
 from .forms import AddWithdrawForm, UserForm, SellForm, SearchForm, ComplaintForm, RegistrationForm, AuctionForm
-from .models import UserProfile, Product, Category, Complaint, ShoppingCart
+from .models import *
 from django.forms.models import inlineformset_factory
 from django.core.exceptions import PermissionDenied
 from .associate import associate_option
@@ -340,7 +340,19 @@ def cart(request):
 
 @login_required
 def confirm_checkout(request):
-    return render(request, 'confirm_checkout.html')
+    profile = UserProfile.objects.get(user=request.user)
+    context_dict = {
+        'username': request.user.username,
+        'money': profile.balance,
+        # 'cart' : cart,
+    }
+    if request.method == 'POST':
+        cart_id = request.POST.get('cart')
+        cart = ShoppingCart.objects.get(id=cart_id)
+        order = Order(cart=cart)
+        context_dict['order'] = order
+
+    return render(request, 'previous_order.html')
 
 @login_required
 def update_account(request):
