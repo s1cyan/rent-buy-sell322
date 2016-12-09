@@ -8,12 +8,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, render_to_response, redirect
 from django.template import RequestContext
 from django.views.decorators.csrf import csrf_protect
-<<<<<<< master
 from .forms import AddWithdrawForm, UserForm, SellForm, SearchForm, ComplaintForm, RegistrationForm
 from .models import UserProfile, Product, Category, Complaint, ShoppingCart, Order
-=======
-
->>>>>>> master
 from django.forms.models import inlineformset_factory
 from django.core.exceptions import PermissionDenied
 from .associate import associate_option
