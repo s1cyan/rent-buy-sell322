@@ -291,6 +291,7 @@ def buy_item_details_users(request):
         # TODO Add to shopping cart logic
     return render(request,'user_item_details.html', context_dict)
 
+
 @login_required
 def auction_item_details_users(request):
     profile = UserProfile.objects.get(user=request.user)
@@ -306,11 +307,15 @@ def auction_item_details_users(request):
         bid = Decimal(bid)
         product_pk = request.POST.get('pk', '')
         product = Product.objects.get(pk=product_pk)
+        context_dict = {
+            'user': request.user.username,
+            'money': profile.balance,
+            'user.is_authenticated': True,
 
+        }
         if bid > product.price and profile.balance >= bid:
             if product.current_bidder is not None:  # get last users profile if the item has been prevously bid on
                 last_bidder = UserProfile.objects.get(pk=product.current_bidder)
-                print ("********** latest person to bid", request.user.username)
                 last_bidder.balance += product.price  # take their balance += product's current price
                 last_bidder.save()
 
@@ -320,7 +325,7 @@ def auction_item_details_users(request):
 
             profile.save()
             product.save()
-
+        print ("********** user is authenticated", request.user.is_authenticated)
         context_dict['money'] = profile.balance
         context_dict['item'] = product.title
         context_dict['price'] = product.price
@@ -331,8 +336,8 @@ def auction_item_details_users(request):
         context_dict['product_id'] = product.id
         context_dict['date'] = product.takedown_date
         context_dict['time'] = product.takedown_time
-
-        return render(request, 'user_auction_details.html', context_dict)
+        HttpResponseRedirect('item-auction')
+        # return render(request, 'user_auction_details', context_dict)
 
     return render(request,'user_auction_details.html', context_dict)
 
