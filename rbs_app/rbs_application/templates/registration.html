@@ -10,14 +10,12 @@
         <div class="row center">
             {% if not registered %}
             <br />
-
             <h6>Register to become a member of Rent.Buy.Sell!</h6>
-
             <br />
-
             <form id="user_form" class="col s6 offset-s3" enctype="multipart/form-data" action="{% url 'register' %}" method="post">
                 {% csrf_token %}
                 <div class="row">
+
                     {% for field in user_form %}
                         <div class="input-field col s12">
                             {{ field.errors }}
@@ -31,17 +29,21 @@
                         </div>
                     {% endfor %}
 
-
-
-
-
-
                 </div>
                 <!-- Provide a button to click to submit the form. -->
                 <input type="submit" name="submit" value="Register">
             </form>
             {% else %}
-            <strong>thank you for registering!</strong>
+            <br/>
+                    <strong>Thank you for registering!</strong>
+            </br/>
+            <br/>
+                    <em>You will have to wait until a superuser approves you.</em>
+            <br/>
+                <p>
+                    Return to <a  href="{% url 'visitor' %}">homepage</a>. 
+                </p>
+            </br/>
             {% endif %}
         </div>
         {% endblock %}

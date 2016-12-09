@@ -15,12 +15,16 @@ urlpatterns = [
     url(r'^$', views.visitors_main, name='visitor'),
     url(r'^edit/', views.edit_listings, name='edit'),
     url(r'^results/', views.show_results, name='results'),
+    url(r'^details/', views.details, name='details'),
+    url(r'^item-details/', views.buy_item_details_users, name='users-buy-item'),
+    url(r'^item-details-visitor/', views.item_details_visitor, name='visitors-view-item'),
+    url(r'^auction-item-details/', views.auction_item_details_users, name='item-auction'),
     url(r'^sell/', views.sell_item, name='sell'),
     url(r'^process-listing', views.process_sell, name='process_sell_item'),
 
     # url(r'^su', views.superuser, name='superuser'),
     url(r'^update', views.update_account, name='update'),
     # url(r'^details', views.show_item_details, name='item_details'),
-    url(r'^main/', views.user_main, name='user_main'),
+    url(r'^user/', views.user_main, name='user'),
 
 ]

@@ -1,26 +1,54 @@
 {% extends "default.html" %}
 {% block header %}
+{% if user.is_authenticated %}
 {% include 'sidenav.html' %}
+{% endif %}
 {% endblock %}
 
 {% block  main %}
 
 {% include 'search_bar.html' %}
 
-{% if found %}
 <div class="row">
-    <div class="col s8 offset-s2">
-      <ul class="collection">
+    {% if found %}
+    <div class="col s8 offset-s3">
+        <ul class="collection">
 
-          {% for item in results %}
-      <a href="#" class="collection-item">{{ item }} </a>
+            {% if results|length == 0 %}
+            <h3> Sorry, we did not find anything for your search :( </h3>
+            {% endif %}
+            {% for result in results %}
+            <li class="collection-item">
+                TITLE: {{ result.title }}
+                PRICE: ${{ result.price }}
+                QUANTITY: {{ result.quantity}}
+                <div class="secondary-content ">
+                    <form method="POST" action="{% url 'details' %}">
+                        {% csrf_token %}
+
+                        <button class="waves-effect waves-light btn" name='pk' value="{{ result.pk }}"> View Details
+                        </button>
+                    </form>
+
+
+                </div>
+            </li>
+
             {% endfor %}
-    </ul>
+        </ul>
     </div>
+    {% else %}
+    <div class="col s8 offset-s3">
+        <ul class="collection">
+            <li class="collection-item">Sorry, nothing matched your search.
+            Please try again.</li>
+
+        </ul>
+    </div>
+
+    {% endif %}
+
 </div>
-
-{% endif %}
-
 
 
 {% endblock %}

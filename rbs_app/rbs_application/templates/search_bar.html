@@ -3,52 +3,53 @@
         {% csrf_token %}
         <div class="row">
             <div class="col s8">
-                <input id="search_input" name="search_input" >
+                <input id="search_input" name="query" >
                 <label for="search_input">Search</label>
             </div>
             <div class="col s4">
-                <button class="waves-effect waves-light btn" type="submit">Submit </button>
-
+                <button class="waves-effect waves-light btn" type="submit">Submit</button>
             </div>
         </div>
         <div class="row">
-            <div class="col s1">
-                <p>
+            <fieldset class="col s12">
+            <legend>Options</legend>
+              <div class="col s3">
+              <input type="radio"
+                     name="method"
+                     id="buy"
+                     value="B"
+                     checked="buy" />
+              <label for="buy">Buy It Now</label>
+              </div>
+              <div class="col s2">
+              <input type="radio"
+                     name="method"
+                     id="rent"
+                     value="R" />
+              <label for="rent">Rent</label>
+              </div>
+              <div class="col s2">
+              <input type="radio"
+                     name="method"
+                     id="auction"
+                     value="A" />
+              <label for="auction">Auction</label>
+              </div>
 
-                    <input type="checkbox" id='rent_option' name='rent_option'/>
-                    <label for="rent_option">Rent</label>
-                </p>
-            </div>
-            <div class="col s1">
-                <p>
-
-                    <input type="checkbox" id="buy_option" name='buy_option'/>
-                    <label for="buy_option">Buy</label>
-                </p>
-            </div>
-            <div class="col s2">
-                <p>
-
-                    <input type="checkbox" id="auction_option" name=auction_option/>
-                    <label for="auction_option">Auction |</label>
-                </p>
+            <div class=" input-field col s2">
+                <input type="number" id="minprice" name="minprice" value="0"
+                       min="0" max="99999.99"/>
+                Min Price
             </div>
             <div class=" input-field col s2">
-
-                <input type="number" id="minprice" name='minprice'/> Min Price
-
+                <input type="number" id="maxprice" name="maxprice" value="100"
+                       min="0"
+                       max="99999.99"/>
+                Max Price
             </div>
-            <div class=" input-field col s2">
-
-                <input type="number" id="maxprice" name=maxprice/> Max Price
-
-            </div>
-
+            </fieldset>
         </div>
-
-
     </form>
-
 </div>
 <div class="divider"></div>
 <br>
