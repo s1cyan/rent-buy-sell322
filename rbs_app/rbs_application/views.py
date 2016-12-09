@@ -8,7 +8,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, render_to_response, redirect
 from django.template import RequestContext
 from django.views.decorators.csrf import csrf_protect
-from .forms import AddWithdrawForm, UserForm, SellForm, SearchForm, ComplaintForm, RegistrationForm
+from .forms import AddWithdrawForm, UserForm, SellForm, SearchForm, ComplaintForm, RegistrationForm, AuctionForm
 from .models import UserProfile, Product, Category, Complaint, ShoppingCart
 from django.forms.models import inlineformset_factory
 from django.core.exceptions import PermissionDenied
@@ -289,19 +289,23 @@ def buy_item_details_users(request):
     return render(request,'user_item_details.html', context_dict)
 
 @login_required
-def auction_item_details_users(request):
+def auction_item_details_users(request,context_dict):
     profile = UserProfile.objects.get(user=request.user)
-
-    context_dict = {
-        'user': request.user.username,
-        'money': profile.balance,
-        'user.is_authenticated': True,
-
-    }
+    context_dict = context_dict
     if request.method == 'POST':
-        product_pk = request.POST.get('pk','')
-        product_for_auction = Product.objects.get(pk= product_pk) # access to the product for auction, do w.e you need
+
+
+        product_pk = request.POST.get('pk')
+        print("----------", request.POST)
+        bid = request.POST.get('bidamount','')
+        print ("-------", product_pk)
+        product = Product.objects.get(pk= product_pk)
+        # if bid > product.price and bid <= profile.balance:
+
+        return render(request, 'user_auction_details.html', context_dict)
+
     return render(request,'user_auction_details.html')
+
 
 def item_details_visitor(request):
     return render(request,'visitor_item_details.html')

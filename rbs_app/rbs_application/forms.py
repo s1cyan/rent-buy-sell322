@@ -79,6 +79,9 @@ class RegistrationForm(forms.Form):
     credit_card = forms.CharField(max_length=16)
     math_answer = forms.IntegerField()
 
+class AuctionForm(forms.Form):
+    bid = forms.DecimalField()
+
 class UserForm(forms.ModelForm):
     """
     The default form for a user
