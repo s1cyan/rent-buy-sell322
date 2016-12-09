@@ -97,16 +97,6 @@ class Product(models.Model):
         return self.title
 
 
-class Order(models.Model):
-    # assuming order number does not repeat...
-    user = models.ForeignKey(UserProfile)
-    products = models.ManyToManyField(Product)
-    creation_date = models.DateTimeField(_("Ordered on"))
-
-    def __str__(self):
-        return str(self.id)
-
-
 class Complaint(models.Model):
     # complaint_id = models.PositiveIntegerField(primary_key=True)
     # pub_date = models.DateTimeField("Date published", auto_now_add=True)
@@ -133,6 +123,16 @@ class ShoppingCart(models.Model):
         verbose_name = _('Shopping Cart')
         verbose_name_plural = _('Shopping Carts')
         # ordering = ['-creation_date', ]
+
+class Order(models.Model):
+    # assuming order number does not repeat...
+    cart = models.ForeignKey(ShoppingCart)
+    # user = models.ForeignKey(UserProfile)
+    # products = models.ManyToManyField(Product)
+    # creation_date = models.DateTimeField(_("Ordered on"))
+
+    def __str__(self):
+        return str(self.id)
 
 class Comment(models.Model):
     post = models.ForeignKey(Product)
