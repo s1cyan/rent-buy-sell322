@@ -89,7 +89,7 @@ def add_withdraw(request):
 def edit_listings(request):
     profile = UserProfile.objects.get(user=request.user)
     context_dict = {
-        'user': request.user.username,
+        'username': request.user.username,
         'money': profile.balance,
     }
     return render(request, 'edit_listings.html', context_dict)
