@@ -89,7 +89,7 @@ def add_withdraw(request):
 def edit_listings(request):
     profile = UserProfile.objects.get(user=request.user)
     context_dict = {
-        'user': request.user.username,
+        'username': request.user.username,
         'money': profile.balance,
     }
     return render(request, 'edit_listings.html', context_dict)
@@ -178,12 +178,14 @@ def process_sell(request):
                       takedown_time = request.POST['time'],
                       quantity = request.POST['quantity'],
                       price = request.POST['price'],
+                      option=request.POST['sell_select'],
 
                       # TODO Change status to a boolean field, Charfield will make it harder to tell what is an active listing
                       # Maybe even change its name to is_active_listing
                       # Also maybe get rid of categories?
                       )
     product.save()
+    print(product)
     return render(request, 'sell_processed.html', context_dict)
 
 

@@ -17,40 +17,44 @@
             </div>
 
             <div class="input-field col s12">
-                <input id="item" name="item" type="text">
+                <input id="item" name="item" type="text"
+                       placeholder="Name of the product">
                 <label class="active " for="item" data-success="">Item Name * </label>
 
             </div>
             <div class="col s12">
-                <label>Select Rent|Buy Now|Auction</label>
+                <label>How to Sell: Rent | Buy Now | Auction</label>
                 <select id = 'buy_select' name = 'sell_select' class="browser-default">
-                    <option value="1">{{ sell_form.sell_choice.field.choices.0.1 }}</option>
-                    <option value="2">{{ sell_form.sell_choice.field.choices.1.1 }}</option>
-                    <option value="3">{{ sell_form.sell_choice.field.choices.2.1 }}</option>
+                    <option value="B">{{ sell_form.sell_choice.field.choices.0.1 }}</option>
+                    <option value="R">{{ sell_form.sell_choice.field.choices.1.1 }}</option>
+                    <option value="A">{{ sell_form.sell_choice.field.choices.2.1 }}</option>
                 </select>
             </div>
 
             <div class="input-field col s12">
-                <input id="price" name="price" type="text">
+                <input id="price" name="price" type="number" value="10.00">
                 <label class="active " for="price">Price * </label>
 
             </div>
             <div class="input-field col s12">
-                <input id="quantity" name="quantity" type="number">
+                <input id="quantity" name="quantity" type="number" value="1">
                 <label class="active " for="quantity">Quantity * </label>
             </div>
             <div class="input-field col s12">
-                <input id="daymonth" type="date" class="datepicker" name="daymonth">
+                <input id="daymonth" type="date" class="datepicker" name="daymonth"
+                min="2016-12-12" max="2017-12-12" value="2016-12-12">
                 <label class="active " for="daymonth">Takedown Listing on Date * </label>
 
             </div>
             <div class="input-field col s12">
-                <input id="time" type="time" name="time">
+                <input id="time" type="time" name="time" min="00:00:00"
+                       max="23:59:00" value="12:59:00">
                 <label class="active " for="time">Takedown Listing at Time * </label>
 
             </div>
             <div class="input-field col s12">
-                <input id="description" name="description" type="text">
+                <input id="description" name="description" type="text"
+                       placeholder="Describe your product">
                 <label class="active " for="description">Product Description * </label>
             </div>
         </div>
