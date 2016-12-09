@@ -8,8 +8,12 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, render_to_response, redirect
 from django.template import RequestContext
 from django.views.decorators.csrf import csrf_protect
-from .forms import AddWithdrawForm, UserForm, SellForm, SearchForm, ComplaintForm, RegistrationForm, AuctionForm
-from .models import UserProfile, Product, Category, Complaint, ShoppingCart
+<<<<<<< master
+from .forms import AddWithdrawForm, UserForm, SellForm, SearchForm, ComplaintForm, RegistrationForm
+from .models import UserProfile, Product, Category, Complaint, ShoppingCart, Order
+=======
+
+>>>>>>> master
 from django.forms.models import inlineformset_factory
 from django.core.exceptions import PermissionDenied
 from .associate import associate_option
@@ -90,11 +94,25 @@ def add_withdraw(request):
 
 @login_required
 def edit_listings(request):
+
+    if request.method == 'POST':
+        print("hi")
+        pk=request.POST.get('remove', ' ')
+        print("hi2")
+        item=Product.objects.get(pk=pk)
+        print("hi3")
+        item.is_active=False;
+        item.save()
+        print("hi4")
+
     profile = UserProfile.objects.get(user=request.user)
     context_dict = {
         'username': request.user.username,
         'money': profile.balance,
     }
+
+    listings = Product.objects.filter(seller=profile.user, is_active=True)
+    context_dict['listings']=listings
     return render(request, 'edit_listings.html', context_dict)
 
 
@@ -456,13 +474,29 @@ def user_main(request):
 
 @login_required
 def view_previous_orders(request):
-    # Render the page for previous orders
-    profile = UserProfile.objects.get(user=request.user)
-    context_dict = {
-        'username': request.user.username,
-        'money': profile.balance,
-    }
-    return render(request, 'previous_orders.html', context_dict)
+    # # Render the page for previous orders
+    # profile = UserProfile.objects.get(user=request.user)
+    # context_dict = {
+    #     'username': request.user.username,
+    #     'money': profile.balance,
+    # }
+    #
+    # # if request.user.is_authenticated:
+    # #     profile = UserProfile.objects.get(user=profile)
+    # #     context_dict['username'] = request.user.username
+    # #     context_dict['money'] = profile.balance
+    # userResult = Order.objects.filter(user=profile)
+    # print("hi4")
+    # print("ALL ORDERS: ", userResult)
+    # (context_dict['user']) = (userResult)
+    # print("hi")
+    # if not userResult:
+    #     (context_dict['userResult']) = (userResult)
+    #     print("hi2")
+    # else:
+    #     (context_dict['userResult']) = (userResult)
+    #     print("hi3")
+     return render(userResult, 'previous_orders.html', context_dict)
 
 
 def visitors_main(request):
