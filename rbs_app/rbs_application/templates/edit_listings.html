@@ -16,7 +16,7 @@
                     <div class="secondary-content">
                         <form method="post">
                             {% csrf_token %}
-                            <button class="waves-effect waves-light btn" name="remove"> Remove
+                            <button class="waves-effect waves-light btn" name="remove" value = "{{ listing.pk }}"> Remove
                             </button>
                         </form>
 
