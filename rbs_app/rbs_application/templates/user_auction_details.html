@@ -13,14 +13,16 @@
 <div class="row">
     <div class="col s8 offset-s3">
         <h5>Item: {{ item }}</h5>
-        <h6>Price: {{ price }}</h6>
+        <h6>Current Price: {{ price }}</h6>
+        <h6>Auction Ends: {{ date }} ,{{ time }}</h6>
+
         <h6>Seller: {{ seller }}</h6>
         <h6>Item is for :{{ option }}</h6>
         <h6>Description: {{ description }}</h6>
 
 
         <div class=" col s12">
-            <form method="POST">
+            <form method="POST" action="{% url 'item-auction' %}">
                 {% csrf_token %}
 
                 <div class=" input-field col s2">
@@ -28,7 +30,7 @@
                     <input type="number" id="bidamount" name='bidamount'/> Bid Amount
 
                 </div>
-                <button class="waves-effect waves-light btn" name='pk' value="{{ product_pk }}"> Make a bid
+                <button type= "submit" class="waves-effect waves-light btn" name='pk' value="{{ product_pk }}"> Make a bid
                 </button>
             </form>
 

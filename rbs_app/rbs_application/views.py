@@ -8,10 +8,17 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, render_to_response, redirect
 from django.template import RequestContext
 from django.views.decorators.csrf import csrf_protect
+<<<<<<< master
 from .forms import AddWithdrawForm, UserForm, SellForm, SearchForm, ComplaintForm, RegistrationForm
 from .models import UserProfile, Product, Category, Complaint, ShoppingCart, Order
+=======
+
+>>>>>>> master
 from django.forms.models import inlineformset_factory
 from django.core.exceptions import PermissionDenied
+from .associate import associate_option
+from decimal import Decimal
+
 # Create your views here.
 
 
@@ -100,7 +107,7 @@ def edit_listings(request):
 
     profile = UserProfile.objects.get(user=request.user)
     context_dict = {
-        'user': request.user.username,
+        'username': request.user.username,
         'money': profile.balance,
     }
 
@@ -184,7 +191,6 @@ def process_sell(request):
         return HttpResponseRedirect('sell')
 
     # create the Product entry
-
     product = Product(seller=request.user,
                       title = request.POST['item'],
                       text = request.POST['description'],
@@ -192,12 +198,10 @@ def process_sell(request):
                       takedown_time = request.POST['time'],
                       quantity = request.POST['quantity'],
                       price = request.POST['price'],
-
-                      # TODO Change status to a boolean field, Charfield will make it harder to tell what is an active listing
-                      # Maybe even change its name to is_active_listing
-                      # Also maybe get rid of categories?
+                      option=request.POST['sell_select'],
                       )
     product.save()
+    print(product)
     return render(request, 'sell_processed.html', context_dict)
 
 
@@ -236,10 +240,17 @@ def details(request):
     context_dict['item'] = product.title
     context_dict['price'] = product.price
     context_dict['seller'] = product.seller.username
-    context_dict['option'] = product.option
+    context_dict['option'] = associate_option(product.option)
     context_dict['description'] = product.text
     context_dict['product_pk'] = product_pk
-    # context_dict['product_id'] = product.id
+    context_dict['product_id'] = product.id
+    context_dict['date'] = product.takedown_date
+    context_dict['time'] = product.takedown_time
+    if product.option == Product.AUCTION:
+        # return auction_item_details_users(request,context_dict)
+        return render(request, 'user_auction_details.html', context_dict)
+
+    # else:
     return render(request, 'user_item_details.html', context_dict)
     # TODO JONATHAN, delete this later. NOBODY TOUCH THESE COMMENTED OUT LINES
     # because multiple item can have the same name, access by pk
@@ -300,10 +311,49 @@ def buy_item_details_users(request):
 
 @login_required
 def auction_item_details_users(request):
+    profile = UserProfile.objects.get(user=request.user)
+
+    context_dict = {
+        'user': request.user.username,
+        'money': profile.balance,
+        'user.is_authenticated': True,
+
+    }
     if request.method == 'POST':
-        product_pk = request.POST.get('pk','')
-        product_for_auction = Product.objects.get(pk= product_pk) # access to the product for auction, do w.e you need
-    return render(request,'user_auction_details.html')
+        bid = request.POST.get('bidamount','')
+        bid = Decimal(bid)
+        product_pk = request.POST.get('pk', '')
+        product = Product.objects.get(pk=product_pk)
+
+        if bid > product.price and profile.balance >= bid:
+            if product.current_bidder is not None:  # get last users profile if the item has been prevously bid on
+                last_bidder = UserProfile.objects.get(pk=product.current_bidder)
+                print ("********** latest person to bid", request.user.username)
+                last_bidder.balance += product.price  # take their balance += product's current price
+                last_bidder.save()
+
+            product.price = bid  # update the current price
+            product.current_bidder = profile.pk # update the current bidder
+            profile.balance -= bid # subtract from that user's balance
+
+            profile.save()
+            product.save()
+
+        context_dict['money'] = profile.balance
+        context_dict['item'] = product.title
+        context_dict['price'] = product.price
+        context_dict['seller'] = product.seller.username
+        context_dict['option'] = associate_option(product.option)
+        context_dict['description'] = product.text
+        context_dict['product_pk'] = product_pk
+        context_dict['product_id'] = product.id
+        context_dict['date'] = product.takedown_date
+        context_dict['time'] = product.takedown_time
+
+        return render(request, 'user_auction_details.html', context_dict)
+
+    return render(request,'user_auction_details.html', context_dict)
+
 
 def item_details_visitor(request):
     return render(request,'visitor_item_details.html')

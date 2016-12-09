@@ -42,11 +42,12 @@ class UserForm(forms.Form):
 
 
 class SellForm(forms.Form):
-    SELL_CHOICES = ((1, 'RENT'), (2, 'BUY NOW'), (3, 'AUCTION'))
+
+    SELL_CHOICES = ((0, 'Buy It Now'), (1, 'Rent'), (2, 'Auction'))
 
     item_name = forms.CharField(max_length=64)
     sell_choice = forms.ChoiceField(choices=SELL_CHOICES)
-    price = forms.DecimalField()
+    price = forms.DecimalField(decimal_places=2, max_digits= 6)
     takedown_date = forms.DateField(widget=forms.SelectDateWidget(),
                                     initial=datetime.today().date() + timedelta(days=7))
     takedown_time = forms.TimeField(initial=datetime.now().time())
@@ -77,6 +78,9 @@ class RegistrationForm(forms.Form):
     country = forms.CharField()
     credit_card = forms.CharField(max_length=16)
     math_answer = forms.IntegerField()
+
+class AuctionForm(forms.Form):
+    bid = forms.DecimalField()
 
 class UserForm(forms.ModelForm):
     """
