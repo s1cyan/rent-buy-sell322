@@ -42,7 +42,8 @@ class UserForm(forms.Form):
 
 
 class SellForm(forms.Form):
-    SELL_CHOICES = ((1, 'Buy It Now'), (2, 'Rent'), (3, 'Auction'))
+
+    SELL_CHOICES = ((0, 'Buy It Now'), (1, 'Rent'), (2, 'Auction'))
 
     item_name = forms.CharField(max_length=64)
     sell_choice = forms.ChoiceField(choices=SELL_CHOICES)
@@ -77,6 +78,9 @@ class RegistrationForm(forms.Form):
     country = forms.CharField()
     credit_card = forms.CharField(max_length=16)
     math_answer = forms.IntegerField()
+
+class AuctionForm(forms.Form):
+    bid = forms.DecimalField()
 
 class UserForm(forms.ModelForm):
     """
