@@ -9,7 +9,7 @@ from django.shortcuts import render, render_to_response, redirect
 from django.template import RequestContext
 from django.views.decorators.csrf import csrf_protect
 from .forms import AddWithdrawForm, UserForm, SellForm, SearchForm, ComplaintForm, RegistrationForm, AuctionForm
-from .models import UserProfile, Product, Category, Complaint, ShoppingCart
+from .models import UserProfile, Product, Category, Complaint, ShoppingCart, Comment
 from django.forms.models import inlineformset_factory
 from django.core.exceptions import PermissionDenied
 from .associate import associate_option
@@ -218,6 +218,8 @@ def details(request):
         context_dict['money'] = profile.balance
     product_pk = request.POST.get('pk', '')
     product = Product.objects.get(pk=product_pk)
+    comments = Comment.objects.filter(product=product)
+    print("\n\n\n\nCOMMENTS FOR SKYLINES", comments)
     context_dict['item'] = product.title
     context_dict['price'] = product.price
     context_dict['seller'] = product.seller.username
@@ -227,6 +229,7 @@ def details(request):
     context_dict['product_id'] = product.id
     context_dict['date'] = product.takedown_date
     context_dict['time'] = product.takedown_time
+    context_dict['comments'] = comments
     if product.option == Product.AUCTION:
         return render(request, 'user_auction_details.html', context_dict)
 
@@ -446,3 +449,29 @@ def user_logout(request):
     logout(request)
     # Redirect to visitor home page
     return HttpResponseRedirect(reverse('visitor'))
+
+def comment(request):
+
+    #vistiors and users can write comments on a product.
+    profile = UserProfile.objects.get(user=request.user)
+    product_pk = request.POST.get('pk','')
+    product = Product.objects.get(pk = product_pk)
+    all_comments = Comment.objects.filter(product=product)
+    context_dict={
+        'username': request.user.username,
+        'money': profile.balance,
+    }
+    context_dict['all_comments'] = all_comments
+    print("hello")
+    print(request.method)
+    if request.method == "POST":
+        print("we made it")
+        comment = request.POST.get('text')
+        print(comment)
+        comment = Comment(text=comment, product=product)
+        comment.save()
+        context_dict = {
+            'text': all_comments,
+        }
+        return render(request, 'user_item_details.html', context_dict)
+    return render(request,'user_item_details.html', context_dict)
