@@ -1,31 +1,30 @@
 # Create your views here.
 import decimal
+from decimal import Decimal
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, render_to_response, redirect
-from django.template import RequestContext
-from django.views.decorators.csrf import csrf_protect
-from .forms import *
-from .models import *
+from django.shortcuts import render, redirect
 from django.forms.models import inlineformset_factory
 from django.core.exceptions import PermissionDenied
 from .associate import associate_option
-from decimal import Decimal
-
-# Create your views here.
+from .forms import *
 
 
 def register(request):
-    '''signup page view'''
+    """Registration Page View
+
+    Displays registration form for user to fill up.
+    If it's a POST request, uses the user input to make a new User.
+
+    Returns: {% url 'register' %}
+    """
     registered = False
     # If it's a HTTP POST, we're interested in processing form data.
     if request.method == 'POST':
         # Attempt to grab information from the raw form information.
         user_form = UserForm(data=request.POST)
-        # registration_form = RegistrationForm(data=request.POST)
         if user_form.is_valid(): # and registration_form.is_valid():
             user = User.objects.create_user(
                 first_name=user_form.cleaned_data['first_name'],
@@ -35,40 +34,29 @@ def register(request):
                 password=user_form.cleaned_data['password'],
                 )
             user.save()
-
-            # userprofile = UserProfile.objects.get_or_create(
-            #     first_name=registration_form.cleaned_data['first_name'],
-            #     last_name=registration_form.cleaned_data['last_name'],
-            #     city=registration_form.cleaned_data['city'],
-            #     country=registration_form.cleaned_data['country']
-            # )
-            # userprofile.save()
-
             registered = True
-
         else:
-            # Invalid form or forms - mistakes or something else?
-            # Print problems to the terminal.
             print(user_form.errors)
     else:
-        # Not a HTTP POST, so we render our form using the ModelForm instance.
-        # These forms will be blank, ready for user input.
         user_form = UserForm()
-        # registration_form = RegistrationForm()
-        # profile_form = UserProfileForm()
     # Render the template depending on the context.
     return render(request, 'registration.html',
                   {'user_form': user_form,
-                   # 'registration_form': registration_form,
                    'registered': registered})
 
 
 def redir(request):
-    '''TODO redirection for top nav bar'''
+    # TODO redirection for top nav bar
     return redirect('/rbs')
 
 @login_required
 def add_withdraw(request):
+    """Add/Withdraw Money Page View
+
+    A User is able to add or withdraw money from this page.
+
+    Returns:
+    """
     profile = UserProfile.objects.get(user=request.user)
     add_withdraw_form = AddWithdrawForm(request.POST)
     if request.method == 'POST':
@@ -90,29 +78,27 @@ def add_withdraw(request):
 
 @login_required
 def edit_listings(request):
+    """Edit a previous posting of a Product for sale
 
-    if request.method == 'POST':
-        print("hi")
-        pk=request.POST.get('remove', ' ')
-        print("hi2")
-        item=Product.objects.get(pk=pk)
-        print("hi3")
-        item.is_active=False;
-        item.save()
-        print("hi4")
-
+    A user who has listed a Product for sale earlier can remove it.
+    """
     profile = UserProfile.objects.get(user=request.user)
     context_dict = {
         'username': request.user.username,
         'money': profile.balance,
     }
-
+    if request.method == 'POST':
+        pk = request.POST.get('remove', ' ')
+        item = Product.objects.get(pk=pk)
+        item.is_active = False
+        item.save()
     listings = Product.objects.filter(seller=profile.user, is_active=True)
-    context_dict['listings']=listings
+    context_dict['listings'] = listings
     return render(request, 'edit_listings.html', context_dict)
 
 
 def file_complaint(request):
+    """"""
     complaint_form = ComplaintForm(request.POST)
     profile= UserProfile.objects.get(user=request.user)
     context_dict = {
