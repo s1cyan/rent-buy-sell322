@@ -21,11 +21,11 @@
             </form>
 
         </div>
-        <form action="" method="POST">
+        <form action="{% url 'comment' %}" method="POST">
             {% csrf_token %}
             <label for="add_comment">Add Comment: </label>
-            <textarea rows="4" cols="40"></textarea>
-            <input type="submit" value="Submit">
+            <textarea rows="4" cols="40" name="text"></textarea>
+            <a href="{% url 'comment' %}" name="text" class='btn btn-lg'>Submit a Comment</a>
         </form>
         <h6>Comments:</h6> {% for comment in comments %}
         <h6> {{ comment }} </h6> {% endfor %}
