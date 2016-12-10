@@ -8,7 +8,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, render_to_response, redirect
 from django.template import RequestContext
 from django.views.decorators.csrf import csrf_protect
-from .forms import AddWithdrawForm, UserForm, SellForm, SearchForm, ComplaintForm, RegistrationForm, AuctionForm
+from .forms import *
 from .models import *
 from django.forms.models import inlineformset_factory
 from django.core.exceptions import PermissionDenied
@@ -90,11 +90,25 @@ def add_withdraw(request):
 
 @login_required
 def edit_listings(request):
+
+    if request.method == 'POST':
+        print("hi")
+        pk=request.POST.get('remove', ' ')
+        print("hi2")
+        item=Product.objects.get(pk=pk)
+        print("hi3")
+        item.is_active=False;
+        item.save()
+        print("hi4")
+
     profile = UserProfile.objects.get(user=request.user)
     context_dict = {
         'username': request.user.username,
         'money': profile.balance,
     }
+
+    listings = Product.objects.filter(seller=profile.user, is_active=True)
+    context_dict['listings']=listings
     return render(request, 'edit_listings.html', context_dict)
 
 
@@ -219,6 +233,8 @@ def details(request):
         context_dict['money'] = profile.balance
     product_pk = request.POST.get('pk', '')
     product = Product.objects.get(pk=product_pk)
+    comments = Comment.objects.filter(product=product)
+    print("\n\n\n\nCOMMENTS FOR SKYLINES", comments)
     context_dict['item'] = product.title
     context_dict['price'] = product.price
     context_dict['seller'] = product.seller.username
@@ -228,6 +244,7 @@ def details(request):
     context_dict['product_id'] = product.id
     context_dict['date'] = product.takedown_date
     context_dict['time'] = product.takedown_time
+    context_dict['comments'] = comments
     if product.option == Product.AUCTION:
         # return auction_item_details_users(request,context_dict)
         return render(request, 'user_auction_details.html', context_dict)
@@ -291,6 +308,7 @@ def buy_item_details_users(request):
         # TODO Add to shopping cart logic
     return render(request,'user_item_details.html', context_dict)
 
+
 @login_required
 def auction_item_details_users(request):
     profile = UserProfile.objects.get(user=request.user)
@@ -306,11 +324,15 @@ def auction_item_details_users(request):
         bid = Decimal(bid)
         product_pk = request.POST.get('pk', '')
         product = Product.objects.get(pk=product_pk)
+        context_dict = {
+            'user': request.user.username,
+            'money': profile.balance,
+            'user.is_authenticated': True,
 
+        }
         if bid > product.price and profile.balance >= bid:
             if product.current_bidder is not None:  # get last users profile if the item has been prevously bid on
                 last_bidder = UserProfile.objects.get(pk=product.current_bidder)
-                print ("********** latest person to bid", request.user.username)
                 last_bidder.balance += product.price  # take their balance += product's current price
                 last_bidder.save()
 
@@ -320,7 +342,7 @@ def auction_item_details_users(request):
 
             profile.save()
             product.save()
-
+        print ("********** user is authenticated", request.user.is_authenticated)
         context_dict['money'] = profile.balance
         context_dict['item'] = product.title
         context_dict['price'] = product.price
@@ -331,8 +353,8 @@ def auction_item_details_users(request):
         context_dict['product_id'] = product.id
         context_dict['date'] = product.takedown_date
         context_dict['time'] = product.takedown_time
-
-        return render(request, 'user_auction_details.html', context_dict)
+        HttpResponseRedirect('item-auction')
+        # return render(request, 'user_auction_details', context_dict)
 
     return render(request,'user_auction_details.html', context_dict)
 
@@ -470,6 +492,7 @@ def user_main(request):
 
 @login_required
 def view_previous_orders(request):
+# <<<<<<< HEAD
     # Render the page for previous orders
     profile = UserProfile.objects.get(user=request.user)
     context_dict = {
@@ -506,6 +529,31 @@ def view_previous_orders(request):
         # context_dict['order'] = order
         # return render(request, 'confirm_checkout.html', context_dict)
     return render(request, 'previous_orders.html', context_dict)
+# =======
+    # # Render the page for previous orders
+    # profile = UserProfile.objects.get(user=request.user)
+    # context_dict = {
+    #     'username': request.user.username,
+    #     'money': profile.balance,
+    # }
+    #
+    # # if request.user.is_authenticated:
+    # #     profile = UserProfile.objects.get(user=profile)
+    # #     context_dict['username'] = request.user.username
+    # #     context_dict['money'] = profile.balance
+    # userResult = Order.objects.filter(user=profile)
+    # print("hi4")
+    # print("ALL ORDERS: ", userResult)
+    # (context_dict['user']) = (userResult)
+    # print("hi")
+    # if not userResult:
+    #     (context_dict['userResult']) = (userResult)
+    #     print("hi2")
+    # else:
+    #     (context_dict['userResult']) = (userResult)
+    #     print("hi3")
+    #  return render(userResult, 'previous_orders.html', context_dict)
+# >>>>>>> s1cyan/master
 
 
 def visitors_main(request):
@@ -518,3 +566,29 @@ def user_logout(request):
     logout(request)
     # Redirect to visitor home page
     return HttpResponseRedirect(reverse('visitor'))
+
+def comment(request):
+
+    #vistiors and users can write comments on a product.
+    profile = UserProfile.objects.get(user=request.user)
+    product_pk = request.POST.get('pk','')
+    product = Product.objects.get(pk = product_pk)
+    all_comments = Comment.objects.filter(product=product)
+    context_dict={
+        'username': request.user.username,
+        'money': profile.balance,
+    }
+    context_dict['all_comments'] = all_comments
+    print("hello")
+    print(request.method)
+    if request.method == "POST":
+        print("we made it")
+        comment = request.POST.get('text')
+        print(comment)
+        comment = Comment(text=comment, product=product)
+        comment.save()
+        context_dict = {
+            'text': all_comments,
+        }
+        return render(request, 'user_item_details.html', context_dict)
+    return render(request,'user_item_details.html', context_dict)
