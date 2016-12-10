@@ -10,13 +10,13 @@
     <div class="col s8 offset-s3">
         <h5>Previous Orders</h5>
     </div>
-{% for order in previous_orders %}
+{% for cart in previous_carts %}
     <div class="col s8 offset-s3">
         <div>
-            {{ order.item }}
+            {{ cart }}
         </div>
         <div>
-            {{ order.seller }}
+            <!--{{ cart.seller }}-->
 
         </div>
         <form>

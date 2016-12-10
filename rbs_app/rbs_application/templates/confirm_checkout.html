@@ -7,6 +7,7 @@
 
 {% include 'search_bar.html' %}
 <div class="row">
+    <!--{% for item in cart %}-->
     <div class="col s8 offset-s3">
 
         <h5> Item Sale</h5>
@@ -14,7 +15,7 @@
         <div class="divider"></div>
 
     </div>
-    {% endfor %}
+    <!--{% endfor %}-->
     <div class="col s8 offset-s3">
 
     <div class=" col s6">
@@ -22,11 +23,16 @@
             </button>
 
         </div>
+        <form method="post" action="{% url 'previous_orders' %}">
+              {% csrf_token %}
       <div class=" col s6">
-            <button class="btn waves-effect waves-light btn-large" type="submit" name="checkout">Checkout
+
+            <button class="btn waves-effect waves-light btn-large"
+                    type="submit" name="checkout" value="{{ cart_pk }}">Checkout
             </button>
 
         </div>
+        </form>
     </div>
         </div>
 
