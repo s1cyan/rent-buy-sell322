@@ -12,11 +12,11 @@
     <div class="col s8 offset-s2">
         <ul class="collection">
             <li class="collection-item">
-                <div> {{ listing.item }}
+                <div> {{ listing.title }}
                     <div class="secondary-content">
                         <form method="post">
                             {% csrf_token %}
-                            <button class="waves-effect waves-light btn" name="remove"> Remove
+                            <button class="waves-effect waves-light btn" name="remove" value="{{ listing.pk }}" action="{{edit_listings}}">remove
                             </button>
                         </form>
 
