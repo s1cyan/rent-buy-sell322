@@ -112,6 +112,7 @@ class Complaint(models.Model):
 class ShoppingCart(models.Model):
     user = models.OneToOneField(UserProfile)
     products = models.ManyToManyField(Product)
+    is_current = models.BooleanField(default=True)
     # creation_date = models.DateTimeField(_("Created on"))
     # checked_out = models.BooleanField(_("Transaction Complete"), default=False)
 
@@ -124,9 +125,8 @@ class ShoppingCart(models.Model):
         verbose_name_plural = _('Shopping Carts')
         # ordering = ['-creation_date', ]
 
-class Order(models.Model):
-    # assuming order number does not repeat...
-    cart = models.ForeignKey(ShoppingCart)
+# class Order(models.Model):
+    # cart = models.ForeignKey(ShoppingCart)
     # user = models.ForeignKey(UserProfile)
     # products = models.ManyToManyField(Product)
     # creation_date = models.DateTimeField(_("Ordered on"))
