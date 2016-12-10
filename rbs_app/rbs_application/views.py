@@ -166,10 +166,10 @@ def process_sell(request):
     have the functions for search processing in here
     to access the values in the SellForm, do request.POST['name value in template']
     """
-    print (request.POST) # just for checking the values returned in terminal
+    # print (request.POST) # just for checking the values returned in terminal
     # if fields are blank redirect back to refill the form
     if (request.POST['item'] or request.POST['price'] or request.POST['daymonth']or request.POST['time'] or request.POST['description']) == None:
-        print("invalid entry ")
+        # print("invalid entry ")
         return HttpResponseRedirect('sell')
 
     # create the Product entry
@@ -183,7 +183,7 @@ def process_sell(request):
                       option=request.POST['sell_select'],
                       )
     product.save()
-    print(product)
+    # print(product)
     return render(request, 'sell_processed.html', context_dict)
 
 
@@ -355,33 +355,35 @@ def cart(request):
         product_pk = request.POST.get('pk')
         product = Product.objects.get(pk=product_pk)
         product.save()
-        cart = ShoppingCart.objects.get_or_create(user=profile)[0]
+        print("ADD Item to Cart was pressed for product: ", product)
+        cart = ShoppingCart.objects.get_or_create(user=profile,
+                                                  is_current=True)[0]
         cart.save()
         cart.products.add(product)
         cart.save()
+        context_dict['cart_pk'] = cart.pk
         context_dict['products'] = cart.products.all()
         return render(request, 'cart.html', context_dict)
     else:
-        cart = ShoppingCart.objects.get_or_create(user=profile)[0]
-        print(cart.products.all())
+        cart = ShoppingCart.objects.get_or_create(user=profile,
+                                                  is_current=True)[0]
+        # print(cart.products.all())
+        context_dict['cart_pk'] = cart.pk
         context_dict['products'] = cart.products.all()
         return render(request, 'cart.html', context_dict)
 
 @login_required
 def confirm_checkout(request):
+    """"""
     profile = UserProfile.objects.get(user=request.user)
+    cart_pk = request.POST.get("cart", "")
     context_dict = {
         'username': request.user.username,
         'money': profile.balance,
-        # 'cart' : cart,
+        'cart_pk' : cart_pk,
     }
-    if request.method == 'POST':
-        cart_id = request.POST.get('cart')
-        cart = ShoppingCart.objects.get(id=cart_id)
-        order = Order(cart=cart)
-        context_dict['order'] = order
 
-    return render(request, 'previous_order.html')
+    return render(request, 'confirm_checkout.html', context_dict)
 
 @login_required
 def update_account(request):
@@ -474,6 +476,35 @@ def view_previous_orders(request):
         'username': request.user.username,
         'money': profile.balance,
     }
+    processed_cart_id = request.POST.get("checkout")
+    print("ABOUT TO PROCESS cart#", processed_cart_id)
+    # TODO execute transactions, deduct from profile.balance
+    # TODO deduct from quantities, and check to set product as inactive
+    cart_to_turn_off = ShoppingCart.objects.get(pk=processed_cart_id)
+    print("\n\n\n\n\n\n\n\n\nI WANT TO TURN OFF THIS CART:", cart_to_turn_off)
+    cart_to_turn_off.is_current = False
+    cart_to_turn_off.save()
+    previous_carts = ShoppingCart.objects.filter(user=profile, is_current=False)
+
+    print("\n\n\nPrevious carts are:", previous_carts)
+    context_dict['previous_carts'] = previous_carts
+    if request.method == 'POST':
+        # print("POST REQUEST MADE")
+        # if request.POST.get("checkout"):
+        # Checkout button was pressed
+        print("CHECKOUT BUTTON WAS PUSHED.")
+        cart_pk = request.POST.get("checkout", "")
+        print("ABOUT TO PROCESS cart-pk:", cart_pk)
+        context_dict['cart_pk'] = cart_pk
+        return render(request, 'previous_orders.html', context_dict)
+
+
+        # cart_pk = request.POST.get("cart_pk")
+        # cart = ShoppingCart.objects.get(pk=cart_pk)
+        # order = Order(cart=cart)
+        # print(order)
+        # context_dict['order'] = order
+        # return render(request, 'confirm_checkout.html', context_dict)
     return render(request, 'previous_orders.html', context_dict)
 
 
