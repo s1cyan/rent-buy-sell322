@@ -26,7 +26,8 @@
                     <form method="POST" action="{% url 'details' %}">
                         {% csrf_token %}
 
-                        <button class="waves-effect waves-light btn" name='pk' value="{{ result.pk }}">
+                        <button class="waves-effect waves-light btn"
+                                name='view_details' value="{{ result.pk }}">
                             View Details
                         </button>
                     </form>
