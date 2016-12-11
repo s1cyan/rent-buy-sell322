@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
+from ..date_checker import update_all
 from ..models import Product, UserProfile
 
 @login_required
@@ -13,6 +14,7 @@ def edit_listings(request):
         'username': request.user.username,
         'money': profile.balance,
     }
+    update_all()
     if request.method == 'POST':
         pk = request.POST.get('remove', ' ')
         item = Product.objects.get(pk=pk)
