@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect
 from ..forms import ComplaintForm
 from ..models import UserProfile
+from ..date_checker import update_all
 
 
 def file_complaint(request):
+    update_all()
     """Handles Button: MAKE A COMPLAINT"""
     complaint_form = ComplaintForm(request.POST)
     context_dict = dict()

@@ -1,10 +1,12 @@
 from django.shortcuts import render
 from ..models import Product, UserProfile
+from ..date_checker import update_all
 
 
 def show_results(request):
     # Searching for products is handled by this function
     context_dict = dict()
+    update_all()
     if request.user.is_authenticated:
         profile = UserProfile.objects.get(user=request.user)
         context_dict['username'] = request.user.username

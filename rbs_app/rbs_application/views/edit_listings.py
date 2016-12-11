@@ -2,9 +2,12 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from ..date_checker import update_all
 from ..models import Product, UserProfile
+from ..date_checker import update_all
+
 
 @login_required
 def edit_listings(request):
+    update_all()
     """Edit a previous posting of a Product for sale
 
     A user who has listed a Product for sale earlier can remove it.

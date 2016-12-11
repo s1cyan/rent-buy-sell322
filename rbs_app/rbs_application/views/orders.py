@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 from django.shortcuts import render
 from ..models import Order, ShoppingCart, UserProfile, Rating
 from ..update_rating import update_rating
+from ..date_checker import update_all
+
 
 @login_required
 def orders(request):
@@ -13,6 +15,7 @@ def orders(request):
         'username': request.user.username,
         'money': profile.balance,
     }
+    update_all()
     if "confirm_checkout" in request.POST:
         # TODO execute transactions, deduct from profile.balance
         # TODO deduct from quantities, and check to set product as inactive

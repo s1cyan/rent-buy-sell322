@@ -1,9 +1,11 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from ..models import UserProfile, Product
+from ..date_checker import update_all
 
 @login_required
 def buy_item_details_users(request):
+    update_all()
     profile = UserProfile.objects.get(user=request.user)
 
     context_dict = {
