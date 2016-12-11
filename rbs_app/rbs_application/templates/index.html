@@ -1,9 +1,13 @@
-
 {% extends 'default.html' %}
+{% block header %}
+{% if user.is_authenticated %}
+{% include 'sidenav.html' %}
+{% endif %}
+{% endblock %}
 
 {% block main %}
 <div class="row">
-
+    {% if not user.is_authenticated %}
 	<div class="row center-align">
 		<br>
 
@@ -19,8 +23,9 @@
 
 		<br>
 
-		{% include 'search_bar.html' %}
 	</div>
+    {% endif %}
+    {% include 'search_bar.html' %}
 </div>
 
 {% endblock %}
