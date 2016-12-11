@@ -1,7 +1,8 @@
 from django.contrib.auth.decorators import login_required
 from django.db.models import Sum
+from django.contrib.auth.models import User
 from django.shortcuts import render
-from ..models import Order, ShoppingCart, UserProfile
+from ..models import Order, ShoppingCart, UserProfile, Rating
 
 
 @login_required
@@ -41,5 +42,16 @@ def orders(request):
             product_list = list(order.products.all())
             order_dic[str(order.pk)] = product_list
         context_dict['allorders'] = order_dic
+
+    if "rating" in request.POST:
+        rating_input = request.POST['rating']
+        listed_seller = request.POST.get('seller', ' ')
+        user_seller = User.objects.get(username = listed_seller)
+        seller_profile = UserProfile.objects.get(user = user_seller)
+        new_rating = Rating(rating = rating_input,id=seller_profile)
+        new_rating.save()
+        print ("*******", rating_input, '****', listed_seller)
     return render(request, 'orders.html', context_dict)
 
+# def update_rating(seller):
+#     seller =

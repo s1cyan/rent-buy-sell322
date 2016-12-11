@@ -28,6 +28,7 @@ class UserProfile(models.Model):
     strikes = models.PositiveIntegerField(_("Number of strikes"), default=0)
     credit_card = models.CharField(max_length=16, blank=True, default='1234999912348888')
     verified_by_admin = models.BooleanField(_("RBS Verified User"), default=False, editable=True)
+    rbs_rating = models.DecimalField(max_digits= 3, decimal_places=2,default='5.00', blank= True)
 
     class Meta:
         verbose_name = "User Profile"
@@ -45,10 +46,11 @@ post_save.connect(create_user_profile, sender=User)
 
 class Rating(models.Model):
     id = models.OneToOneField(UserProfile, primary_key=True)
-    ratings = models.CharField(max_length=1000, default='', blank=True)
+    rating = models.IntegerField( blank = True)
+    # ratings = models.CharField(max_length=1000, default='', blank=True)
 
     def __str__(self):
-        return self.ratings
+        return str(self.rating)
 
 
 class Category(models.Model):
