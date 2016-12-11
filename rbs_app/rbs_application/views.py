@@ -14,6 +14,7 @@ from django.forms.models import inlineformset_factory
 from django.core.exceptions import PermissionDenied
 from .associate import associate_option
 from decimal import Decimal
+from .date_checker import update_all
 
 # Create your views here.
 
@@ -90,16 +91,12 @@ def add_withdraw(request):
 
 @login_required
 def edit_listings(request):
-
+    update_all()
     if request.method == 'POST':
-        print("hi")
         pk=request.POST.get('remove', ' ')
-        print("hi2")
         item=Product.objects.get(pk=pk)
-        print("hi3")
         item.is_active=False;
         item.save()
-        print("hi4")
 
     profile = UserProfile.objects.get(user=request.user)
     context_dict = {
