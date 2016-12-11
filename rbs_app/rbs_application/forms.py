@@ -25,6 +25,11 @@ class UserForm(forms.Form):
         label=_("CONFIRM PASSWORD *"),
         widget=forms.PasswordInput(attrs=dict(required=True, max_length=30, render_value=False)))
 
+    class Meta:
+
+        model = User
+        fields = ['first_name', 'last_name', 'email', 'password']
+
     def clean_username(self):
         """ Clean form data for username """
         try:
@@ -82,13 +87,13 @@ class RegistrationForm(forms.Form):
 class AuctionForm(forms.Form):
     bid = forms.DecimalField()
 
-class UserForm(forms.ModelForm):
-    """
-    The default form for a user
-    """
-    class Meta:
-        model = User
-        fields = ['first_name', 'last_name', 'email']
+# class UserForm(forms.ModelForm):
+#     """
+#     The default form for a user
+#     """
+#     class Meta:
+#         model = User
+#         fields = ['first_name', 'last_name', 'email']
 
 class CommentForm(forms.ModelForm):
 
