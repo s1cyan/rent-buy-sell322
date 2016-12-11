@@ -1,8 +1,8 @@
 ''' Use this script to populate the datebase for rbs
     Type in: python populate_rbs.py and check the data in the admin site. '''
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
 from django.core.management.base import BaseCommand
-from rbs_application.models import *
+from ...models import *
 
 
 ENGINEERS = [{"username": "jonathanrozario",
@@ -10,25 +10,25 @@ ENGINEERS = [{"username": "jonathanrozario",
               "phone": "2126507000",
               "city": "Harlem",
               "country": "USA",
-              "balance": '512.00', },
+              "balance": '1234.95', },
              {"username": "cyan",
               "password": "pass",
               "phone": "2126507000",
               "city": "Harlem",
               "country": "USA",
-              "balance": '100.00', },
+              "balance": '1234.95', },
              {"username": "heyconnie123",
               "password": "pass",
               "phone": "2126507000",
               "city": "Harlem",
               "country": "USA",
-              "balance": '345.00', },
+              "balance": '1234.95', },
              {"username": "alphamale",
               "password": "pass",
               "phone": "2126507000",
               "city": "Harlem",
               "country": "USA",
-              "balance": '992.00', }, ]
+              "balance": '1234.95', }, ]
 
 class Command(BaseCommand):
     args = '<foo bar ...>'
@@ -104,7 +104,7 @@ class Command(BaseCommand):
              "option": "A"},
             {"title": "Black Givenchy Dress",
              "price": 500,
-             "option": "A"}
+             "option": "A"},
         ]
 
         games = [
@@ -116,7 +116,16 @@ class Command(BaseCommand):
              "option": "B"},
             {"title": "The Last of Us Remastered",
              "price": 14.99,
-             "option": "B"}
+             "option": "B"},
+            {"title": "Civilization VI",
+             "price": 12.99,
+             "option": "B"},
+            {"title": "Red Dead Redemption",
+             "price": 59.99,
+             "option": "B"},
+            {"title": "Just Cause 3",
+             "price": 44.99,
+             "option": "B"},
         ]
 
         books = [
@@ -129,8 +138,44 @@ class Command(BaseCommand):
             {"title": "Holy Bible, King James Version",
              "price": 1.00,
              "option": "R"},
+            {"title": "\"Surely, You\'re Joking Mr. Feynman!\"",
+             "price": 8.48,
+             "option": "R"},
             {"title": "The Hitchhiker's Guide to the Galaxy",
              "price": 7.19,
+             "option": "R"},
+            {"title": "Flask Web Development",
+             "price": 34.99,
+             "option": "R"},
+            {"title": "The Art of Programming",
+             "price": 99.50,
+             "option": "R"},
+            {"title": "Harry Potter and the Cursed Child",
+             "price": 13.99,
+             "option": "R"},
+            {"title": "Three Men on a Boat",
+             "price": 4.99,
+             "option": "R"},
+            {"title": "Harry Potter and the Sorcerer's Stone",
+             "price": 10.99,
+             "option": "R"},
+            {"title": "Harry Potter and the Chamber of Secrets",
+             "price": 10.01,
+             "option": "R"},
+            {"title": "Harry Potter and the Prisoner of Azkaban",
+             "price": 10.09,
+             "option": "R"},
+            {"title": "Harry Potter and the Goblet of Fire",
+             "price": 10.15,
+             "option": "R"},
+            {"title": "Harry Potter and the Order of the Phoenix",
+             "price": 10.99,
+             "option": "R"},
+            {"title": "Harry Potter and the Half-Blood Prince",
+             "price": 10.99,
+             "option": "R"},
+            {"title": "Harry Potter and the Deathly Hallows",
+             "price": 12.99,
              "option": "R"},
         ]
 
@@ -195,6 +240,12 @@ class Command(BaseCommand):
         for s in sellers:
             seller = self.add_user(s["username"], s["password"])
             open_sellers.append(seller)
+
+        # products = books + clothing + games
+        # for seller, product in zip(open_sellers, products):
+        #     self.add_product(seller, product["title"], product["price"],
+        #                      product["option"])
+        #     open_sellers.remove(seller)
 
         for cat, cat_data in cats.items():
             category = self.add_cat(cat)
