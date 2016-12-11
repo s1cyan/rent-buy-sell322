@@ -2,7 +2,7 @@ from django.shortcuts import render
 from ..models import Comment, Product, UserProfile
 
 def comment(request):
-    """Vistiors and users can write comments on a product."""
+    """Visitors and users can write comments on a product."""
     profile = UserProfile.objects.get(user=request.user)
     product_pk = request.POST.get('pk','')
     product = Product.objects.get(pk = product_pk)
