@@ -95,7 +95,7 @@ def edit_listings(request):
     if request.method == 'POST':
         pk=request.POST.get('remove', ' ')
         item=Product.objects.get(pk=pk)
-        item.is_active=False;
+        item.is_active=False
         item.save()
 
     profile = UserProfile.objects.get(user=request.user)
