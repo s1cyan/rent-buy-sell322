@@ -1,51 +1,53 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8" />
-        <title>Registration</title>
-    </head>
-    <body>
-        {% extends 'default.html' %}
-        {% block main %}
-        <div class="row center">
-            {% if not registered %}
-            <br />
-            <h6>Register to become a member of Rent.Buy.Sell!</h6>
-            <br />
-            <form id="user_form" class="col s6 offset-s3" enctype="multipart/form-data" action="{% url 'register' %}" method="post">
-                {% csrf_token %}
-                <div class="row">
+<head>
+    <meta charset="utf-8"/>
+    <title>Registration</title>
+</head>
+<body>
+{% extends 'default.html' %}
+{% block main %}
+<div class="row center">
+    {% if not registered %}
+    <br/>
+    <h6>Register to become a member of Rent.Buy.Sell!</h6>
+    <br/>
+    <form id="user_form" class="col s6 offset-s3" enctype="multipart/form-data"
+          action="{% url 'register' %}" method="post">
+        {% csrf_token %}
+        <div class="row">
 
-                    {% for field in user_form %}
-                        <div class="input-field col s12">
-                            {{ field.errors }}
+            {% for field in user_form %}
+            <div class="input-field col s12">
+                {{ field.errors }}
 
-                            {{ field }}
-                            <label class="active " for="{{ field.id_for_label }}" data-success="">{{  field.label }}</label>
+                {{ field }}
+                <label class="active " for="{{ field.id_for_label }}"
+                       data-success="">{{ field.label }}</label>
 
-                            {% if field.help_text %}
-                            <p class="help">{{ field.help_text|safe }}</p>
-                            {% endif %}
-                        </div>
-                    {% endfor %}
+                {% if field.help_text %}
+                <p class="help">{{ field.help_text|safe }}</p>
+                {% endif %}
+            </div>
+            {% endfor %}
 
-                </div>
-                <!-- Provide a button to click to submit the form. -->
-                <input type="submit" name="submit" value="Register">
-            </form>
-            {% else %}
-            <br/>
-                    <strong>Thank you for registering!</strong>
-            </br/>
-            <br/>
-                    <em>You will have to wait until a superuser approves you.</em>
-            <br/>
-                <p>
-                    Return to <a  href="{% url 'index' %}">homepage</a>.
-                </p>
-            </br/>
-            {% endif %}
         </div>
-        {% endblock %}
-    </body>
+        <!-- Provide a button to click to submit the form. -->
+        <input type="submit" name="submit" value="Register">
+    </form>
+    {% else %}
+    <br/>
+    <strong>Thank you for registering!</strong>
+    </br/>
+    <br/>
+    <em>You will have to wait until a superuser approves you.</em>
+    <br/>
+    <p>
+        Return to <a href="{% url 'index' %}">homepage</a>.
+    </p>
+    </br/>
+    {% endif %}
+</div>
+{% endblock %}
+</body>
 </html>
