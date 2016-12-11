@@ -1,13 +1,20 @@
-{% extends 'default.html' %} {% block header %} {% if user.is_authenticated %} {% include 'sidenav.html' %} {% endif %} {% endblock %} {% block main %} {% include 'search_bar.html' %}
+{% extends 'default.html' %}
+{% block header %}
+    {% if user.is_authenticated %}
+        {% include 'sidenav.html' %}
+    {% endif %}
+{% endblock %}
+
+{% block main %}
+    {% include 'search_bar.html' %}
 
 <div class="row">
     <div class="col s8 offset-s3">
         <h5>Item: {{ item }}</h5>
         <h6>Price: {{ price }}</h6>
         <h6>Seller: {{ seller }}</h6>
-        <h6>Item is for :{{ option }}</h6>
+        <h6>Item is for: {{ option }}</h6>
         <h6>This item will be taken down on: {{ date }} ,{{ time }}</h6>
-
         <h6>Description: {{ description }}</h6>
 
 
@@ -15,7 +22,9 @@
             <form method="POST" action="{% url 'cart' %}">
                 {% csrf_token %}
 
-                <button class="waves-effect waves-light btn" name='pk' value="{{ product_pk }}"> Add Item to Cart
+                <button class="waves-effect waves-light btn"
+                        name="add_to_cart" value="{{ product_pk }}">
+                    Add to Cart
                     <i class="material-icons right">shopping_cart</i>
                 </button>
             </form>
@@ -32,5 +41,5 @@
     </div>
 </div>
 
-</div>
+
 {% endblock %}

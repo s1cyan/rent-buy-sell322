@@ -97,16 +97,6 @@ class Product(models.Model):
         return self.title
 
 
-class Order(models.Model):
-    # assuming order number does not repeat...
-    user = models.ForeignKey(UserProfile)
-    products = models.ManyToManyField(Product)
-    creation_date = models.DateTimeField(_("Ordered on"))
-
-    def __str__(self):
-        return str(self.id)
-
-
 class Complaint(models.Model):
     # complaint_id = models.PositiveIntegerField(primary_key=True)
     # pub_date = models.DateTimeField("Date published", auto_now_add=True)
@@ -122,17 +112,28 @@ class Complaint(models.Model):
 class ShoppingCart(models.Model):
     user = models.OneToOneField(UserProfile)
     products = models.ManyToManyField(Product)
+    # is_current = models.BooleanField(default=True)
     # creation_date = models.DateTimeField(_("Created on"))
     # checked_out = models.BooleanField(_("Transaction Complete"), default=False)
 
     def __str__(self):
-        return ("%s's Shopping Cart" % self.user)
+        return "%s's Shopping Cart" % self.user
 
     class Meta:
         # pass
         verbose_name = _('Shopping Cart')
         verbose_name_plural = _('Shopping Carts')
         # ordering = ['-creation_date', ]
+
+
+class Order(models.Model):
+    user = models.ForeignKey(UserProfile)
+    products = models.ManyToManyField(Product)
+    # creation_date = models.DateTimeField(_("Ordered on"))
+
+    def __str__(self):
+        return "{0}'s Order# {1} ".format(self.user, self.id)
+
 
 class Comment(models.Model):
     product = models.ForeignKey(Product)
