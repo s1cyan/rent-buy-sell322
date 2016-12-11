@@ -50,8 +50,14 @@ def orders(request):
         seller_profile = UserProfile.objects.get(user = user_seller)
         new_rating = Rating(rating = rating_input,id=seller_profile)
         new_rating.save()
+        update_rating(seller_profile)
         print ("*******", rating_input, '****', listed_seller)
     return render(request, 'orders.html', context_dict)
 
-# def update_rating(seller):
-#     seller =
+
+def update_rating(seller_profile):
+    # seller = UserProfile.objects.get(user = seller_profile)
+    ratings = Rating.objects.get(id = seller_profile)
+    overall_rating = sum(ratings)/len(ratings)
+    seller_profile.rbs_rating = overall_rating
+    seller_profile.save()
