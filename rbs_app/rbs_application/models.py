@@ -45,7 +45,7 @@ post_save.connect(create_user_profile, sender=User)
 
 
 class Rating(models.Model):
-    id = models.OneToOneField(UserProfile, primary_key=True)
+    user = models.ForeignKey(UserProfile)
     rating = models.IntegerField( blank = True)
     # ratings = models.CharField(max_length=1000, default='', blank=True)
 

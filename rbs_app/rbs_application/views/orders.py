@@ -3,6 +3,7 @@ from django.db.models import Sum
 from django.contrib.auth.models import User
 from django.shortcuts import render
 from ..models import Order, ShoppingCart, UserProfile, Rating
+from decimal import Decimal
 
 
 @login_required
@@ -48,7 +49,7 @@ def orders(request):
         listed_seller = request.POST.get('seller', ' ')
         user_seller = User.objects.get(username = listed_seller)
         seller_profile = UserProfile.objects.get(user = user_seller)
-        new_rating = Rating(rating = rating_input,id=seller_profile)
+        new_rating = Rating(user=seller_profile,rating = int(rating_input))
         new_rating.save()
         update_rating(seller_profile)
         print ("*******", rating_input, '****', listed_seller)
@@ -56,8 +57,10 @@ def orders(request):
 
 
 def update_rating(seller_profile):
-    # seller = UserProfile.objects.get(user = seller_profile)
-    ratings = Rating.objects.get(id = seller_profile)
+    rs = Rating.objects.filter(user = seller_profile)
+    ratings = list(rs.values_list('rating', flat = True))
     overall_rating = sum(ratings)/len(ratings)
-    seller_profile.rbs_rating = overall_rating
+    print ("$$$$$ overall ", overall_rating)
+
+    seller_profile.rbs_rating = Decimal(overall_rating)
     seller_profile.save()
