@@ -1,0 +1,42 @@
+{% extends "default.html" %}
+{% block header %}
+{% include 'sidenav.html' %}
+{% endblock %}
+
+{% block  main %}
+
+{% include 'search_bar.html' %}
+<div class="row">
+    <!--{% for item in cart %}-->
+    <div class="col s8 offset-s3">
+        <h5> Item Sale</h5>
+        <h5> Item Price</h5>
+        <div class="divider"></div>
+    </div>
+    <!--{% endfor %}-->
+    <div class="col s8 offset-s4">
+        <form method="post" action="{% url 'orders' %}">
+            {% csrf_token %}
+            <div class=" col s6">
+                <button class="btn waves-effect waves-light btn-large"
+                        type="submit" name="confirm_checkout"
+                        value="{{ cart_pk }}">
+                    Confirm Checkout
+                    <i class="material-icons right">check_circle</i>
+                </button>
+            </div>
+        </form>
+        <form method="post" action="{% url 'cart' %}">
+            {% csrf_token %}
+            <div class=" col s6">
+
+                <button class="btn waves-effect waves-light btn-large"
+                        type="submit" name="cancel">
+                    Cancel
+                    <i class="material-icons right">clear</i>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
