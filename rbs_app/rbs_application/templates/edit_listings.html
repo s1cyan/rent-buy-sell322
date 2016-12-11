@@ -8,7 +8,14 @@
 {% include 'search_bar.html' %}
 
 <div class="row">
+    {% if listings|length == 0 %}
+        <div class="col s8 offset-s3">
+            <h3> You have no items for sale </h3>
+            </div>
+    {% endif %}
+
 {% for listing in listings %}
+
     <div class="col s8 offset-s2">
         <ul class="collection">
             <li class="collection-item">
