@@ -11,15 +11,8 @@ from ..date_checker import update_all
 def orders(request):
     # Render the page for previous orders
     profile = UserProfile.objects.get(user=request.user)
-<<<<<<< HEAD
     context_dict = dict()
-=======
-    context_dict = {
-        'username': request.user.username,
-        'money': profile.balance,
-    }
     update_all()
->>>>>>> s1cyan/master
     if "confirm_checkout" in request.POST:
         # TODO execute transactions, deduct from profile.balance
         # TODO deduct from quantities, and check to set product as inactive
@@ -63,12 +56,9 @@ def orders(request):
             product_list = list(order.products.all())
             order_dic[str(order.pk)] = product_list
         context_dict['allorders'] = order_dic
-<<<<<<< HEAD
+
     context_dict['username'] = request.user.username
     context_dict['money'] = profile.balance
-    return render(request, 'orders.html', context_dict)
-=======
-
     if "rating" in request.POST:
         rating_input = request.POST['rating']
         listed_seller = request.POST.get('seller', ' ')
@@ -79,6 +69,3 @@ def orders(request):
         update_rating(seller_profile)
         print ("*******", rating_input, '****', listed_seller)
     return render(request, 'orders.html', context_dict)
-
-
->>>>>>> s1cyan/master
