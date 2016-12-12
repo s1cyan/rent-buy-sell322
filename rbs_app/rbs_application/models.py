@@ -50,14 +50,6 @@ def create_user_profile(sender, instance, created, **kwargs):
 post_save.connect(create_user_profile, sender=User)
 
 
-class Rating(models.Model):
-    user = models.ForeignKey(UserProfile)
-    rating = models.IntegerField( blank = True)
-    rated_by = models.ForeignKey(UserProfile, related_name="rater")
-    # ratings = models.CharField(max_length=1000, default='', blank=True)
-
-    def __str__(self):
-        return str(self.rating)
 
 
 class Category(models.Model):
@@ -105,6 +97,15 @@ class Product(models.Model):
     def __str__(self):
         return self.title
 
+
+class Rating(models.Model):
+    user = models.ForeignKey(UserProfile)
+    rating = models.IntegerField( blank = True , null= True)
+    rated_by = models.ForeignKey(UserProfile, related_name="rater")
+    product = models.ForeignKey(Product, related_name= 'product')
+
+    def __str__(self):
+        return str(self.rating)
 
 class Complaint(models.Model):
     # complaint_id = models.PositiveIntegerField(primary_key=True)
