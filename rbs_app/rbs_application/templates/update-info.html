@@ -15,5 +15,16 @@
 
             </div>
     </form>
+    {% for fields in profile %}
+    {% if field.rbs_vip_user == True %}
+    <p>
+      YAY, you are a RBS verified VIP user!
+    </p>
+    {% else %}
+    <p>
+      You have not reached VIP status!
+    </p>
+    {% endif %}
+    {% endfor %}
     </div>
     {% endblock %}
