@@ -16,6 +16,7 @@
           action="{% url 'register' %}" method="post">
         {% csrf_token %}
         <div class="row">
+
             {% for field in user_form %}
             <div class="input-field col s12">
                 {{ field.errors }}
@@ -40,6 +41,9 @@
                 </div>
                 {% endfor %}
             </div>
+            <input type = "hidden" name = "eq" value="{{ math }}">To make sure you are not a bot what is: {{ math }}
+              <p><input type="number" name="answer" > </p>
+
             <input type="submit" name="submit" value="Register">
         </div>
     </form>
