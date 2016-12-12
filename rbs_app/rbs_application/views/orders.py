@@ -90,7 +90,7 @@ def orders(request):
         listed_seller = request.POST.get('seller', ' ')
         user_seller = User.objects.get(username = listed_seller)
         seller_profile = UserProfile.objects.get(user = user_seller)
-        new_rating = Rating(user=seller_profile,rating = int(rating_input))
+        new_rating = Rating(user=seller_profile,rating = int(rating_input), rated_by = profile)
         new_rating.save()
         update_rating(seller_profile)
         print ("*******", rating_input, '****', listed_seller)
