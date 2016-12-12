@@ -14,3 +14,7 @@ rbs_app contains all base settings, static files, etc.
 
 # Run server
 `$ python manage.py runserver`
+
+# Run serve with prepopulated db 
+`$ python go.py`
+
