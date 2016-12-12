@@ -47,12 +47,14 @@ def update_account(request):
                     if profile.balance >= 5000.00 and profile.transactions >= 5 and profile.suspensions == 0 and profile.strikes == 0:
                         profile.rbs_vip_user = True
                         print(profile.rbs_vip_user)
-                        print(profile.suspensions)
                         print("i made it ---- true")
+                        profile.save()
                     else:
                         profile.rbs_vip_user = False
                         print("i made it --- false")
                         print(profile.rbs_vip_user)
+                        profile.save()
+
                     created_user.save()
                     formset.save()
                     return HttpResponseRedirect('/rbs/update')
@@ -62,6 +64,7 @@ def update_account(request):
             'money': profile.balance,
             "noodle_form": user_form,
             "formset": formset,
+            "vip_user": profile.rbs_vip_user,
         })
     else:
         raise PermissionDenied

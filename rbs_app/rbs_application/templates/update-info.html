@@ -2,12 +2,20 @@
 <div class="row center">
     <form id="update-form" class="col s6 offset-s3" method="post" action="{{ process_update }}">
         {% csrf_token %}
-        <h3>Update Information</h3>
-        {{ noodle_form.as_p }}
+        <h3>Update Information</h3> {{ noodle_form.as_p }}
 
         <div class="row">
 
             {{ formset.management_form }} {{ formset.as_p }}
+            {% if vip_user is True %}
+            <p>
+                YAY, you are a RBS verified VIP user!
+            </p>
+            {% else %}
+            <p>
+                You have not reached VIP status!
+            </p>
+            {% endif %}
             <div class=" col s12">
                 <button class="btn waves-effect waves-light btn-large" type="submit" name="action">Submit
                 <i class="material-icons right">send</i>
@@ -15,16 +23,6 @@
 
             </div>
     </form>
-    {% for fields in profile %}
-    {% if field.rbs_vip_user == True %}
-    <p>
-      YAY, you are a RBS verified VIP user!
-    </p>
-    {% else %}
-    <p>
-      You have not reached VIP status!
-    </p>
-    {% endif %}
-    {% endfor %}
+
     </div>
     {% endblock %}
