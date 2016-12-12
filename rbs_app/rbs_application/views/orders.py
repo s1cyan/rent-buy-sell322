@@ -3,7 +3,7 @@ from django.db.models import Sum
 from django.contrib.auth.models import User
 from django.shortcuts import render
 from ..models import Order, ShoppingCart, UserProfile, Rating, Complaint, Product
-
+from ..check_vip import  check_vip
 from ..update_rating import update_rating
 from ..date_checker import update_all
 

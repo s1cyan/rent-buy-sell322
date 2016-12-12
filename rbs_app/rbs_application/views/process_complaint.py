@@ -13,11 +13,14 @@ def process_complaint(request):
     :param request:
     :return:
     '''
-    profile= UserProfile.objects.get(user=request.user)
-    context_dict = {
-        'username': request.user.username,
-        'money': profile.balance,
-    }
+    context_dict=dict()
+    if request.user.is_authenticated:
+
+        profile= UserProfile.objects.get(user=request.user)
+        context_dict = {
+            'username': request.user.username,
+            'money': profile.balance,
+        }
     if User.objects.filter(username=request.POST['reported_user']).exists():
         complained_user = User.objects.get(username = request.POST['reported_user'])
         complaint_user_profile = UserProfile.objects.get(user = complained_user)

@@ -42,8 +42,8 @@ def register(request):
             profile = UserProfile.objects.get(user=user)
             profile.bio = userprofile_form.cleaned_data['bio']
             profile.phone = userprofile_form.cleaned_data['phone']
-            profile.city = userprofile_form.cleaned_data['city']
-            profile.country = userprofile_form.cleaned_data['country']
+            # profile.city = userprofile_form.cleaned_data['city']
+            # profile.country = userprofile_form.cleaned_data['country']
             profile.credit_card = userprofile_form.cleaned_data['credit_card']
             profile.save()
             registered = True

@@ -25,8 +25,7 @@ def update_account(request):
                                                  UserProfile,
                                                  fields=('bio',
                                                          'phone',
-                                                         'city',
-                                                         'country',
+                                                         
                                                          'credit_card',))
     formset = ProfileInlineFormset(instance=user)
 

@@ -87,17 +87,17 @@ class ComplaintForm(forms.Form):
 
 class UserProfileForm(forms.Form):
     bio = forms.CharField(max_length=120)
-    address = forms.CharField(label="Street Address *",
-                              # required=True,
-                              max_length=160, )
+    # address = forms.CharField(label="Street Address *",
+    #                           required=True,
+                              # max_length=160, )
     # Street Address, Line 2
-    address2 = forms.CharField(label="Apt / Floor *", max_length=40)
-    city = forms.CharField(label="City *", required=True, max_length=20)
-    state = forms.CharField(label="State *", required=True, max_length=20)
-    zipcode = forms.IntegerField(label="ZIP code *",
-                                 min_value=10000,
-                                 max_value=99999)
-    country = forms.CharField(max_length=20)
+    # address2 = forms.CharField(label="Apt / Floor ", required=False, max_length=40)
+    # city = forms.CharField(label="City *", required=True, max_length=20)
+    # state = forms.CharField(label="State *", required=True, max_length=20)
+    # zipcode = forms.IntegerField(label="ZIP code *",
+    #                              min_value=10000,
+    #                              max_value=99999)
+    # country = forms.CharField(max_length=20)
     phone = forms.CharField(max_length=10)
     # city = forms.CharField(max_length=20)
     credit_card = forms.CharField(max_length=16)
@@ -105,7 +105,7 @@ class UserProfileForm(forms.Form):
 
     class Meta:
         model = UserProfile
-        fields = ['bio', 'phone', 'city', 'country', 'credit_card']
+        fields = ['bio','phone','credit_card']
 
 
 class AuctionForm(forms.Form):

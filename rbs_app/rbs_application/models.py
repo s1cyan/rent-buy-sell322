@@ -18,12 +18,12 @@ class UserProfile(models.Model):
                              blank=True,
                              default='2126507000',
                              max_length=10)
-    address = models.CharField("Street Address", max_length=40)
-    address2 = models.CharField("Apt / Floor", max_length=40, null=True)
-    city = models.CharField("City", max_length=25, default='New York')
-    state = models.CharField("State", max_length=20, default='NY')
-    zipcode = models.CharField("ZIP code", max_length=5, default="10031")
-    country = models.CharField(max_length=50, default='USA', blank=True)
+    # address = models.CharField("Street Address", max_length=40)
+    # address2 = models.CharField("Apt / Floor", max_length=40, null=True)
+    # city = models.CharField("City", max_length=25, default='New York')
+    # state = models.CharField("State", max_length=20, default='NY')
+    # zipcode = models.CharField("ZIP code", max_length=5, default="10031")
+    # country = models.CharField(max_length=50, default='USA', blank=True)
     # city = models.CharField(max_length=50, default='New York', blank=True)
     balance = models.DecimalField(max_digits=7,
                                   decimal_places=2,
