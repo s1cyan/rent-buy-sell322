@@ -21,6 +21,10 @@ def cart(request):
     if 'add_to_cart' in request.POST:
         product_pk = request.POST['add_to_cart']
         product = Product.objects.get(pk=product_pk)
+        print("\n\n",profile.user, product.seller, str(profile.user)==str(product.seller),"\n\n")
+        if  str(profile.user) == str(product.seller):
+            context_dict['messages'] = "You cannot buy your own items!"
+            return render(request, 'badAction.html', context_dict)
         print("ADD TO CART was pressed for product_pk: ", product_pk)
         cart.products.add(product)
         cart.save()

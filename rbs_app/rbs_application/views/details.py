@@ -34,7 +34,7 @@ def details(request):
         product = Product.objects.get(pk=product_pk)
         context_dict['product'] = product
         context_dict['option'] = associate_option(product.option)
-        context_dict['description'] = product.text
+        context_dict['description'] = product.description
         context_dict['product_pk'] = product_pk
         context_dict['product_id'] = product.id
         new_comment = Comment(product=product, text=request.POST['new_comment'])
