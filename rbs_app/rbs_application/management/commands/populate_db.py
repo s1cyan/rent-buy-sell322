@@ -234,11 +234,13 @@ class Command(BaseCommand):
         #         for product in cat_data["products"]:
         #             self.add_product(c, s, product["title"], product["price"])
 
-
+        # List of SELLER PROFILES
         open_sellers = []
 
         for s in sellers:
-            seller = self.add_user(s["username"], s["password"])
+            user = self.add_user(s["username"], s["password"])
+            seller = self.add_userprofile(
+                user, "2126507000", "New York", "USA", 100.99)
             open_sellers.append(seller)
 
         # products = books + clothing + games

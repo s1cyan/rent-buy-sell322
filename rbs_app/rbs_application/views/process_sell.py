@@ -25,15 +25,16 @@ def process_sell(request):
         return HttpResponseRedirect('sell')
 
     # create the Product entry
-    product = Product(seller=request.user,
-                      title = request.POST['item'],
-                      text = request.POST['description'],
-                      takedown_date = request.POST['daymonth'],
-                      takedown_time = request.POST['time'],
-                      quantity = request.POST['quantity'],
-                      price = request.POST['price'],
-                      option=request.POST['sell_select'],
-                      )
+    product = Product(
+        seller=profile,
+        title=request.POST['item'],
+        description=request.POST['description'],
+        takedown_date=request.POST['daymonth'],
+        takedown_time=request.POST['time'],
+        quantity=request.POST['quantity'],
+        price=request.POST['price'],
+        option=request.POST['sell_select'],
+    )
     product.save()
     # print(product)
     return render(request, 'sell_processed.html', context_dict)

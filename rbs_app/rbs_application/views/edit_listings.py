@@ -23,6 +23,6 @@ def edit_listings(request):
         item = Product.objects.get(pk=pk)
         item.is_active = False
         item.save()
-    listings = Product.objects.filter(seller=profile.user, is_active=True)
+    listings = Product.objects.filter(seller=profile, is_active=True)
     context_dict['listings'] = listings
     return render(request, 'edit-listings.html', context_dict)
