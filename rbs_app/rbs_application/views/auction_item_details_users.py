@@ -29,6 +29,9 @@ def auction_item_details_users(request):
             'user.is_authenticated': True,
 
         }
+        if str(profile.user) == str(product.seller):
+            context_dict['messages'] = "You cannot bid on your own item"
+            return render(request, 'badAction.html', context_dict)
         if bid > product.price and profile.balance >= bid:
             if product.current_bidder is not None:  # get last users profile if the item has been prevously bid on
                 last_bidder = UserProfile.objects.get(pk=product.current_bidder)

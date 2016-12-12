@@ -2,7 +2,8 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Sum
 from django.contrib.auth.models import User
 from django.shortcuts import render
-from ..models import Order, ShoppingCart, UserProfile, Rating, Product
+from ..models import Order, ShoppingCart, UserProfile, Rating, Complaint, Product
+
 from ..update_rating import update_rating
 from ..date_checker import update_all
 
@@ -93,6 +94,7 @@ def orders(request):
         listed_seller = prod.seller
         user_seller = User.objects.get(username = listed_seller)
         seller_profile = UserProfile.objects.get(user = user_seller)
+
         r = Rating.objects.get_or_create(user = seller_profile, rated_by = profile, product = prod)[0]
         r.rating = int(rating_input)
         # new_rating = Rating(user=seller_profile,rating = int(rating_input), rated_by = profile, product = prod)
