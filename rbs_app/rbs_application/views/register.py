@@ -2,8 +2,9 @@ from django.contrib.auth.models import User
 from django.shortcuts import render
 from ..date_checker import update_all
 from ..forms import UserForm, UserProfileForm
-from random import randint
 from ..models import UserProfile
+from random import randint
+
 
 def register(request):
     """Registration Page View
@@ -16,22 +17,20 @@ def register(request):
     registered = False
     # If it's a HTTP POST, we're interested in processing form data.
     update_all()
-    x = randint(0,9)
-    y = randint(0,9)
-    math_equation = str(x) +'+' + str(y) + '='
-    context_dict= {
-        'math': math_equation
-    }
+    x = randint(0, 9)
+    y = randint(0, 9)
+    math_equation = str(x) + '+' + str(y) + '='
+    context_dict = {
+                'math': math_equation
+                         }
     if request.method == 'POST':
         # Attempt to grab information from the raw form information.
         user_form = UserForm(data=request.POST)
         userprofile_form = UserProfileForm(data=request.POST)
-
-        eq = request.POST.get('eq','')
+        eq = request.POST.get('eq', '')
         form_ans = request.POST.get('answer')
-        ans = int( eq[0]) + int (eq[2])
-
-        if user_form.is_valid() and int(form_ans) == int(ans) : # and registration_form.is_valid():
+        ans = int(eq[0]) + int(eq[2])
+        if user_form.is_valid() and userprofile_form.is_valid() and int(form_ans) == int(ans):
             user = User.objects.create_user(
                 first_name=user_form.cleaned_data['first_name'],
                 last_name=user_form.cleaned_data['last_name'],
@@ -57,5 +56,5 @@ def register(request):
     # Render the template depending on the context.
     return render(request, 'registration.html',
                   {'user_form': user_form,
-                   'registered': registered, 'math': math_equation,
-                    } )
+                   'userprofile_form': userprofile_form,
+                   'registered': registered,  'math': math_equation,} )
