@@ -40,6 +40,8 @@ def orders(request):
             if product.quantity == 0:
                 product.is_active = False
                 product.save()
+        profile.transactions += len(cart.products.all())
+        profile.save()
         cart_total = cart.products.all().aggregate(Sum('price'))
         amount = cart_total['price__sum']
         new_order.totalPrice=amount
@@ -57,7 +59,7 @@ def orders(request):
             product_list = list(order.products.all())
             order_dic[str(order.pk)] = product_list
         context_dict['allorders'] = order_dic
-    print("\n\nAll order dict\n",context_dict['allorders'],"\n\n")
+    # print("\n\nAll order dict\n",context_dict['allorders'],"\n\n")
 
     orderlist=list(all_orders.all())
     price_dic={}
