@@ -34,6 +34,7 @@ class UserProfile(models.Model):
     credit_card = models.CharField(max_length=16, blank=True, default='1234999912348888')
     verified_by_admin = models.BooleanField(_("RBS Verified User"), default=False, editable=True)
     rbs_rating = models.DecimalField(max_digits= 3, decimal_places=2,default='5.00', blank= True)
+    rbs_vip_user = models.BooleanField(_("RBS VIP User"), default=False, editable=True)
 
     class Meta:
         verbose_name = "User Profile"

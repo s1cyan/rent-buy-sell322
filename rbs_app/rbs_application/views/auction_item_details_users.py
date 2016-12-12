@@ -9,7 +9,7 @@ from ..date_checker import update_all
 
 @login_required
 def auction_item_details_users(request):
-    # update_all()
+    update_all()
     profile = UserProfile.objects.get(user=request.user)
 
     context_dict = {
@@ -32,6 +32,7 @@ def auction_item_details_users(request):
         if bid > product.price and profile.balance >= bid:
             if product.current_bidder is not None:  # get last users profile if the item has been prevously bid on
                 last_bidder = UserProfile.objects.get(pk=product.current_bidder)
+
                 last_bidder.balance += product.price  # take their balance += product's current price
                 last_bidder.save()
 
@@ -43,16 +44,11 @@ def auction_item_details_users(request):
             product.save()
         # print ("********** user is authenticated", request.user.is_authenticated)
         context_dict['money'] = profile.balance
-        context_dict['item'] = product.title
-        context_dict['price'] = product.price
-        context_dict['seller'] = product.seller.username
         context_dict['option'] = associate_option(product.option)
-        context_dict['description'] = product.text
         context_dict['product_pk'] = product_pk
         context_dict['product_id'] = product.id
-        context_dict['date'] = product.takedown_date
+        context_dict['product'] = product
         context_dict['time'] = product.takedown_time
         HttpResponseRedirect('item-auction')
-        # return render(request, 'user_auction_details', context_dict)
 
     return render(request,'auction_details.html', context_dict)
