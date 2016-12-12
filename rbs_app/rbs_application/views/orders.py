@@ -59,7 +59,7 @@ def orders(request):
             product_list = list(order.products.all())
             order_dic[str(order.pk)] = product_list
         context_dict['allorders'] = order_dic
-    print("\n\nAll order dict\n",context_dict['allorders'],"\n\n")
+    # print("\n\nAll order dict\n",context_dict['allorders'],"\n\n")
 
     orderlist=list(all_orders.all())
     price_dic={}
