@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from ..models import Product, ShoppingCart, UserProfile
 from ..date_checker import update_all
-
+from django.db.models import Sum
 
 @login_required
 def cart(request):
@@ -25,8 +25,9 @@ def cart(request):
         if  str(profile.user) == str(product.seller):
             context_dict['messages'] = "You cannot buy your own items!"
             return render(request, 'badAction.html', context_dict)
-        print("ADD TO CART was pressed for product_pk: ", product_pk)
+        print("\n\n ADD TO CART was pressed for product_pk: \n\n", product_pk)
         cart.products.add(product)
+        cart.totalPrice=float(cart.products.all().aggregate(Sum('price'))['price__sum'])
         cart.save()
     # Check if "REMOVE" was pressed
     elif 'remove' in request.POST:
@@ -40,4 +41,6 @@ def cart(request):
     # cart = ShoppingCart.objects.get_or_create(user=profile)[0]
     # context_dict['cart.pk'] = cart.pk
     context_dict['products'] = cart.products.all()
+    print("\n\n\n",cart.totalPrice,"\n\n")
+    context_dict['totalPrice'] = cart.totalPrice
     return render(request, 'cart.html', context_dict)
