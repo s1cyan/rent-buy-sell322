@@ -17,20 +17,24 @@ def orders(request):
         new_order.save()
         new_order.products.add(*cart.products.all())
         for product in cart.products.all():
-            seller = UserProfile.objects.get(user=product.seller)
+            # seller = UserProfile.objects.get(seller=product.seller)
+
+            # print("Seller balance BEFORE:", seller.balance)
+            seller = product.seller
             print("\n\nTransaction for", product, "sold by", seller)
-            print("Seller balance BEFORE:", seller.balance)
-            print("Buyer balance BEFORE:", cart.user.balance)
-            seller.balance += product.price
-            seller.save()
-            cart.user.balance -= product.price
-            cart.user.save()
+            print("Buyer balance BEFORE:", profile.balance)
+            # seller.balance += product.price
+            # seller.save()
+            profile.balance -= product.price
+            profile.save()
             print("TRANSACTION DONE!!!!!!!!!!!!!!!!!")
-            print("Seller balance AFTER:", seller.balance)
+            # print("Seller balance AFTER:", seller.balance)
             print("Buyer balance BEFORE:", cart.user.balance)
-            product.is_active = False
-            product.save()
-            print(product.is_active)
+            product.quantity -= 1
+            if product.quantity == 0:
+                product.is_active = False
+                product.save()
+            # print(product.is_active)
         cart_total = cart.products.all().aggregate(Sum('price'))
         amount = cart_total['price__sum']
         print("CART TOTAL was: $", amount)
@@ -49,5 +53,5 @@ def orders(request):
             order_dic[str(order.pk)] = product_list
         context_dict['allorders'] = order_dic
     context_dict['username'] = request.user.username
-    # context_dict['money'] = profile.balance
+    context_dict['money'] = profile.balance
     return render(request, 'orders.html', context_dict)

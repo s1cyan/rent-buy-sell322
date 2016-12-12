@@ -63,22 +63,21 @@ class Category(models.Model):
 
 
 class Product(models.Model):
-    # seller = models.ForeignKey('auth.User') # TODO Don't know what to do here
     (BUY, RENT, AUCTION) = ('B', 'R', 'A')
     SELL_CHOICES = (
         (BUY, 'Buy It Now'),
         (RENT, 'Rent'),
         (AUCTION, 'Auction'),
     )
-    seller = models.ForeignKey(User)
+    seller = models.ForeignKey(UserProfile)
     title = models.CharField(max_length=200)
     # option: How the product is to be sold
     option = models.CharField(
         max_length=1,
         choices=SELL_CHOICES,
-        default=RENT,
+        default=BUY,
     )
-    text = models.TextField()
+    description = models.TextField()
     created_date = models.DateTimeField(default=timezone.now)
     published_date = models.DateTimeField(blank=True, null=True)
     takedown_date = models.DateField(blank=False, null=False, default=datetime.today().date() + timedelta(days=7))
@@ -87,8 +86,9 @@ class Product(models.Model):
     quantity = models.PositiveIntegerField(default=1)
     price = models.DecimalField(max_digits=6, decimal_places=2)
     is_active = models.BooleanField(max_length=100, blank=True, default=True)
-    #below is only for auction items
+    # below is only for auction items
     current_bidder = models.PositiveIntegerField(blank = True, null = True ,default= None)
+
     def post(self):
         self.published_date = timezone.now()
         self.save()
@@ -103,7 +103,12 @@ class Complaint(models.Model):
     # start_date = models.DateField()
     # end_date = models.DateField()
     user_id = models.ForeignKey(UserProfile)
-    complaint = models.CharField(max_length=512,null= True, blank= True,default="No details")
+    complaint = models.CharField(
+        max_length=512,
+        null=True,
+        blank=True,
+        default="No details",
+    )
 
     def __str__(self):
         return str(self.complaint)
