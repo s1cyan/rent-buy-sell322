@@ -8,13 +8,13 @@
 
             {{ formset.management_form }} {{ formset.as_p }}
             {% if vip_user is True %}
-            <p>
+            <h3>
                 YAY, you are a RBS verified VIP user!
-            </p>
+            </h3>
             {% else %}
-            <p>
+            <h3>
                 You have not reached VIP status!
-            </p>
+            </h3>
             {% endif %}
             <div class=" col s12">
                 <button class="btn waves-effect waves-light btn-large" type="submit" name="action">Submit
