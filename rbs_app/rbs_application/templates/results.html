@@ -15,14 +15,14 @@
         <ul class="collection">
 
             {% if results|length == 0 %}
-            <h3> Sorry, we did not find anything for your search :( </h3>
+            <h5>Sorry, nothing matched your query.</h5>
             {% endif %}
             {% for result in results %}
             <li class="collection-item">
-                TITLE: {{ result.title }}
-                PRICE: ${{ result.price }}
-                QUANTITY: {{ result.quantity}}
-                <div class="secondary-content ">
+                {{ result.title }}
+                PRICE: $ {{ result.price }}
+                QUANTITY: {{ result.quantity }}
+                <div class="secondary-content">
                     <form method="POST" action="{% url 'details' %}">
                         {% csrf_token %}
 
