@@ -13,10 +13,18 @@ def update_all():
         takedown_daymonth = item.takedown_date
         takedown_time = item.takedown_time
         if takedown_daymonth < date.today():
+            if item.option == 'A':
+                seller = UserProfile.objects.get(user = item.seller)
+                seller.balance += item.price
+                seller.save()
             item.is_active = False
             item.save()
         elif takedown_daymonth == date.today():
             if takedown_time.hour <= datetime.now().time().hour and takedown_time.minute <= datetime.now().time().minute:
+                if item.option == 'A':
+                    seller = UserProfile.objects.get(user=item.seller)
+                    seller.balance += item.price
+                    seller.save()
                 item.is_active = False
                 item.save()
 
