@@ -84,6 +84,7 @@ def orders(request):
     #context_dict['all_orders'] = all_orders
     #print("\n\n",all_orders,"\n\n")
     #context_dict['totalPrice'] = all_orders.totalPrice
+    check_vip(profile)
 
     if "rating" in request.POST:
         rating_input = request.POST['rating']
