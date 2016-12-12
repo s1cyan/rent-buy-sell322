@@ -34,6 +34,7 @@ class UserProfile(models.Model):
     credit_card = models.CharField(max_length=16, blank=True, default='1234999912348888')
     verified_by_admin = models.BooleanField(_("RBS Verified User"), default=False, editable=True)
     rbs_rating = models.DecimalField(max_digits= 3, decimal_places=2,default='5.00', blank= True)
+    rbs_vip_user = models.BooleanField(_("RBS VIP User"), default=False, editable=True)
 
     class Meta:
         verbose_name = "User Profile"
@@ -124,6 +125,7 @@ class Complaint(models.Model):
 class ShoppingCart(models.Model):
     user = models.OneToOneField(UserProfile)
     products = models.ManyToManyField(Product)
+    totalPrice = models.DecimalField(max_digits=6, decimal_places=2, default=0)
     # is_current = models.BooleanField(default=True)
     # creation_date = models.DateTimeField(_("Created on"))
     # checked_out = models.BooleanField(_("Transaction Complete"), default=False)
@@ -141,6 +143,7 @@ class ShoppingCart(models.Model):
 class Order(models.Model):
     user = models.ForeignKey(UserProfile)
     products = models.ManyToManyField(Product)
+    totalPrice = models.DecimalField(max_digits=6, decimal_places=2, default=0)
     # creation_date = models.DateTimeField(_("Ordered on"))
 
     def __str__(self):

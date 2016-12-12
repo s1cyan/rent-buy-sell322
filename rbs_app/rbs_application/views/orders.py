@@ -22,6 +22,8 @@ def orders(request):
 
         print("\n\n", float(cart.products.all().aggregate(Sum('price'))['price__sum']), profile.balance, "\n\n")
         if float(cart.products.all().aggregate(Sum('price'))['price__sum']) > profile.balance:
+            context_dict['username'] = request.user.username
+            context_dict['money'] = profile.balance
             context_dict['messages']="You do not have enough money on your account for these purchases."
             return render(request, 'badAction.html', context_dict)
 
@@ -38,13 +40,17 @@ def orders(request):
             if product.quantity == 0:
                 product.is_active = False
                 product.save()
+        profile.transactions += len(cart.products.all())
+        profile.save()
         cart_total = cart.products.all().aggregate(Sum('price'))
         amount = cart_total['price__sum']
+        new_order.totalPrice=amount
         print("CART TOTAL was: $", amount)
+        #context_dict['totalPrice'] = new_order.totalPrice
         new_order.save()
         cart.delete()
     all_orders = Order.objects.filter(user=profile)
-
+    #print(all_orders[0].totalPrice)
     # Check if previous orders exist
     if all_orders.count():
         orders_list = list(all_orders.all())
@@ -53,9 +59,22 @@ def orders(request):
             product_list = list(order.products.all())
             order_dic[str(order.pk)] = product_list
         context_dict['allorders'] = order_dic
+    # print("\n\nAll order dict\n",context_dict['allorders'],"\n\n")
 
+    orderlist=list(all_orders.all())
+    price_dic={}
+    for i in orderlist:
+        price_dic[str(i.pk)] = i.totalPrice
+    context_dict['totalPrice'] = price_dic
+    print("\n\nTotal price dict\n",context_dict['totalPrice'],"\n\n")
+
+    print("\n\nFull dictionary:\n",context_dict,"\n\n")
     context_dict['username'] = request.user.username
     context_dict['money'] = profile.balance
+    #context_dict['all_orders'] = all_orders
+    #print("\n\n",all_orders,"\n\n")
+    #context_dict['totalPrice'] = all_orders.totalPrice
+
     if "rating" in request.POST:
         rating_input = request.POST['rating']
         listed_seller = request.POST.get('seller', ' ')
