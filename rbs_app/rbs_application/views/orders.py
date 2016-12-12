@@ -42,10 +42,12 @@ def orders(request):
                 product.save()
         profile.transactions += len(cart.products.all())
         profile.save()
-        cart_total = cart.products.all().aggregate(Sum('price'))
-        amount = cart_total['price__sum']
-        new_order.totalPrice=amount
-        print("CART TOTAL was: $", amount)
+        # cart_total = cart.products.all().aggregate(Sum('price'))
+        # print("++++++++++++++++++ CART TOTAL IS:", cart_total)
+        # amount = cart_total['price__sum']
+        new_order.totalPrice = cart.totalPrice
+        print("++++++++ NEW ORDER TOTALING:", new_order.totalPrice)
+        # print("CART TOTAL was: $", amount)
         #context_dict['totalPrice'] = new_order.totalPrice
         new_order.save()
         cart.delete()
@@ -54,21 +56,29 @@ def orders(request):
     # Check if previous orders exist
     if all_orders.count():
         orders_list = list(all_orders.all())
-        order_dic = {}
+        order_dic = dict()
+
         for order in orders_list:
+            product_dic = dict()
+            # print("*************", order.totalPrice)
+            product_dic['total'] = float(order.totalPrice)
             product_list = list(order.products.all())
-            order_dic[str(order.pk)] = product_list
+            product_dic['products'] = product_list
+            # print("%%%%%%%%%% product_dic: ", product_dic)
+            order_dic[str(order.pk)] = product_dic
+
+            # order_dic[str(order.pk)] = product_list
         context_dict['allorders'] = order_dic
-    # print("\n\nAll order dict\n",context_dict['allorders'],"\n\n")
+        print("######### allorders::", order_dic)
 
-    orderlist=list(all_orders.all())
-    price_dic={}
-    for i in orderlist:
-        price_dic[str(i.pk)] = i.totalPrice
-    context_dict['totalPrice'] = price_dic
-    print("\n\nTotal price dict\n",context_dict['totalPrice'],"\n\n")
+    # orderlist=list(all_orders.all())
+    # price_dic={}
+    # for i in orderlist:
+    #     price_dic[str(i.pk)] = i.totalPrice
+    # context_dict['totalPrice'] = price_dic
+    # print("\n\nTotal price dict\n",context_dict['totalPrice'],"\n\n")
 
-    print("\n\nFull dictionary:\n",context_dict,"\n\n")
+    # print("\n\nFull dictionary:\n",context_dict,"\n\n")
     context_dict['username'] = request.user.username
     context_dict['money'] = profile.balance
     #context_dict['all_orders'] = all_orders
