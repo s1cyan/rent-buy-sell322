@@ -1,10 +1,13 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from ..models import Order, ShoppingCart, UserProfile
+from ..date_checker import update_all
 
 
 @login_required
 def checkout(request):
+    from ..date_checker import update_all
+
     """View for checkout page
 
     Buttons to handle: CONFIRM CHECKOUT, CANCEL

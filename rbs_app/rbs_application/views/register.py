@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.shortcuts import render
 from ..forms import UserForm
+from ..date_checker import update_all
 
 
 def register(request):
@@ -13,6 +14,7 @@ def register(request):
     """
     registered = False
     # If it's a HTTP POST, we're interested in processing form data.
+    update_all()
     if request.method == 'POST':
         # Attempt to grab information from the raw form information.
         user_form = UserForm(data=request.POST)

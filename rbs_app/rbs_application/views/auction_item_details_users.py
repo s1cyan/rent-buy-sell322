@@ -4,10 +4,12 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from ..associate import associate_option
 from ..models import Product, UserProfile
+from ..date_checker import update_all
 
 
 @login_required
 def auction_item_details_users(request):
+    # update_all()
     profile = UserProfile.objects.get(user=request.user)
 
     context_dict = {

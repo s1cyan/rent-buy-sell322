@@ -6,6 +6,8 @@ from django.forms.models import inlineformset_factory
 from django.core.exceptions import PermissionDenied
 from ..forms import UserForm
 from ..models import UserProfile
+from ..date_checker import update_all
+
 
 
 @login_required
@@ -13,12 +15,12 @@ def update_account(request):
     """
     Update the user profile
     """
+    update_all()
 
     user = User.objects.get(user=request.user.id)
     profile = UserProfile.objects.get(user=request.user)
 
     user_form = UserForm(instance=user)
-
     ProfileInlineFormset = inlineformset_factory(User,
                                                  UserProfile,
                                                  fields=('bio',
