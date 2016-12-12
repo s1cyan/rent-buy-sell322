@@ -1,5 +1,6 @@
 from .models import *
 from datetime import date,time
+from check_vip import check_vip
 
 
 def update_all():
@@ -27,6 +28,6 @@ def update_all():
                     seller.balance += item.price
                     seller.transaction += 1
                     seller.save()
+                    check_vip(seller)
                 item.is_active = False
                 item.save()
-
