@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Sum
 from django.contrib.auth.models import User
 from django.shortcuts import render
-from ..models import Order, ShoppingCart, UserProfile, Rating
+from ..models import Order, ShoppingCart, UserProfile, Rating, Complaint
 from ..update_rating import update_rating
 from ..date_checker import update_all
 
@@ -80,8 +80,22 @@ def orders(request):
         listed_seller = request.POST.get('seller', ' ')
         user_seller = User.objects.get(username = listed_seller)
         seller_profile = UserProfile.objects.get(user = user_seller)
-        new_rating = Rating(user=seller_profile,rating = int(rating_input))
+        new_rating = Rating(user=seller_profile, rating = int(rating_input), ratedBy=str(profile.user))
         new_rating.save()
         update_rating(seller_profile)
         print ("*******", rating_input, '****', listed_seller)
+        #here, we check if you are rating too unfairly or if you are rating too generously
+        # unfairRater = Rating.objects.filter(ratedBy=str(profile.user), rating=1)
+        # whiner = Complaint.objects.filter(user_id=profile.pk)
+        # if len(unfairRater)>=3 and len(whiner)>=3:
+        #     profile.strikes+=1
+        #     profile.save()
+        #     context_dict['messages']="You have received a strike for being a negative user"
+        #     #check strikes, ssupections, bans
+        # generousRater = Rating.objects.filter(ratedBy=str(profile.user), rating=5)
+        # if len(generousRater)>=5:
+        #     profile.strikes+=1
+        #     profile.save()
+        #     context_dict['messages']="You have received a strike for giving too many perfect ratings"
+        #     #check strikes, suspentions, bans
     return render(request, 'orders.html', context_dict)

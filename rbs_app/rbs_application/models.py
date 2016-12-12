@@ -53,6 +53,8 @@ post_save.connect(create_user_profile, sender=User)
 class Rating(models.Model):
     user = models.ForeignKey(UserProfile)
     rating = models.IntegerField( blank = True)
+    ratedBy = models.CharField("ratedBy", max_length=40, )
+    #ratedBy = models.ForeignKey(UserProfile, related_name="who is doing the rating")
     # ratings = models.CharField(max_length=1000, default='', blank=True)
 
     def __str__(self):
