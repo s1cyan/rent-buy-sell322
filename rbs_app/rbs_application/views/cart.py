@@ -27,8 +27,15 @@ def cart(request):
             return render(request, 'badAction.html', context_dict)
         print("\n\n ADD TO CART was pressed for product_pk: \n\n", product_pk)
         cart.products.add(product)
-        cart.totalPrice=float(cart.products.all().aggregate(Sum('price'))['price__sum'])
+        cart_total = cart.products.all().aggregate(Sum('price'))
+        cart.totalPrice = cart_total['price__sum']
+        print("++++++++++++++++++ CART TOTAL IS:", cart.totalPrice)
+        # cart.totalPrice=float(cart.products.all().aggregate(Sum('price'))['price__sum'])
         cart.save()
+        context_dict['products'] = cart.products.all()
+        context_dict['totalPrice'] = cart.totalPrice
+        return render(request, 'cart.html', context_dict)
+
     # Check if "REMOVE" was pressed
     elif 'remove' in request.POST:
         # Find which product was added to cart
