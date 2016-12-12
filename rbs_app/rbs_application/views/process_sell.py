@@ -2,6 +2,8 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from ..models import Product, UserProfile
+from ..date_checker import update_all
+
 
 @login_required
 def process_sell(request):
@@ -11,6 +13,7 @@ def process_sell(request):
         'user': request.user.username,
         'money': profile.balance,
     }
+    update_all()
     """
     have the functions for search processing in here
     to access the values in the SellForm, do request.POST['name value in template']

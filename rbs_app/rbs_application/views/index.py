@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from ..models import UserProfile
+from ..date_checker import update_all
 
 def index(request):
     """Redirect to home page
@@ -7,6 +8,7 @@ def index(request):
     Populates username and balance is user is authenticated.
     Else, shows generic homepage for visitor.
     """
+    update_all()
     context_dict = dict()
     if request.user.is_authenticated:
         profile = UserProfile.objects.get(user=request.user)

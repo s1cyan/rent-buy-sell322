@@ -5,6 +5,8 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from ..models import UserProfile
 from ..forms import AddWithdrawForm
+from ..date_checker import update_all
+
 
 @login_required
 def add_withdraw(request):
@@ -14,6 +16,7 @@ def add_withdraw(request):
 
     Returns:
     """
+    update_all()
     profile = UserProfile.objects.get(user=request.user)
     add_withdraw_form = AddWithdrawForm(request.POST)
     if request.method == 'POST':

@@ -3,8 +3,11 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from ..models import UserProfile
+from ..date_checker import update_all
+
 
 def user_login(request):
+    update_all()
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']

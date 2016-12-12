@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from ..forms import SellForm
 from ..models import UserProfile
+from ..date_checker import update_all
 
 
 @login_required
@@ -19,4 +20,5 @@ def sell_item(request):
         'sell_form': sell_form,
         'process_sell_post': '/rbs/process-listing'
     }
+    update_all()
     return render(request, 'sell-item.html', context_dict)

@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from ..models import Product, ShoppingCart, UserProfile
+from ..date_checker import update_all
 
 
 @login_required
@@ -9,6 +10,7 @@ def cart(request):
 
     Renders: cart.html
     """
+    update_all()
     profile = UserProfile.objects.get(user=request.user)
     context_dict = {
         'username': request.user.username,

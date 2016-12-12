@@ -1,9 +1,11 @@
 from django.shortcuts import render
 from ..associate import associate_option
 from ..models import Comment, Product, UserProfile
+from ..date_checker import update_all
 
 
 def details(request):
+    update_all()
     # View for clicking 'View item details' in search results
     context_dict = dict()
     if request.user.is_authenticated:
