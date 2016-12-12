@@ -19,10 +19,10 @@
             {% endif %}
             {% for result in results %}
             <li class="collection-item">
-                TITLE: {{ result.title }}
-                PRICE: ${{ result.price }}
-                QUANTITY: {{ result.quantity}}
-                <div class="secondary-content ">
+                {{ result.title }}
+                PRICE: $ {{ result.price }}
+                QUANTITY: {{ result.quantity }}
+                <div class="secondary-content">
                     <form method="POST" action="{% url 'details' %}">
                         {% csrf_token %}
 
