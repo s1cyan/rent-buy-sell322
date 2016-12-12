@@ -1,7 +1,8 @@
 from django.contrib.auth.models import User
 from django.shortcuts import render
-from ..forms import UserForm
 from ..date_checker import update_all
+from ..forms import UserForm, UserProfileForm
+from ..models import UserProfile
 
 
 def register(request):
@@ -18,7 +19,8 @@ def register(request):
     if request.method == 'POST':
         # Attempt to grab information from the raw form information.
         user_form = UserForm(data=request.POST)
-        if user_form.is_valid(): # and registration_form.is_valid():
+        userprofile_form = UserProfileForm(data=request.POST)
+        if user_form.is_valid() and userprofile_form.is_valid():
             user = User.objects.create_user(
                 first_name=user_form.cleaned_data['first_name'],
                 last_name=user_form.cleaned_data['last_name'],
@@ -27,12 +29,22 @@ def register(request):
                 password=user_form.cleaned_data['password'],
                 )
             user.save()
+            profile = UserProfile.objects.get(user=user)
+            profile.bio = userprofile_form.cleaned_data['bio']
+            profile.phone = userprofile_form.cleaned_data['phone']
+            profile.city = userprofile_form.cleaned_data['city']
+            profile.country = userprofile_form.cleaned_data['country']
+            profile.credit_card = userprofile_form.cleaned_data['credit_card']
+            profile.save()
             registered = True
         else:
             print(user_form.errors)
+            print(userprofile_form.errors)
     else:
         user_form = UserForm()
+        userprofile_form = UserProfileForm()
     # Render the template depending on the context.
     return render(request, 'registration.html',
                   {'user_form': user_form,
-                   'registered': registered})
+                   'userprofile_form': userprofile_form,
+                   'registered': registered, } )
