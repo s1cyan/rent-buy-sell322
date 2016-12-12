@@ -15,6 +15,16 @@ def orders(request):
     update_all()
     if "confirm_checkout" in request.POST:
         cart = ShoppingCart.objects.get(user=profile)
+        #print("\n\n",cart.products.all,"\n\n")
+        #totalPrice=0
+        #for i in cart:
+        #    totalPrice+=double(i.price)
+
+        print("\n\n", float(cart.products.all().aggregate(Sum('price'))['price__sum']), profile.balance, "\n\n")
+        if float(cart.products.all().aggregate(Sum('price'))['price__sum']) > profile.balance:
+            context_dict['messages']="You do not have enough money on your account for these purchases."
+            return render(request, 'badAction.html', context_dict)
+
         new_order = Order(user=profile)
         new_order.save()
         new_order.products.add(*cart.products.all())
