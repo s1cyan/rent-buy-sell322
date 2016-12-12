@@ -16,12 +16,17 @@ def details(request):
     if "view_details" in request.POST:
         product_pk = request.POST['view_details']
         product = Product.objects.get(pk=product_pk)
+
         comments = Comment.objects.filter(product=product)
         context_dict['product'] = product
         context_dict['option'] = associate_option(product.option)
         context_dict['product_pk'] = product_pk
         context_dict['product_id'] = product.id
         context_dict['comments'] = comments
+        if product.option == Product.AUCTION:
+            # return auction_item_details_users(request,context_dict)
+            print ("&&&&& TRUEEEE")
+            return render(request, 'auction_details.html', context_dict)
 
     # Check if ADD A COMMENT button was pressed
     if "add_comment" in request.POST:
@@ -40,9 +45,7 @@ def details(request):
         print("NEW COMMENT:", new_comment)
         return render(request, "item-details.html", context_dict)
 
-    if product.option == Product.AUCTION:
-        # return auction_item_details_users(request,context_dict)
-        return render(request, 'auction_details.html', context_dict)
+
 
     # else:
     return render(request, 'item-details.html', context_dict)

@@ -12,13 +12,13 @@
 
 <div class="row">
     <div class="col s8 offset-s3">
-        <h5>Item: {{ item }}</h5>
-        <h6>Current Price: $ {{ price }}</h6>
-        <h6>Auction Ends: {{ date }} ,{{ time }}</h6>
+        <h5>Item: {{ product.title }}</h5>
+        <h6>Current Price: $ {{ product.price }}</h6>
+        <h6>Auction Ends: {{ product.takedown_date }} ,{{ product.takedown_time }}</h6>
 
-        <h6>Seller: {{ seller }}</h6>
+        <h6>Seller: {{ product.seller }}</h6>
         <h6>Item is for :{{ option }}</h6>
-        <h6>Description: {{ description }}</h6>
+        <h6>Description: {{ product.text }}</h6>
 
 
         <div class=" col s12">
