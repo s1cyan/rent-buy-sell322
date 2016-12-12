@@ -16,6 +16,7 @@ def update_all():
             if item.option == 'A':
                 seller = UserProfile.objects.get(user = item.seller)
                 seller.balance += item.price
+                seller.transaction += 1
                 seller.save()
             item.is_active = False
             item.save()
@@ -24,6 +25,7 @@ def update_all():
                 if item.option == 'A':
                     seller = UserProfile.objects.get(user=item.seller)
                     seller.balance += item.price
+                    seller.transaction += 1
                     seller.save()
                 item.is_active = False
                 item.save()

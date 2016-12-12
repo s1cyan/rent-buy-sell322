@@ -38,6 +38,8 @@ def orders(request):
             if product.quantity == 0:
                 product.is_active = False
                 product.save()
+        profile.transactions += len(cart.products.all())
+        profile.save()
         cart_total = cart.products.all().aggregate(Sum('price'))
         amount = cart_total['price__sum']
         print("CART TOTAL was: $", amount)
