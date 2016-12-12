@@ -27,11 +27,7 @@ def update_account(request):
                                                          'phone',
                                                          'city',
                                                          'country',
-                                                         'transactions',
-                                                         'credit_card',
-                                                         'strikes',
-                                                         'suspensions',
-                                                         'rbs_vip_user'))
+                                                         'credit_card',))
     formset = ProfileInlineFormset(instance=user)
 
     if request.user.is_authenticated() and request.user.id == user.id:

@@ -2,7 +2,8 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Sum
 from django.contrib.auth.models import User
 from django.shortcuts import render
-from ..models import Order, ShoppingCart, UserProfile, Rating, Complaint
+from ..models import Order, ShoppingCart, UserProfile, Rating, Complaint, Product
+
 from ..update_rating import update_rating
 from ..date_checker import update_all
 
@@ -84,28 +85,36 @@ def orders(request):
     #context_dict['all_orders'] = all_orders
     #print("\n\n",all_orders,"\n\n")
     #context_dict['totalPrice'] = all_orders.totalPrice
+    check_vip(profile)
 
     if "rating" in request.POST:
         rating_input = request.POST['rating']
-        listed_seller = request.POST.get('seller', ' ')
+        listed_product_pk = request.POST['product_pk']
+        prod = Product.objects.get(pk= listed_product_pk)
+        listed_seller = prod.seller
         user_seller = User.objects.get(username = listed_seller)
         seller_profile = UserProfile.objects.get(user = user_seller)
-        new_rating = Rating(user=seller_profile, rating = int(rating_input), ratedBy=str(profile.user))
-        new_rating.save()
+
+        r = Rating.objects.get_or_create(user = seller_profile, rated_by = profile, product = prod)[0]
+        r.rating = int(rating_input)
+        # new_rating = Rating(user=seller_profile,rating = int(rating_input), rated_by = profile, product = prod)
+        r.save()
         update_rating(seller_profile)
-        print ("*******", rating_input, '****', listed_seller)
-        #here, we check if you are rating too unfairly or if you are rating too generously
-        # unfairRater = Rating.objects.filter(ratedBy=str(profile.user), rating=1)
-        # whiner = Complaint.objects.filter(user_id=profile.pk)
-        # if len(unfairRater)>=3 and len(whiner)>=3:
-        #     profile.strikes+=1
-        #     profile.save()
-        #     context_dict['messages']="You have received a strike for being a negative user"
-        #     #check strikes, ssupections, bans
-        # generousRater = Rating.objects.filter(ratedBy=str(profile.user), rating=5)
-        # if len(generousRater)>=5:
-        #     profile.strikes+=1
-        #     profile.save()
-        #     context_dict['messages']="You have received a strike for giving too many perfect ratings"
-        #     #check strikes, suspentions, bans
+        check_rater(profile)
     return render(request, 'orders.html', context_dict)
+
+
+def check_rater(rater_profile):
+    sr = Rating.objects.filter(rated_by = rater_profile).order_by('-id')[:5]
+    sr_list = list(sr.values_list('rating',flat = True))
+
+    if len(sr_list) >= 3:
+        if sr_list.count(1) == 3:
+            rater_profile.strikes += 1
+            rater_profile.save()
+            print ('strikes          ', rater_profile.strikes)
+
+    if len(sr_list)>= 5:
+        if sr_list.count(5) == 5:
+            rater_profile.strikes += 1
+            rater_profile.save()
